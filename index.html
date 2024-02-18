@@ -10,6 +10,23 @@
         channel: '1206500438338437120' // #📕￤rules
     })
 </script>
+	<script>
+	
+        function updateClock() {
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var timeString = hours + ":" + minutes + ":" + seconds;
+            document.getElementById("clock").innerText = timeString;
+        }
+
+        setInterval(updateClock, 1000); 
+    </script>
     <style>
     @font-face {
                 font-family: b nazanin;
@@ -45,11 +62,13 @@
 
 
     <body bgcolor="#16161A">
+		<font id="clock" face="b nazanin" size="5" color="white"></font>
         <center><font face="b nazanin" size="14" color = "white"><p>علی صفامنش</p></font></center>
 
         <center><font face="b nazanin" size="5" color="white">من علی صفامنش هستم</font></center>
         <center><font face="b nazanin" size="5" color="white">هستم html و javascript ، عاشق پایتون</font></center>
         <center><font face="b nazanin" size="5" color="white">در حال کامل کردن این وب پیجم</font></center>
+		
 
         <center><font face="b nazanin" size="14" color = "white"><p>: وضعیت من در دیسکورد</p></font></center>
         <center><img src="https://discord.c99.nl/widget/theme-1/898843614380163082.png" alt=" my status in discord but you cant see it LOL :)"></img></center>
