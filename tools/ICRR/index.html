@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICRR</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dark-theme {
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .dark-theme .form-control {
+            background-color: #444444;
+            color: #ffffff;
+            border-color: #555555;
+        }
+        .dark-theme .form-range::-webkit-slider-thumb {
+            background-color: #ffffff;
+        }
+        .dark-theme .form-range::-moz-range-thumb {
+            background-color: #ffffff;
+        }
+        .dark-theme .form-range::-ms-thumb {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-center">ICRR</h1>
+        
+        <div class="mb-4">
+            <label for="imageInput" class="block mb-2">Select an image:</label>
+            <input type="file" id="imageInput" accept="image/*" class="form-control">
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="colorPicker" class="block mb-2">Color to remove/replace:</label>
+                <input type="color" id="colorPicker" class="form-control">
+            </div>
+            <div>
+                <label for="replacementColorPicker" class="block mb-2">Replacement color:</label>
+                <input type="color" id="replacementColorPicker" class="form-control">
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <label for="toleranceSlider" class="block mb-2">Color tolerance:</label>
+            <input type="range" id="toleranceSlider" min="0" max="255" value="30" class="form-range">
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-4 mb-4">
+            <button id="removeColorBtn" class="btn btn-primary">Remove Color</button>
+            <button id="replaceColorBtn" class="btn btn-success">Replace Color</button>
+            <button id="invertBtn" class="btn btn-warning">Invert Image</button>
+            <button id="themeToggle" class="btn btn-secondary">Toggle Theme</button>
+        </div>
+        
+        <canvas id="preview" class="max-w-full mx-auto border border-gray-300 dark:border-gray-600"></canvas>
+    </div>
+
+    <footer class="bg-gray-200 dark:bg-gray-700 py-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>Directed by <a href="https://github.com/daradege" class="text-blue-600 dark:text-blue-400 hover:underline">daradege</a></p>
+            <p>© 2024 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const colorPicker = document.getElementById('colorPicker');
+        const replacementColorPicker = document.getElementById('replacementColorPicker');
+        const toleranceSlider = document.getElementById('toleranceSlider');
+        const removeColorBtn = document.getElementById('removeColorBtn');
+        const replaceColorBtn = document.getElementById('replaceColorBtn');
+        const invertBtn = document.getElementById('invertBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const preview = document.getElementById('preview');
+        const ctx = preview.getContext('2d');
+
+        let image = new Image();
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                image.src = event.target.result;
+                image.onload = () => {
+                    preview.width = image.width;
+                    preview.height = image.height;
+                    ctx.drawImage(image, 0, 0);
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+
+        removeColorBtn.addEventListener('click', () => {
+            processImage(true);
+        });
+
+        replaceColorBtn.addEventListener('click', () => {
+            processImage(false);
+        });
+
+        invertBtn.addEventListener('click', () => {
+            invertImage();
+        });
+
+        function processImage(removeColor) {
+            const imageData = ctx.getImageData(0, 0, preview.width, preview.height);
+            const data = imageData.data;
+            const color = hexToRgb(colorPicker.value);
+            const replacementColor = hexToRgb(replacementColorPicker.value);
+            const tolerance = parseInt(toleranceSlider.value);
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+
+                const distance = Math.sqrt(
+                    Math.pow(r - color.r, 2) +
+                    Math.pow(g - color.g, 2) +
+                    Math.pow(b - color.b, 2)
+                );
+
+                if (distance <= tolerance) {
+                    if (removeColor) {
+                        data[i + 3] = 0;
+                    } else {
+                        data[i] = replacementColor.r;
+                        data[i + 1] = replacementColor.g;
+                        data[i + 2] = replacementColor.b;
+                    }
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function invertImage() {
+            const imageData = ctx.getImageData(0, 0, preview.width, preview.height);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                data[i] = 255 - data[i];
+                data[i + 1] = 255 - data[i + 1];
+                data[i + 2] = 255 - data[i + 2];
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            document.documentElement.classList.toggle('dark');
+        });
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+    </script>
+</body>
+</html>
