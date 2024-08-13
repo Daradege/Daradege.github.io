@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVNG Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        #preview {
+            max-width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <h1 class="text-4xl font-bold mb-8 text-center">SVNG Converter</h1>
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+            <textarea id="svgInput" class="bg-gray-700 text-white rounded-md p-2 mb-4" placeholder="Paste your SVG code here"></textarea>
+            <button onclick="convertToPNG()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Convert SVG to PNG</button>
+            <div class="my-4">
+                <label for="pngInput" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                    Choose PNG File
+                    <input type="file" id="pngInput" accept="image/png" onchange="loadPNG(event)" class="hidden">
+                </label>
+                <button onclick="convertToSVG()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded ml-2">Convert PNG to SVG</button>
+            </div>
+            <img id="preview" alt="Preview" class="mx-auto">
+            <a id="downloadLink" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded inline-block mt-4" style="display: none;">Download</a>
+            <textarea id="svgOutput" class="bg-gray-700 text-white rounded-md p-2 mt-4" placeholder="SVG code will appear here" readonly></textarea>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>Directed by <a href="https://github.com/daradege" class="text-blue-400 hover:text-blue-300">daradege</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function convertToPNG() {
+            const svgCode = document.getElementById('svgInput').value;
+            const img = document.getElementById('preview');
+            const downloadLink = document.getElementById('downloadLink');
+
+            const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+
+            img.src = url;
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob(function(blob) {
+                    const pngUrl = URL.createObjectURL(blob);
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = 'converted_image.png';
+                    downloadLink.style.display = 'inline-block';
+                    downloadLink.textContent = 'Download PNG';
+                }, 'image/png');
+
+                URL.revokeObjectURL(url);
+            };
+        }
+
+        function loadPNG(event) {
+            const file = event.target.files[0];
+            const img = document.getElementById('preview');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                img.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+
+        function convertToSVG() {
+            const img = document.getElementById('preview');
+            const downloadLink = document.getElementById('downloadLink');
+            const svgOutput = document.getElementById('svgOutput');
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.drawImage(img, 0, 0);
+
+            const svgString = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+                <image href="${canvas.toDataURL('image/png')}" width="${canvas.width}" height="${canvas.height}"/>
+            </svg>
+            `;
+
+            const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+
+            downloadLink.href = url;
+            downloadLink.download = 'converted_image.svg';
+            downloadLink.style.display = 'inline-block';
+            downloadLink.textContent = 'Download SVG';
+
+            svgOutput.value = svgString;
+        }
+    </script>
+</body>
+</html>
