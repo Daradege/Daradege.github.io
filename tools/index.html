@@ -1,246 +1,193 @@
 <!DOCTYPE html>
-<html lang="fa" class="bg-black">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>علی صفامنش</title>
+    <title>Paint App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Poppins', 'Vazirmatn', sans-serif;
-        }
-        
-        @keyframes neon-pulse {
-            0%, 100% { box-shadow: 0 0 5px #4C3BCF, 0 0 10px #4C3BCF, 0 0 15px #4C3BCF, 0 0 20px #4C3BCF; }
-            50% { box-shadow: 0 0 10px #4C3BCF, 0 0 20px #4C3BCF, 0 0 30px #4C3BCF, 0 0 40px #4C3BCF; }
-        }
-        .neon-border {
-            animation: neon-pulse 1.5s infinite alternate;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4C3BCF;
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6050E0;
-        }
-        
-        /* Smooth Scroll Behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Mobile menu animation */
-        .mobile-menu {
-            transition: transform 0.3s ease-in-out;
-            transform: translateX(-100%);
-        }
-        .mobile-menu.open {
-            transform: translateX(0);
-        }
-    </style>
 </head>
-<body class="bg-black text-white">
-    <header class="bg-purple-900 p-4 fixed w-full z-10">
-        <nav class="max-w-4xl mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold">علی صفامنش</a>
-
-            <ul class="hidden md:flex space-x-4">
-                <li><a href="/en" class="hover:text-purple-300 transition duration-300">en</a></li>
-                <li><a href="#about" class="hover:text-purple-300 transition duration-300">درباره من</a></li>
-                <li><a href="#skills" class="hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
-                <li><a href="#experience" class="hover:text-purple-300 transition duration-300">تجربیات</a></li>
-                <li><a href="#backend" class="hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
-                <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
-            </ul>
-            <button id="mobile-menu-button" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </nav>
-    </header>
-
-    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-purple-900 p-4 z-20 mobile-menu md:hidden">
-        <button id="close-menu" class="absolute top-4 right-4">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        <ul class="mt-8 space-y-4">
-            <li><a href="/en" class="block hover:text-purple-300 transition duration-300">en</a></li>
-            <li><a href="#about" class="block hover:text-purple-300 transition duration-300">درباره من</a></li>
-            <li><a href="#skills" class="block hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
-            <li><a href="#experience" class="block hover:text-purple-300 transition duration-300">تجربیات</a></li>
-            <li><a href="#backend" class="block hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
-            <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
-        </ul>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Paint App</h1>
+        <canvas id="paintCanvas" class="w-full h-auto border-2 border-gray-300 rounded-lg mb-4"></canvas>
+        <div class="flex flex-wrap gap-4 justify-center items-center">
+            <input type="color" id="colorPicker" value="#000000" class="w-12 h-12 rounded cursor-pointer">
+            <input type="range" id="brushSize" min="1" max="50" value="5" class="w-32 md:w-48">
+            <button id="clearBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear</button>
+            <button id="eraseBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Erase</button>
+            <button id="textBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add Text</button>
+            <input type="text" id="textInput" placeholder="Enter text" class="border-2 border-gray-300 rounded px-2 py-1">
+            <label for="imageUpload" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                Upload Image
+                <input type="file" id="imageUpload" accept="image/*" class="hidden">
+            </label>
+            <button id="clearBackgroundBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">Clear Background</button>
+            <button id="saveBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">Save Image</button>
+        </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const closeMenuButton = document.getElementById('close-menu');
-            const mobileMenu = document.getElementById('mobile-menu');
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSize = document.getElementById('brushSize');
+        const clearBtn = document.getElementById('clearBtn');
+        const eraseBtn = document.getElementById('eraseBtn');
+        const textBtn = document.getElementById('textBtn');
+        const textInput = document.getElementById('textInput');
+        const imageUpload = document.getElementById('imageUpload');
+        const clearBackgroundBtn = document.getElementById('clearBackgroundBtn');
+        const saveBtn = document.getElementById('saveBtn');
 
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.add('open');
+        let isDrawing = false;
+        let isErasing = false;
+        let isAddingText = false;
+        let backgroundImage = null;
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientWidth * 0.75;
+            if (backgroundImage) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('click', addText);
+        clearBtn.addEventListener('click', clearCanvas);
+        eraseBtn.addEventListener('click', toggleErase);
+        textBtn.addEventListener('click', toggleAddText);
+        imageUpload.addEventListener('change', addBackgroundImage);
+        clearBackgroundBtn.addEventListener('click', clearBackground);
+        saveBtn.addEventListener('click', saveImage);
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent("mousemove", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
             });
+            canvas.dispatchEvent(mouseEvent);
+        }
 
-            closeMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.remove('open');
-            });
+        function startDrawing(e) {
+            if (isAddingText) return;
+            isDrawing = true;
+            draw(e);
+        }
 
-            // Close menu when clicking on a link
-            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenu.classList.remove('open');
-                });
-            });
-        });
+        function draw(e) {
+            if (!isDrawing || isAddingText) return;
 
+            ctx.lineWidth = brushSize.value;
+            ctx.lineCap = 'round';
+            
+            if (isErasing) {
+                ctx.globalCompositeOperation = 'destination-out';
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = colorPicker.value;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = e.clientY - rect.top - canvas.height / 2;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (backgroundImage) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function toggleErase() {
+            isErasing = !isErasing;
+            eraseBtn.textContent = isErasing ? 'Draw' : 'Erase';
+            eraseBtn.classList.toggle('bg-yellow-500');
+            eraseBtn.classList.toggle('bg-green-500');
+        }
+
+        function toggleAddText() {
+            isAddingText = !isAddingText;
+            textBtn.textContent = isAddingText ? 'Cancel Text' : 'Add Text';
+            canvas.style.cursor = isAddingText ? 'text' : 'default';
+            textBtn.classList.toggle('bg-blue-500');
+            textBtn.classList.toggle('bg-red-500');
+        }
+
+        function addText(e) {
+            if (!isAddingText) return;
+            const text = textInput.value.trim();
+            if (text) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left - canvas.width / 2;
+                const y = e.clientY - rect.top - canvas.height / 2;
+
+                ctx.font = `${brushSize.value}px Arial`;
+                ctx.fillStyle = colorPicker.value;
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, x, y);
+                textInput.value = '';
+            }
+            isAddingText = false;
+            textBtn.textContent = 'Add Text';
+            canvas.style.cursor = 'default';
+            textBtn.classList.remove('bg-red-500');
+            textBtn.classList.add('bg-blue-500');
+        }
+
+        function addBackgroundImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    backgroundImage = new Image();
+                    backgroundImage.onload = function() {
+                        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                    }
+                    backgroundImage.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearBackground() {
+            backgroundImage = null;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveImage() {
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'paint-app-image.png';
+            link.href = dataURL;
+            link.click();
+        }
+
+        // Center the canvas origin
+        ctx.translate(canvas.width / 2, canvas.height / 2);
     </script>
-
-    <main class="p-8 pt-24">
-        <div class="max-w-4xl mx-auto">
-            <div class="mb-8 text-center">
-                <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="daradege avatar" class="w-32 h-32 rounded-full mx-auto mb-4 neon-border">
-                <h1 class="text-4xl font-bold mb-2">علی صفامنش</h1>
-                <p class="text-xl mb-4">توسعه دهنده بات و برنامه نویس</p>
-            </div>
-
-            <div id="about" class="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
-                <div id="persian-content" dir="auto" class="bg-black p-6 rounded-lg neon-border">
-                    <p class="text-lg">
-                        !سلام! من <a href="https://discordapp.com/users/898843614380163082" class="text-blue-400 hover:text-blue-300">علی صفامنش</a> هستم<br>
-                        عاشق پایتون و دارم #C رو یاد میگیرم<br>
-                        سه تا مدرک قابل ترجمه ی پایتون از مجتمع فنی مرکزی تهران دارم<br>
-                        و بات نویسی <strong class="text-purple-400">بله</strong>، <strong class="text-purple-400">تلگرام</strong>، <strong class="text-purple-400">گیلدد</strong>، <strong class="text-purple-400">دیسکورد</strong> رو به صورت کاملا حرفه‌ای براتون انجام میدم<br>
-                        من بیش از 2 سال تجربه در ساخت بات‌های دیسکورد و بله دارم و می‌توانم بات‌های سفارشی با قابلیت‌های پیشرفته برای شما بسازم
-                    </p>
-                </div>
-            </div>
-
-            <div id="skills" class="mb-8">
-                <h2 class="text-2xl font-bold mb-4 text-center">:مهارت‌های من</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">Python 100%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">HTML 100%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">Node.Js 100%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">CSS 95%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PhotoShop 90%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">BootStrap 90%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PHP 70%</p>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PowerPoint 70%</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="experience" class="mb-8" dir="auto">
-                <h2 class="text-2xl font-bold mb-4 text-center">تجربیات من در ساخت بات</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <h3 class="text-xl font-bold mb-2">بات‌های دیسکورد</h3>
-                        <ul class="list-disc list-inside">
-                            <li>ساخت بات‌های مدیریت سرور</li>
-                            <li>بات‌های موسیقی با کیفیت بالا</li>
-                            <li>سیستم‌های لول و رنک</li>
-                            <li>بات‌های اکونومی و بازی</li>
-                        </ul>
-                    </div>
-                    <div class="bg-black p-4 rounded-lg neon-border">
-                        <h3 class="text-xl font-bold mb-2">بات‌های بله</h3>
-                        <ul class="list-disc list-inside">
-                            <li>بات‌های اطلاع‌رسانی و خبری</li>
-                            <li>سیستم‌های پاسخگوی خودکار</li>
-                            <li>بات‌های مدیریت گروه و کانال</li>
-                            <li>بات‌های سرگرمی و بازی</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="backend" class="mb-8" dir="auto">
-                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">توسعه بک‌اند و API ها</h2>
-                <div class="bg-black p-6 rounded-lg neon-border">
-                    <p class="text-lg mb-4">
-                        علاوه بر توسعه بات، من در زمینه توسعه بک‌اند وب‌سایت‌ها و ایجاد API های کاربردی نیز تخصص دارم. برخی از پروژه‌های من شامل:
-                    </p>
-                    <ul class="list-disc list-inside mb-4">
-                        <li>توسعه API اخبار برای دریافت آخرین اخبار از منابع مختلف</li>
-                        <li>ایجاد API تولید تصویر با استفاده از هوش مصنوعی</li>
-                        <li>طراحی و پیاده‌سازی API ابزارهای سرگرمی مانند جوک‌ساز و نقل قول تصادفی</li>
-                    </ul>
-                    <p class="text-lg">
-                        من می‌توانم راه‌حل‌های سفارشی برای نیازهای خاص پروژه شما ارائه دهم و API های قدرتمند و مقیاس‌پذیر بسازم.
-                    </p>
-                </div>
-            </div>
-
-            <div class="mb-8" dir="auto">
-                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ابزارک ها</h2>
-                <div class="bg-black p-6 rounded-lg neon-border" ;">
-                    <div>
-                        <p class="text-lg mb-4">
-                            برخی از ابزارک های توسعه داده شده در حوزه فرانت‌اند:<br><span dir="rtl"><a href="https://daradege.github.io/tools" style="color: #0dff00;">برو به سایت</a></span>
-                            </p>
-                            <ul class="list-disc list-inside mb-4">
-                                <li>ICRR</li>
-                                <li>IPW</li>
-                                <li>svng</li>
-                                <li>Paint</li>
-                            </ul>
-                    </div>
-                    <div>
-                        <center><iframe src="https://daradege.github.io/tools" style="border-radius: 20px;height: 500px;width: 100%;"></center></iframe>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ارتباط با من</h2>
-                <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
-                    <center><a href="https://ble.ir/daradege">Bale</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="https://github.com/daradege">Github</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                    more soon
-
-                    </center>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-purple-900 p-4 mt-8">
-        <div class="max-w-4xl mx-auto text-center">
-            <p>© 2024 علی صفامنش. تمامی حقوق محفوظ است</p>
-        </div>
-    </footer>
 </body>
 </html>
