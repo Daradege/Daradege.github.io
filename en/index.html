@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Safamanesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', 'Vazirmatn', sans-serif;
+        }
+        
+        @keyframes neon-pulse {
+            0%, 100% { box-shadow: 0 0 5px #4C3BCF, 0 0 10px #4C3BCF, 0 0 15px #4C3BCF, 0 0 20px #4C3BCF; }
+            50% { box-shadow: 0 0 10px #4C3BCF, 0 0 20px #4C3BCF, 0 0 30px #4C3BCF, 0 0 40px #4C3BCF; }
+        }
+        .neon-border {
+            animation: neon-pulse 1.5s infinite alternate;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4C3BCF;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6050E0;
+        }
+        
+        /* Smooth Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Mobile menu animation */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <header class="bg-purple-900 p-4 fixed w-full z-10">
+        <nav class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">Ali Safamanesh</a>
+
+            <ul class="hidden md:flex space-x-4">
+                <li><a href="/" class="hover:text-purple-300 transition duration-300">فا</a></li>
+                <li><a href="#about" class="hover:text-purple-300 transition duration-300">About Me</a></li>
+                <li><a href="#skills" class="hover:text-purple-300 transition duration-300">Skills</a></li>
+                <li><a href="#experience" class="hover:text-purple-300 transition duration-300">Experience</a></li>
+                <li><a href="#backend" class="hover:text-purple-300 transition duration-300">Backend Development</a></li>
+                <li><a href="#tools" class="hover:text-purple-300 transition duration-300">Tools</a></li>
+            </ul>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-purple-900 p-4 z-20 mobile-menu md:hidden">
+        <button id="close-menu" class="absolute top-4 right-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-8 space-y-4">
+            <li><a href="/" class="block hover:text-purple-300 transition duration-300">فا</a></li>
+            <li><a href="#about" class="block hover:text-purple-300 transition duration-300">About Me</a></li>
+            <li><a href="#skills" class="block hover:text-purple-300 transition duration-300">Skills</a></li>
+            <li><a href="#experience" class="block hover:text-purple-300 transition duration-300">Experience</a></li>
+            <li><a href="#backend" class="block hover:text-purple-300 transition duration-300">Backend Development</a></li>
+            <li><a href="#tools" class="hover:text-purple-300 transition duration-300">Tools</a></li>
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.add('open');
+            });
+
+            closeMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+            });
+
+            // Close menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        });
+
+    </script>
+
+    <main class="p-8 pt-24">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8 text-center">
+                <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="daradege avatar" class="w-32 h-32 rounded-full mx-auto mb-4 neon-border">
+                <h1 class="text-4xl font-bold mb-2">Ali Safamanesh</h1>
+                <p class="text-xl mb-4">Bot Developer and Programmer</p>
+            </div>
+
+            <div id="about" class="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
+                <div id="english-content" class="bg-black p-6 rounded-lg neon-border">
+                    <p class="text-lg">
+                        Hello! I'm <a href="https://discordapp.com/users/898843614380163082" class="text-blue-400 hover:text-blue-300">Ali Safamanesh</a><br>
+                        I love Python and I'm learning C#<br>
+                        I have three translatable Python certificates from Tehran Central Technical Complex<br>
+                        I can professionally develop bots for <strong class="text-purple-400">Bale</strong>, <strong class="text-purple-400">Telegram</strong>, <strong class="text-purple-400">Guilded</strong>, and <strong class="text-purple-400">Discord</strong><br>
+                        I have over 2 years of experience in creating Discord and Bale bots and can build custom bots with advanced features for you
+                    </p>
+                </div>
+            </div>
+
+            <div id="skills" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">My Skills:</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">Python 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">HTML 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">Node.Js 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">CSS 95%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PhotoShop 90%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">BootStrap 90%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PHP 70%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PowerPoint 70%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="experience" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">My Experience in Bot Development</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <h3 class="text-xl font-bold mb-2">Discord Bots</h3>
+                        <ul class="list-disc list-inside">
+                            <li>Server management bots</li>
+                            <li>High-quality music bots</li>
+                            <li>Level and rank systems</li>
+                            <li>Economy and game bots</li>
+                        </ul>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <h3 class="text-xl font-bold mb-2">Bale Bots</h3>
+                        <ul class="list-disc list-inside">
+                            <li>Information and news bots</li>
+                            <li>Automated response systems</li>
+                            <li>Group and channel management bots</li>
+                            <li>Entertainment and game bots</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="backend" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">Backend Development and APIs</h2>
+                <div class="bg-black p-6 rounded-lg neon-border">
+                    <p class="text-lg mb-4">
+                        In addition to bot development, I specialize in backend website development and creating useful APIs. Some of my projects include:
+                    </p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>Developing a news API to fetch the latest news from various sources</li>
+                        <li>Creating an image generation API using artificial intelligence</li>
+                        <li>Designing and implementing APIs for entertainment tools like joke generators and random quotes</li>
+                    </ul>
+                    <p class="text-lg">
+                        I can provide custom solutions for your project's specific needs and build powerful and scalable APIs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">Tools</h2>
+                <div class="bg-black p-6 rounded-lg neon-border">
+                    <div>
+                        <p class="text-lg mb-4">
+                            Some of the tools developed in the frontend area:<br><a href="https://daradege.github.io/tools" style="color: #0dff00;">Go to website</a>
+                        </p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>ICRR</li>
+                            <li>IPW</li>
+                            <li>svng</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <center><iframe src="https://daradege.github.io/tools" style="border-radius: 20px;height: 500px;width: 100%;"></iframe></center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">Contact Me</h2>
+                <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
+                    <center><a href="https://ble.ir/daradege">Bale</a> 
+                    <a href="https://github.com/daradege">Github</a>
+                    more soon
+                    </center>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-purple-900 p-4 mt-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <p>© 2024 Ali Safamanesh. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
