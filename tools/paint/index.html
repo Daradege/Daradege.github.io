@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">Paint App</h1>
+        <canvas id="paintCanvas" class="w-full h-auto border-2 border-gray-300 rounded-lg mb-4"></canvas>
+        <div class="flex flex-wrap gap-4 justify-center items-center">
+            <input type="color" id="colorPicker" value="#000000" class="w-12 h-12 rounded cursor-pointer">
+            <input type="range" id="brushSize" min="1" max="50" value="5" class="w-32 md:w-48">
+            <button id="clearBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear</button>
+            <button id="eraseBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Erase</button>
+            <button id="textBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add Text</button>
+            <input type="text" id="textInput" placeholder="Enter text" class="border-2 border-gray-300 rounded px-2 py-1">
+            <label for="imageUpload" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                Upload Image
+                <input type="file" id="imageUpload" accept="image/*" class="hidden">
+            </label>
+            <button id="clearBackgroundBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">Clear Background</button>
+            <button id="saveBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">Save Image</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSize = document.getElementById('brushSize');
+        const clearBtn = document.getElementById('clearBtn');
+        const eraseBtn = document.getElementById('eraseBtn');
+        const textBtn = document.getElementById('textBtn');
+        const textInput = document.getElementById('textInput');
+        const imageUpload = document.getElementById('imageUpload');
+        const clearBackgroundBtn = document.getElementById('clearBackgroundBtn');
+        const saveBtn = document.getElementById('saveBtn');
+
+        let isDrawing = false;
+        let isErasing = false;
+        let isAddingText = false;
+        let backgroundImage = null;
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientWidth * 0.75;
+            if (backgroundImage) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('click', addText);
+        clearBtn.addEventListener('click', clearCanvas);
+        eraseBtn.addEventListener('click', toggleErase);
+        textBtn.addEventListener('click', toggleAddText);
+        imageUpload.addEventListener('change', addBackgroundImage);
+        clearBackgroundBtn.addEventListener('click', clearBackground);
+        saveBtn.addEventListener('click', saveImage);
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent("mousemove", {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function startDrawing(e) {
+            if (isAddingText) return;
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing || isAddingText) return;
+
+            ctx.lineWidth = brushSize.value;
+            ctx.lineCap = 'round';
+            
+            if (isErasing) {
+                ctx.globalCompositeOperation = 'destination-out';
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = colorPicker.value;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = e.clientY - rect.top - canvas.height / 2;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (backgroundImage) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function toggleErase() {
+            isErasing = !isErasing;
+            eraseBtn.textContent = isErasing ? 'Draw' : 'Erase';
+            eraseBtn.classList.toggle('bg-yellow-500');
+            eraseBtn.classList.toggle('bg-green-500');
+        }
+
+        function toggleAddText() {
+            isAddingText = !isAddingText;
+            textBtn.textContent = isAddingText ? 'Cancel Text' : 'Add Text';
+            canvas.style.cursor = isAddingText ? 'text' : 'default';
+            textBtn.classList.toggle('bg-blue-500');
+            textBtn.classList.toggle('bg-red-500');
+        }
+
+        function addText(e) {
+            if (!isAddingText) return;
+            const text = textInput.value.trim();
+            if (text) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left - canvas.width / 2;
+                const y = e.clientY - rect.top - canvas.height / 2;
+
+                ctx.font = `${brushSize.value}px Arial`;
+                ctx.fillStyle = colorPicker.value;
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, x, y);
+                textInput.value = '';
+            }
+            isAddingText = false;
+            textBtn.textContent = 'Add Text';
+            canvas.style.cursor = 'default';
+            textBtn.classList.remove('bg-red-500');
+            textBtn.classList.add('bg-blue-500');
+        }
+
+        function addBackgroundImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    backgroundImage = new Image();
+                    backgroundImage.onload = function() {
+                        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                    }
+                    backgroundImage.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearBackground() {
+            backgroundImage = null;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveImage() {
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'paint-app-image.png';
+            link.href = dataURL;
+            link.click();
+        }
+
+        // Center the canvas origin
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+    </script>
+</body>
+</html>
