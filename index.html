@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Poppins', 'Vazirmatn', sans-serif;
@@ -39,21 +40,77 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Mobile menu animation */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="bg-black text-white">
     <header class="bg-purple-900 p-4 fixed w-full z-10">
         <nav class="max-w-4xl mx-auto flex justify-between items-center">
             <a href="#" class="text-2xl font-bold">علی صفامنش</a>
-            <ul class="flex space-x-4">
+
+            <ul class="hidden md:flex space-x-4">
                 <li><a href="/en" class="hover:text-purple-300 transition duration-300">en</a></li>
                 <li><a href="#about" class="hover:text-purple-300 transition duration-300">درباره من</a></li>
                 <li><a href="#skills" class="hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
                 <li><a href="#experience" class="hover:text-purple-300 transition duration-300">تجربیات</a></li>
                 <li><a href="#backend" class="hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
+                <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
             </ul>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
         </nav>
     </header>
+
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-purple-900 p-4 z-20 mobile-menu md:hidden">
+        <button id="close-menu" class="absolute top-4 right-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-8 space-y-4">
+            <li><a href="/en" class="block hover:text-purple-300 transition duration-300">en</a></li>
+            <li><a href="#about" class="block hover:text-purple-300 transition duration-300">درباره من</a></li>
+            <li><a href="#skills" class="block hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
+            <li><a href="#experience" class="block hover:text-purple-300 transition duration-300">تجربیات</a></li>
+            <li><a href="#backend" class="block hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
+            <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.add('open');
+            });
+
+            closeMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+            });
+
+            // Close menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        });
+
+    </script>
 
     <main class="p-8 pt-24">
         <div class="max-w-4xl mx-auto">
@@ -64,16 +121,15 @@
             </div>
 
             <div id="about" class="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
-                <div id="persian-content" dir="rtl" class="bg-black p-6 rounded-lg neon-border">
+                <div id="persian-content" dir="auto" class="bg-black p-6 rounded-lg neon-border">
                     <p class="text-lg">
                         !سلام! من <a href="https://discordapp.com/users/898843614380163082" class="text-blue-400 hover:text-blue-300">علی صفامنش</a> هستم<br>
-                        عاشق پایتون و دارم نود جی اس رو یاد میگیرم<br>
+                        عاشق پایتون و دارم #C رو یاد میگیرم<br>
                         سه تا مدرک قابل ترجمه ی پایتون از مجتمع فنی مرکزی تهران دارم<br>
                         و بات نویسی <strong class="text-purple-400">بله</strong>، <strong class="text-purple-400">تلگرام</strong>، <strong class="text-purple-400">گیلدد</strong>، <strong class="text-purple-400">دیسکورد</strong> رو به صورت کاملا حرفه‌ای براتون انجام میدم<br>
                         من بیش از 2 سال تجربه در ساخت بات‌های دیسکورد و بله دارم و می‌توانم بات‌های سفارشی با قابلیت‌های پیشرفته برای شما بسازم
                     </p>
                 </div>
-                
             </div>
 
             <div id="skills" class="mb-8">
@@ -156,8 +212,9 @@
                             </p>
                             <ul class="list-disc list-inside mb-4">
                                 <li>ICRR</li>
-                                <li>ICW</li>
+                                <li>IPW</li>
                                 <li>svng</li>
+                                <li>Paint</li>
                             </ul>
                     </div>
                     <div>
@@ -167,12 +224,14 @@
                 </div>
             </div>
 
-            <div class="mb-8" dir="auto">
+            <div class="mb-8">
                 <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ارتباط با من</h2>
                 <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
-                    <a href="https://ble.ir/daradege">Bale</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <center><a href="https://ble.ir/daradege">Bale</a> &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="https://github.com/daradege">Github</a> &nbsp;&nbsp;&nbsp;&nbsp;
                     more soon
+
+                    </center>
                 </div>
             </div>
         </div>
@@ -180,20 +239,8 @@
 
     <footer class="bg-purple-900 p-4 mt-8">
         <div class="max-w-4xl mx-auto text-center">
-            <p>© 2024 علی صفامنش. تمامی حقوق محفوظ است.</p>
+            <p>© 2024 علی صفامنش. تمامی حقوق محفوظ است</p>
         </div>
     </footer>
-
-    <script>        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
