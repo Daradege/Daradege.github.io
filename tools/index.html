@@ -1,77 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" class="bg-black">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daradege Tools</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>علی صفامنش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            font-family: 'Poppins', 'Vazirmatn', sans-serif;
         }
-        .screenshot-iframe {
-            pointer-events: none;
-            user-select: none;
+        
+        @keyframes neon-pulse {
+            0%, 100% { box-shadow: 0 0 5px #4C3BCF, 0 0 10px #4C3BCF, 0 0 15px #4C3BCF, 0 0 20px #4C3BCF; }
+            50% { box-shadow: 0 0 10px #4C3BCF, 0 0 20px #4C3BCF, 0 0 30px #4C3BCF, 0 0 40px #4C3BCF; }
+        }
+        .neon-border {
+            animation: neon-pulse 1.5s infinite alternate;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4C3BCF;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6050E0;
+        }
+        
+        /* Smooth Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Mobile menu animation */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
         }
     </style>
 </head>
-<body class="bg-gray-900">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8 text-white">Daradege Tools</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">ICRR</h2>
-                <p class="mb-4 text-gray-300">Image Color Replacer and Remover</p>
-                <a href="https://Daradege.github.io/tools/ICRR" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/ICRR')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">IPW</h2>
-                <p class="mb-4 text-gray-300">Image Paste Viewer</p>
-                <a href="https://Daradege.github.io/tools/IPW" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/IPW')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">svng</h2>
-                <p class="mb-4 text-gray-300">SVG to PNG Converter</p>
-                <a href="https://Daradege.github.io/tools/svng" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/svng')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Paint</h2>
-                <p class="mb-4 text-gray-300">A simple Paint open source app using js and canvas</p>
-                <a href="https://Daradege.github.io/tools/paint" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/paint')">Capture Screenshot</button>
-            </div>
-        </div>
-    </div>
+<body class="bg-black text-white">
+    <header class="bg-purple-900 p-4 fixed w-full z-10">
+        <nav class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">علی صفامنش</a>
 
-    <div id="screenshotContainer" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 hidden flex items-center justify-center">
-        <div class="bg-white p-4 rounded-lg" style="width: 85%; height: 85%;">
-            <iframe id="screenshotFrame" class="w-full h-full screenshot-iframe" src=""></iframe>
-            <button class="btn btn-primary mt-4" onclick="closeScreenshot()">Close</button>
-        </div>
-    </div>
+            <ul class="hidden md:flex space-x-4">
+                <li><a href="/en" class="hover:text-purple-300 transition duration-300">en</a></li>
+                <li><a href="#about" class="hover:text-purple-300 transition duration-300">درباره من</a></li>
+                <li><a href="#skills" class="hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
+                <li><a href="#experience" class="hover:text-purple-300 transition duration-300">تجربیات</a></li>
+                <li><a href="#backend" class="hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
+                <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
+            </ul>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-purple-900 p-4 z-20 mobile-menu md:hidden">
+        <button id="close-menu" class="absolute top-4 right-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-8 space-y-4">
+            <li><a href="/en" class="block hover:text-purple-300 transition duration-300">en</a></li>
+            <li><a href="#about" class="block hover:text-purple-300 transition duration-300">درباره من</a></li>
+            <li><a href="#skills" class="block hover:text-purple-300 transition duration-300">مهارت‌ها</a></li>
+            <li><a href="#experience" class="block hover:text-purple-300 transition duration-300">تجربیات</a></li>
+            <li><a href="#backend" class="block hover:text-purple-300 transition duration-300">توسعه بک‌اند</a></li>
+            <li><a href="#tools" class="hover:text-purple-300 transition duration-300">ابزارک ها</a></li>
+        </ul>
+    </div>
     <script>
-        function captureScreenshot(url) {
-            const container = document.getElementById('screenshotContainer');
-            const frame = document.getElementById('screenshotFrame');
-            frame.src = url;
-            container.classList.remove('hidden');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-        function closeScreenshot() {
-            const container = document.getElementById('screenshotContainer');
-            const frame = document.getElementById('screenshotFrame');
-            container.classList.add('hidden');
-            frame.src = '';
-        }
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.add('open');
+            });
+
+            closeMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+            });
+
+            // Close menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        });
+
     </script>
+
+    <main class="p-8 pt-24">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8 text-center">
+                <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="daradege avatar" class="w-32 h-32 rounded-full mx-auto mb-4 neon-border">
+                <h1 class="text-4xl font-bold mb-2">علی صفامنش</h1>
+                <p class="text-xl mb-4">توسعه دهنده بات و برنامه نویس</p>
+            </div>
+
+            <div id="about" class="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
+                <div id="persian-content" dir="auto" class="bg-black p-6 rounded-lg neon-border">
+                    <p class="text-lg">
+                        !سلام! من <a href="https://discordapp.com/users/898843614380163082" class="text-blue-400 hover:text-blue-300">علی صفامنش</a> هستم<br>
+                        عاشق پایتون و دارم #C رو یاد میگیرم<br>
+                        سه تا مدرک قابل ترجمه ی پایتون از مجتمع فنی مرکزی تهران دارم<br>
+                        و بات نویسی <strong class="text-purple-400">بله</strong>، <strong class="text-purple-400">تلگرام</strong>، <strong class="text-purple-400">گیلدد</strong>، <strong class="text-purple-400">دیسکورد</strong> رو به صورت کاملا حرفه‌ای براتون انجام میدم<br>
+                        من بیش از 2 سال تجربه در ساخت بات‌های دیسکورد و بله دارم و می‌توانم بات‌های سفارشی با قابلیت‌های پیشرفته برای شما بسازم
+                    </p>
+                </div>
+            </div>
+
+            <div id="skills" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center">:مهارت‌های من</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">Python 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">HTML 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">Node.Js 100%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">CSS 95%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PhotoShop 90%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">BootStrap 90%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PHP 70%</p>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <p class="text-lg font-semibold">PowerPoint 70%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="experience" class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center">تجربیات من در ساخت بات</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <h3 class="text-xl font-bold mb-2">بات‌های دیسکورد</h3>
+                        <ul class="list-disc list-inside">
+                            <li>ساخت بات‌های مدیریت سرور</li>
+                            <li>بات‌های موسیقی با کیفیت بالا</li>
+                            <li>سیستم‌های لول و رنک</li>
+                            <li>بات‌های اکونومی و بازی</li>
+                        </ul>
+                    </div>
+                    <div class="bg-black p-4 rounded-lg neon-border">
+                        <h3 class="text-xl font-bold mb-2">بات‌های بله</h3>
+                        <ul class="list-disc list-inside">
+                            <li>بات‌های اطلاع‌رسانی و خبری</li>
+                            <li>سیستم‌های پاسخگوی خودکار</li>
+                            <li>بات‌های مدیریت گروه و کانال</li>
+                            <li>بات‌های سرگرمی و بازی</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="backend" class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">توسعه بک‌اند و API ها</h2>
+                <div class="bg-black p-6 rounded-lg neon-border">
+                    <p class="text-lg mb-4">
+                        علاوه بر توسعه بات، من در زمینه توسعه بک‌اند وب‌سایت‌ها و ایجاد API های کاربردی نیز تخصص دارم. برخی از پروژه‌های من شامل:
+                    </p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>توسعه API اخبار برای دریافت آخرین اخبار از منابع مختلف</li>
+                        <li>ایجاد API تولید تصویر با استفاده از هوش مصنوعی</li>
+                        <li>طراحی و پیاده‌سازی API ابزارهای سرگرمی مانند جوک‌ساز و نقل قول تصادفی</li>
+                    </ul>
+                    <p class="text-lg">
+                        من می‌توانم راه‌حل‌های سفارشی برای نیازهای خاص پروژه شما ارائه دهم و API های قدرتمند و مقیاس‌پذیر بسازم.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ابزارک ها</h2>
+                <div class="bg-black p-6 rounded-lg neon-border" ;">
+                    <div>
+                        <p class="text-lg mb-4">
+                            برخی از ابزارک های توسعه داده شده در حوزه فرانت‌اند:<br><span dir="rtl"><a href="https://daradege.github.io/tools" style="color: #0dff00;">برو به سایت</a></span>
+                            </p>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>ICRR</li>
+                                <li>IPW</li>
+                                <li>svng</li>
+                                <li>Paint</li>
+                            </ul>
+                    </div>
+                    <div>
+                        <center><iframe src="https://daradege.github.io/tools" style="border-radius: 20px;height: 500px;width: 100%;"></center></iframe>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ارتباط با من</h2>
+                <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
+                    <center><a href="https://ble.ir/daradege">Bale</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="https://github.com/daradege">Github</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    more soon
+
+                    </center>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-purple-900 p-4 mt-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <p>© 2024 علی صفامنش. تمامی حقوق محفوظ است</p>
+        </div>
+    </footer>
 </body>
 </html>
