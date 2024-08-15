@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Daradege Blog</title>
+    <meta name="description" content="Welcome to Daradege Blog - A modern and insightful blog">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins','Vazirmatn','sans-serif']
+                    },
+                    colors: {
+                        gold: {
+                            100: '#FFF7E6',
+                            200: '#FFE9B3',
+                            300: '#FFD980',
+                            400: '#FFC94D',
+                            500: '#FFB300',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .transition-transform {
+            transition: transform 0.3s ease-in-out;
+        }
+        .hover\:scale-105:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-black text-gold-100 flex flex-col min-h-screen">
+    <div class="container mx-auto px-4 py-8 flex-grow">
+
+        <h1 class="text-center mb-12 text-4xl md:text-5xl font-bold text-gold-400 animate-fade-in">Daradege Blog</h1>
+        <div id="posts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in"></div>
+        <div id="post-content" class="bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 animate-fade-in mt-8 hidden"></div>
+    </div>
+
+    <footer class="bg-gray-900 text-gold-100 py-4 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Daradege Blog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const postsList = document.getElementById('posts-list');
+        const postContent = document.getElementById('post-content');
+
+        async function fetchMarkdown(file) {
+            try {
+                const response = await fetch(`posts/${file}`);
+                if (!response.ok) {
+                    throw new Error('Post not found');
+                }
+                return await response.text();
+            } catch (error) {
+                console.error('Error fetching post:', error);
+                return null;
+            }
+        }
+
+        async function loadPosts() {
+            for (let i = 1; i <= 10; i++) {
+                const content = await fetchMarkdown(`${i}.md`);
+                if (content) {
+                    const lines = content.split('\n');
+                    const title = lines[0].replace('#', '').trim();
+                    const excerpt = lines.slice(1, 3).join(' ').trim();
+                    const postCard = document.createElement('div');
+                    postCard.className = 'bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 transition-transform hover:scale-105 cursor-pointer';
+                    postCard.innerHTML = `
+                        <h2 class="text-2xl font-semibold mb-4 text-gold-300">${title}</h2>
+                        <p class="text-gold-100">${excerpt}...</p>
+                    `;
+                    postCard.addEventListener('click', () => displayPost(i));
+                    postsList.appendChild(postCard);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        async function displayPost(postId) {
+            postsList.classList.add('hidden');
+            postContent.classList.remove('hidden');
+            postContent.innerHTML = '<div class="animate-pulse"><div class="h-4 bg-gold-200 rounded w-3/4 mb-4"></div><div class="h-4 bg-gold-200 rounded w-1/2 mb-4"></div><div class="h-4 bg-gold-200 rounded w-5/6"></div></div>';
+            
+            const content = await fetchMarkdown(`${postId}.md`);
+            if (content) {
+                const lines = content.split('\n');
+                const title = lines[0];
+                const postBody = lines.slice(1).join('\n');
+                postContent.innerHTML = `
+                    <button id="back-button" class="mb-4 text-gold-400 hover:text-gold-200 transition-colors duration-200">← Back to Posts</button>
+                    ${marked.parse(title + postBody)}
+                `;
+                postContent.querySelectorAll('a').forEach(link => {
+                    link.className = 'text-gold-400 hover:text-gold-200 underline transition-colors duration-200';
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener noreferrer');
+                });
+                postContent.querySelectorAll('img').forEach(img => {
+                    img.className = 'max-w-full h-auto rounded-lg shadow-md my-4 transition-transform hover:scale-105';
+                    img.setAttribute('loading', 'lazy');
+                });
+                postContent.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
+                    heading.className += ' text-gold-300 mb-4';
+                });
+                postContent.querySelectorAll('p').forEach(p => {
+                    p.className += ' mb-4';
+                });
+                postContent.querySelectorAll('ul, ol').forEach(list => {
+                    list.className += ' list-disc list-inside mb-4';
+                });
+
+                document.getElementById('back-button').addEventListener('click', () => {
+                    postContent.classList.add('hidden');
+                    postsList.classList.remove('hidden');
+                });
+            } else {
+                postContent.innerHTML = '<p class="text-red-500">Error loading post.</p>';
+            }
+        }
+
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            loadPosts();
+        });
+    </script>
+    
+
+</body>
+</html>
