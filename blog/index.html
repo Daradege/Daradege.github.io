@@ -45,9 +45,15 @@
         .hover\:scale-105:hover {
             transform: scale(1.05);
         }
+        [dir="rtl"] {
+            direction: rtl;
+        }
+        [dir="ltr"] {
+            direction: ltr;
+        }
     </style>
 </head>
-<body class="bg-black text-gold-100 flex flex-col min-h-screen" dir="auto">
+<body class="bg-black text-gold-100 flex flex-col min-h-screen">
     <div class="container mx-auto px-4 py-8 flex-grow">
 
         <h1 class="text-center mb-12 text-4xl md:text-5xl font-bold text-gold-400 animate-fade-in">Daradege Blog</h1>
@@ -110,7 +116,7 @@
                 const title = lines[0];
                 const postBody = lines.slice(1).join('\n');
                 postContent.innerHTML = `
-                    <button id="back-button" class="mb-4 text-gold-400 hover:text-gold-200 transition-colors duration-200">← Back to Posts</button>
+                    <button  id="back-button" class="mb-4 text-gold-400 hover:text-gold-200 transition-colors duration-200">← Back to Posts</button>
                     ${marked.parse(title + postBody)}
                 `;
                 postContent.querySelectorAll('a').forEach(link => {
@@ -136,11 +142,19 @@
                     postContent.classList.add('hidden');
                     postsList.classList.remove('hidden');
                 });
+
+                // Set direction based on content
+                const direction = isRTL(title) ? 'rtl' : 'ltr';
+                postContent.setAttribute('dir', direction);
             } else {
                 postContent.innerHTML = '<p class="text-red-500">Error loading post.</p>';
             }
         }
 
+        function isRTL(text) {
+            const rtlChars = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/;
+            return rtlChars.test(text);
+        }
 
         window.addEventListener('DOMContentLoaded', (event) => {
             loadPosts();
