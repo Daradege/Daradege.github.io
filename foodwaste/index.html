@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DontFoodWaste</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="preconnect" href="//fdn.fontcdn.ir">
+<link rel="preconnect" href="//v1.fontapi.ir">
+<link href="https://v1.fontapi.ir/css/IranNastaliq" rel="stylesheet">
+  <style>
+.hero-image {
+  background-image: url('v.jpg');
+  height: 50vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+.nav-link:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
+@media (max-width: 768px) {
+  .hero-image {
+    height: 30vh;
+  }
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+}
+  </style>
+</head>
+<body class="bg-gray-100">
+  <nav class="bg-green-600 p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-white text-3xl font-bold">DontFoodWaste</h1>
+      <ul class="flex space-x-4">
+        <li><a href="#about" class="text-white hover:text-green-200 nav-link">About</a></li>
+        <li><a href="#statistics" class="text-white hover:text-green-200 nav-link">Statistics</a></li>
+        <li><a href="#team" class="text-white hover:text-green-200 nav-link">Our Team</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="hero-image flex items-center justify-center">
+    <div class="hero-text">
+      <h2 class="text-white text-4xl font-bold bg-black bg-opacity-50 p-4 rounded">Stop Food Waste, Save the Earth</h2>
+      <a href="#about" class="btn btn-success btn-lg mt-4">Learn More</a>
+    </div>
+  </div>
+
+  <div id="about" class="container mx-auto mt-8">
+    <div class="row">
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">What's Food Waste?</h5>
+            <p class="card-text">Food waste is when we throw away food that we could have eaten. This happens in many places, from farms to our homes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Why Food Waste is Bad</h5>
+            <p class="card-text">Food waste hurts our planet, wastes money, and means some people don't have enough to eat. It makes more pollution and uses up resources we need.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">How to Waste Less Food</h5>
+            <p class="card-text">Plan your meals, keep food fresh, use leftovers in new ways, and make compost from food scraps. These easy steps can help reduce food waste at home.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="statistics" class="bg-green-100 py-8 mt-8">
+    <div class="container mx-auto">
+      <h3 class="text-2xl font-bold mb-4">Food Waste Numbers</h3>
+      <div class="row">
+        <div class="col-md-6 mb-4" data-aos="fade-right">
+          <canvas id="globalWasteChart"></canvas>
+        </div>
+        <div class="col-md-6 mb-4" data-aos="fade-left">
+          <canvas id="wasteByRegionChart"></canvas>
+        </div>
+      </div>
+      <div class="progress mb-4" role="progressbar" aria-label="Food waste percentage" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar bg-danger" style="width: 33%">33% of food is wasted around the world</div>
+      </div>
+      <p class="text-gray-700">About one-third of all food made for people to eat is lost or wasted. That's about 1.3 billion tons every year!</p>
+      
+      <h4 class="text-2xl font-bold mt-8 mb-6 text-green-700">Foods That We Waste Most</h4>
+      <ul class="grid grid-cols-2 md:grid-cols-3 gap-4 pl-5">
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Bananas</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Basil</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Bread</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Carrots</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Celery</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Cheese</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Chicken</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Coriander</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Eggs</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Ham</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Lemon</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Lettuce</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Milk</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Ground meat</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Mint</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Parsley</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Potatoes</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Shrimp</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Rice</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Tomatoes</span></li>
+        <li class="flex items-center space-x-2"><span class="text-red-500">•</span><span class="text-gray-700 hover:text-green-600 transition-colors duration-300">Turkey</span></li>
+      </ul>
+
+      <h4 class="text-xl font-bold mt-8 mb-4">More Food Waste Info</h4>
+      <div class="table-responsive">
+        <table id="foodWasteTable" class="display">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>Food Waste (kg/person/year)</th>
+              <th>Total Food Waste (tons/year)</th>
+              <th>Percent of Total Food Made</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>United States</td>
+              <td>95.1</td>
+              <td>31,147,000</td>
+              <td>30%</td>
+            </tr>
+            <tr>
+              <td>China</td>
+              <td>64.0</td>
+              <td>91,646,000</td>
+              <td>27%</td>
+            </tr>
+            <tr>
+              <td>India</td>
+              <td>50.0</td>
+              <td>68,760,000</td>
+              <td>40%</td>
+            </tr>
+            <tr>
+              <td>Japan</td>
+              <td>64.2</td>
+              <td>8,082,000</td>
+              <td>25%</td>
+            </tr>
+            <tr>
+              <td>Germany</td>
+              <td>75.2</td>
+              <td>6,264,000</td>
+              <td>22%</td>
+            </tr>
+            <tr>
+              <td>United Kingdom</td>
+              <td>77.0</td>
+              <td>5,199,000</td>
+              <td>24%</td>
+            </tr>
+            <tr>
+              <td>France</td>
+              <td>85.0</td>
+              <td>5,522,000</td>
+              <td>23%</td>
+            </tr>
+            <tr>
+              <td>Canada</td>
+              <td>79.0</td>
+              <td>2,938,000</td>
+              <td>28%</td>
+            </tr>
+            <tr>
+              <td>Australia</td>
+              <td>102.0</td>
+              <td>2,602,000</td>
+              <td>31%</td>
+            </tr>
+            <tr>
+              <td>Brazil</td>
+              <td>60.0</td>
+              <td>12,735,000</td>
+              <td>35%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="team" class="container mx-auto mt-8 mb-8">
+    <h3 class="text-2xl font-bold mb-4">Our Team</h3>
+    <div class="row">
+      <div class="col-md-4 mb-4" data-aos="flip-left" data-aos-delay="100">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Ali Safamanesh</h5>
+            <p class="card-text">Site Programmer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="flip-left" data-aos-delay="200">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Meysam Assareh</h5>
+            <p class="card-text">Data Helper</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4" data-aos="flip-left" data-aos-delay="300">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Amirali Salehzade</h5>
+            <p class="card-text">Content Helper</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-green-600 text-white text-center p-4 mt-8">
+    <div name="school-logo-and-name" class="bg-white" style="display: inline-flex; align-items: center;border: #000 solid 2px;padding: 25px;">
+        <img src="mofid.png" alt="school image" width="90" height="90">
+        <h1 style="color: #000;font-family: IranNastaliq;font-size: 90px;">دبیرستان دوره اول مفید</h1>
+    </div>
+    <p>© 2024 DontFoodWaste Project. All rights reserved.</p>
+    <p>Made by Ali Safamanesh, Meysam Assareh, and Amirali Salehzade for our 8th grade english project</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init();
+
+      var cards = document.querySelectorAll('.card');
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].onmouseover = function() {
+          this.className += ' shadow-lg';
+        };
+        cards[i].onmouseout = function() {
+          this.className = this.className.replace(' shadow-lg', '');
+        };
+      }
+      var anchors = document.querySelectorAll('a[href^="#"]');
+      for (var j = 0; j < anchors.length; j++) {
+        anchors[j].onclick = function (e) {
+          e.preventDefault();
+          var target = document.querySelector(this.getAttribute('href'));
+          var scrollTo = target.offsetTop;
+          var scrollDuration = 1000;
+          var scrollStep = Math.PI / (scrollDuration / 15);
+          var cosParameter = scrollTo / 2;
+          var scrollCount = 0, scrollMargin;
+          var scrollInterval = setInterval(function() {
+            if (window.pageYOffset != scrollTo) {
+              scrollCount++;
+              scrollMargin = cosParameter - cosParameter * Math.cos(scrollCount * scrollStep);
+              window.scrollTo(0, (scrollTo - scrollMargin));
+            } else clearInterval(scrollInterval);
+          }, 15);
+        };
+      }
+      var globalWasteCtx = document.getElementById('globalWasteChart').getContext('2d');
+      new Chart(globalWasteCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Wasted Food', 'Eaten Food'],
+          datasets: [{
+            data: [33, 67],
+            backgroundColor: ['#dc3545', '#28a745']
+          }]
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: true,
+            text: 'Global Food Waste'
+          }
+        }
+      });
+      var wasteByRegionCtx = document.getElementById('wasteByRegionChart').getContext('2d');
+      new Chart(wasteByRegionCtx, {
+        type: 'bar',
+        data: {
+          labels: ['North America', 'Europe', 'Asia', 'Africa', 'South America', 'Oceania'],
+          datasets: [{
+            label: 'Food Waste Percentage',
+            data: [39, 31, 28, 25, 20, 15],
+            backgroundColor: '#ffc107'
+          }]
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: true,
+            text: 'Food Waste by Region (%)'
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 50
+            }
+          }
+        }
+      });
+      $('#foodWasteTable').DataTable({
+        responsive: true
+      });
+    });
+  </script>
+</body>
+</html>
+        
