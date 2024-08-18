@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        body {
+            background-color: #000033;
+            color: #00ffff;
+        }
+        .form-control {
+            background-color: rgba(0, 0, 153, 0.5);
+            color: #00ffff;
+            border-color: #00ffff;
+        }
+        .form-control:focus {
+            background-color: rgba(0, 0, 204, 0.5);
+            color: #00ffff;
+            border-color: #00ffff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 255, 255, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div id="particles-js" class="fixed inset-0"></div>
+    <div class="container max-w-lg z-10">
+        <h1 class="text-4xl text-center mb-8 font-bold text-cyan-400">Contact Portal</h1>
+        <div class="bg-indigo-900 bg-opacity-50 rounded-lg shadow-lg p-8 backdrop-blur-sm">
+            <form id="contactForm" onsubmit="event.preventDefault(); sendRequest();">
+                <div class="mb-6">
+                    <label for="name" class="block text-cyan-300 mb-2">Your Name:</label>
+                    <input type="text" class="form-control w-full px-4 py-2 rounded" id="name" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="email" class="block text-cyan-300 mb-2">Email Address:</label>
+                    <input type="email" class="form-control w-full px-4 py-2 rounded" id="email" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="text" class="block text-cyan-300 mb-2">Your Message:</label>
+                    <textarea class="form-control w-full px-4 py-2 rounded" id="text" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-cyan-400 hover:bg-cyan-500 text-indigo-900 font-bold py-2 px-4 rounded transition duration-300">
+                    Send Magical Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="alertPopup" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <div class="bg-indigo-900 bg-opacity-75 p-8 rounded-lg shadow-lg backdrop-blur-sm">
+            <p id="alertMessage" class="text-cyan-300 text-lg mb-4"></p>
+            <button onclick="closeAlert()" class="bg-cyan-400 hover:bg-cyan-500 text-indigo-900 font-bold py-2 px-4 rounded transition duration-300">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#00ffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+        console.log('particles.js config loaded');
+
+        function sendRequest() {
+            const name = encodeURIComponent(document.getElementById('name').value.trim());
+            const email = encodeURIComponent(document.getElementById('email').value.trim());
+            const text = encodeURIComponent(document.getElementById('text').value.trim());
+            
+            if (!name || !email || !text) {
+                showAlert('Please fill in all fields');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showAlert('Please enter a valid email address');
+                return;
+            }
+            
+            const url = `https://daradege.iapp.ir/api/msg?text=${text}&email=${email}&name=${name}`;
+            
+            fetch(url, {
+                method: 'GET',
+                mode: 'no-cors',
+            })
+            .then(response => {
+                console.log("Request sent successfully");
+                clearForm();
+                showAlert('Your message has been sent successfully!');
+            })
+            .catch(error => {
+                console.error("An error occurred:", error);
+                showAlert('A error occurred. Please try again later.');
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('text').value = '';
+        }
+
+        function showAlert(message) {
+            document.getElementById('alertMessage').textContent = message;
+            document.getElementById('alertPopup').classList.remove('hidden');
+        }
+
+        function closeAlert() {
+            document.getElementById('alertPopup').classList.add('hidden');
+        }
+
+        function isValidEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return true
+        }
+    </script>
+</body>
+</html>
