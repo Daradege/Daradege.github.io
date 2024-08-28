@@ -194,12 +194,10 @@
             const posts = ['1.md', '2.md'];
             for (const post of posts) {
                 const markdown = await fetchMarkdown(post);
-                const lines = markdown.split('
-');
+                const lines = markdown.split('\n');
                 const title = lines[0].replace(/^#\s*/, ''); 
                 const thumbnailUrl = lines[1].trim();
-                const content = lines.slice(2).join('
-');
+                const content = lines.slice(2).join('\n');
                 const html = marked.parse(content);
                 const postElement = document.createElement('div');
                 postElement.className = 'col-12 col-md-6 mb-4';
