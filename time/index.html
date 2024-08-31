@@ -1,0 +1,74 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>World Clock</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-8">
+      <h1 class="text-4xl font-bold text-blue-600 mb-8">World Clock</h1>
+      <div id="clock" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+
+      <script>
+          function updateClock() {
+              const clockElement = document.getElementById('clock');
+              const now = new Date();
+                
+              const timeEmojis = [
+                  { range: [0, 5], emoji: '🌇' },
+                  { range: [6, 11], emoji: '🌅' },
+                  { range: [12, 17], emoji: '☀️' },
+                  { range: [18, 20], emoji: '🌅'},
+                  { range: [21, 23], emoji: '🌆' },
+              ];
+                
+              const timezones = [
+                  { name: 'New York', offset: -4, color: '#FF5733' },
+                  { name: 'London', offset: 1, color: '#33FF57' },
+                  { name: 'Tokyo', offset: 9, color: '#3357FF' },
+                  { name: 'Sydney', offset: 10, color: '#FF33F1' },
+                  { name: 'Los Angeles', offset: -7, color: '#33FFF1' },
+                  { name: 'Chicago', offset: -5, color: '#F1FF33' },
+                  { name: 'Paris', offset: 2, color: '#FF3333' },
+                  { name: 'Berlin', offset: 2, color: '#33FFFF' },
+                  { name: 'Moscow', offset: 3, color: '#FF33A1' },
+                  { name: 'Dubai', offset: 4, color: '#A1FF33' },
+                  { name: 'Mumbai', offset: 5.5, color: '#33A1FF' },
+                  { name: 'Beijing', offset: 8, color: '#FFA133' },
+                  { name: 'Hong Kong', offset: 8, color: '#33FFA1' },
+                  { name: 'Singapore', offset: 8, color: '#A133FF' },
+                  { name: 'Seoul', offset: 9, color: '#FF8033' },
+                  { name: 'Melbourne', offset: 10, color: '#3380FF' },
+                  { name: 'Auckland', offset: 12, color: '#FF3380' },
+                  { name: 'Honolulu', offset: -10, color: '#80FF33' },
+                  { name: 'Anchorage', offset: -8, color: '#3380FF' },
+                  { name: 'Rio de Janeiro', offset: -3, color: '#FF3380' },
+                  { name: 'Mexico City', offset: -5, color: '#80FF33' },
+                  { name: 'Cairo', offset: 2, color: '#3380FF' },
+                  { name: 'Johannesburg', offset: 2, color: '#FF3380' },
+                  { name: 'Bangkok', offset: 7, color: '#80FF33' },
+                  { name: 'Vancouver', offset: -7, color: '#3380FF' },
+                  { name: 'Tehran', offset: +3.5, color: '#FF3380' }
+              ];
+              let clockHTML = '';
+              timezones.forEach(tz => {
+                  const localTime = new Date(now.getTime() + (tz.offset * 60 + now.getTimezoneOffset()) * 60000);
+                  const hours = localTime.getHours();
+                  const emoji = timeEmojis.find(e => hours >= e.range[0] && hours <= e.range[1]).emoji;
+                  clockHTML += `
+                      <div class="rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300" style="background-color: ${tz.color};">
+                          <h2 class="text-xl font-semibold mb-2" style="color: black; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">${tz.name} ${emoji}</h2>
+                          <p class="text-3xl font-bold" style="color: black; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;">${localTime.toLocaleTimeString()}</p>
+                      </div>
+                  `;
+              });
+
+              clockElement.innerHTML = clockHTML;
+          }
+
+          updateClock();
+          setInterval(updateClock, 1000);
+      </script>
+  </body>
+  </html>
