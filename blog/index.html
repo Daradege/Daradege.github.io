@@ -85,24 +85,29 @@
         }
 
         async function loadPosts() {
+            const posts = [];
             for (let i = 1; i <= 10; i++) {
                 const content = await fetchMarkdown(`${i}.md`);
                 if (content) {
                     const lines = content.split('\n');
                     const title = lines[0].replace('#', '').trim();
                     const excerpt = lines.slice(1, 3).join(' ').trim();
-                    const postCard = document.createElement('div');
-                    postCard.className = 'bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 transition-transform hover:scale-105 cursor-pointer';
-                    postCard.innerHTML = `
-                        <h2 class="text-2xl font-semibold mb-4 text-gold-300">${title}</h2>
-                        <p class="text-gold-100">${excerpt}...</p>
-                    `;
-                    postCard.addEventListener('click', () => displayPost(i));
-                    postsList.appendChild(postCard);
+                    posts.push({ id: i, title, excerpt });
                 } else {
                     break;
                 }
             }
+            
+            posts.reverse().forEach(post => {
+                const postCard = document.createElement('div');
+                postCard.className = 'bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 transition-transform hover:scale-105 cursor-pointer';
+                postCard.innerHTML = `
+                    <h2 class="text-2xl font-semibold mb-4 text-gold-300">${post.title}</h2>
+                    <p class="text-gold-100">${post.excerpt}...</p>
+                `;
+                postCard.addEventListener('click', () => displayPost(post.id));
+                postsList.appendChild(postCard);
+            });
         }
 
         async function displayPost(postId) {
