@@ -298,63 +298,6 @@ print(f"Nice to meet you, {name}!")`;
                 </div>
             </div>
 
-            
-                        <div class="mb-8" dir="auto">
-                            <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">بازی ساده</h2>
-                            <div class="bg-black p-6 rounded-lg neon-border">
-                                <canvas id="gameCanvas" width="400" height="200" style="border:1px solid #0dff00;"></canvas>
-                                <div class="mt-4">
-                                    <button id="leftBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">چپ</button>
-                                    <button id="rightBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">راست</button>
-                                </div>
-                            </div>
-                        </div>
-            
-                        <script>
-                            const canvas = document.getElementById('gameCanvas');
-                            const ctx = canvas.getContext('2d');
-                            let x = canvas.width / 2;
-                            const y = canvas.height - 30;
-                            const ballRadius = 10;
-                            let dx = 2;
-                            let dy = -2;
-            
-                            function drawBall() {
-                                ctx.beginPath();
-                                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-                                ctx.fillStyle = "#0dff00";
-                                ctx.fill();
-                                ctx.closePath();
-                            }
-            
-                            function draw() {
-                                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                                drawBall();
-                                
-                                if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-                                    dx = -dx;
-                                }
-                                
-                                x += dx;
-                                requestAnimationFrame(draw);
-                            }
-            
-                            document.getElementById('leftBtn').addEventListener('click', () => {
-                                if (x - ballRadius > 0) {
-                                    x -= 10;
-                                }
-                            });
-            
-                            document.getElementById('rightBtn').addEventListener('click', () => {
-                                if (x + ballRadius < canvas.width) {
-                                    x += 10;
-                                }
-                            });
-            
-                            draw();
-                        </script>
-            
-
             <div class="mb-8">
                 <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">ارتباط با من</h2>
                 <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
