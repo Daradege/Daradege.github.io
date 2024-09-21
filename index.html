@@ -36,24 +36,31 @@
         }
         .mobile-menu.open { transform: translateX(0); }
         
-                @keyframes lightning-flash {
-                    0%, 100% { opacity: 0; }
-                    10%, 90% { opacity: 0.1; }
-                    50% { opacity: 1; }
-                }
-                .lightning {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    pointer-events: none;
-                    background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 100%);
-                    opacity: 0;
-                    animation: lightning-flash 3s infinite;
-                    z-index: 9999;
-                }
+        @keyframes lightning-flash {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
+        .lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 100%);
+            opacity: 0;
+            animation: lightning-flash 3s infinite;
+            z-index: 9999;
+        }
         
+        @keyframes neon-glow {
+            0% { box-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de, 0 0 15px #ff00de, 0 0 20px #ff00de; }
+            100% { box-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de; }
+        }
+        .sneon-border {
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -88,14 +95,13 @@
             <li><a href="#skills" class="block hover:text-purple-300 transition">مهارت‌ها</a></li>
             <li><a href="#experience" class="block hover:text-purple-300 transition">تجربیات</a></li>
             <li><a href="#backend" class="block hover:text-purple-300 transition">توسعه بک‌اند</a></li>
-            <li><a href="#tools" class="hover:text-purple-300 transition">ابزارک ها</a></li>
+            <li><a href="#tools" class="block hover:text-purple-300 transition">ابزارک ها</a></li>
         </ul>
     </div>
 
     <main class="p-8 pt-24">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 text-center">
-                
                 <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="Ali Safamanesh avatar" class="w-40 h-40 rounded-full mx-auto mb-4 neon-border shadow-lg hover:scale-105 transition-transform duration-300">
                 <h1 class="text-5xl font-bold mb-2 text-purple-300">علی صفامنش</h1>
                 <p class="text-2xl mb-4 text-gray-300">توسعه دهنده بات و برنامه نویس</p>
@@ -111,8 +117,8 @@
                 </div>
                 <br><br>
                 
-                <div id="programming-box" class="bg-black p-6 rounded-lg neon-border mb-8 relative overflow-hidden">
-                    <pre id="code-display" class="text-green-400 font-mono text-sm"></pre>
+                <div id="programming-box" class="bg-black p-4 sm:p-6 rounded-lg neon-border mb-4 sm:mb-8 relative overflow-hidden" style="height: auto; min-height: 120px; max-height: 200px;">
+                    <pre id="code-display" class="text-green-400 font-mono text-xs sm:text-sm overflow-auto"></pre>
                 </div>
                 
                 <style>
@@ -128,8 +134,8 @@
                 <script>
                     const codeDisplay = document.getElementById('code-display');
                     const code = `
-to be or not to be, that is the question
-programmer answer: 2B || !2B = true
+To code, or not to code, that is the exception
+programmer answer: try { toBe() } catch (NotToBe) { return "Shakespeare.RuntimeException"; }
                     `;
                 
                     let index = 0;
@@ -140,7 +146,6 @@ programmer answer: 2B || !2B = true
                             index++;
                             setTimeout(typeCode, 50);
                         } else {
-                            setTimeout(resetCode, 2000);
                         }
                     }
                 
@@ -253,6 +258,50 @@ programmer answer: 2B || !2B = true
                     </div>
                 </div>
             </div>
+
+            
+                        <div id="certificates" class="mb-8" dir="auto">
+                            <h2 class="text-2xl font-bold mb-4 text-center">گواهینامه‌های من</h2>
+                            <div class="bg-black p-4 rounded-lg neon-border">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('certificates/fa/ict.png')">
+                                        <img src="certificates/fa/ict.png" alt="ICT Certificate" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('certificates/fa/python1.jpg')">
+                                        <img src="certificates/fa/python1.jpg" alt="Python Certificate 1" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('certificates/fa/python2.jpg')">
+                                        <img src="certificates/fa/python2.jpg" alt="Python Certificate 2" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('certificates/fa/python3.jpg')">
+                                        <img src="certificates/fa/python3.jpg" alt="Python Certificate 3" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('certificates/fa/dotnet1.jpg')">
+                                        <img src="certificates/fa/dotnet1.jpg" alt=".NET Certificate" class="w-full h-auto rounded-lg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                            <div class="max-w-4xl max-h-full p-4">
+                                <img id="modalImage" src="" alt="Zoomed Certificate" class="max-w-full max-h-full object-contain">
+                            </div>
+                        </div>
+
+                        <script>
+                            function openModal(imageSrc) {
+                                const modal = document.getElementById('imageModal');
+                                const modalImage = document.getElementById('modalImage');
+                                modalImage.src = imageSrc;
+                                modal.classList.remove('hidden');
+                            }
+
+                            document.getElementById('imageModal').addEventListener('click', function() {
+                                this.classList.add('hidden');
+                            });
+                        </script>
+            
 
             <div id="backend" class="mb-8" dir="auto">
                 <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">توسعه بک‌اند و API ها</h2>
