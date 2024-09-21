@@ -1,68 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-black">
+<html lang="en" class="bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ali Safamanesh</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
         body {
             font-family: 'Poppins', 'Vazirmatn', sans-serif;
+            line-height: 1.6;
+            color: #f8f9fa;
         }
-        
         @keyframes neon-pulse {
-            0%, 100% { box-shadow: 0 0 5px #4C3BCF, 0 0 10px #4C3BCF, 0 0 15px #4C3BCF, 0 0 20px #4C3BCF; }
-            50% { box-shadow: 0 0 10px #4C3BCF, 0 0 20px #4C3BCF, 0 0 30px #4C3BCF, 0 0 40px #4C3BCF; }
+            0%, 100% { box-shadow: 0 0 5px #6610f2, 0 0 10px #6610f2; }
+            50% { box-shadow: 0 0 10px #6610f2, 0 0 20px #6610f2; }
         }
         .neon-border {
             animation: neon-pulse 1.5s infinite alternate;
+            transition: transform 0.3s ease;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4C3BCF;
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6050E0;
-        }
-        
-        /* Smooth Scroll Behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Mobile menu animation */
+        .neon-border:hover { transform: scale(1.02); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2d3748; }
+        ::-webkit-scrollbar-thumb { background: #6610f2; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7d42f8; }
+        html { scroll-behavior: smooth; }
+        *:focus { outline: 2px solid #7d42f8; outline-offset: 2px; }
+        a { color: #17a2b8; text-decoration: none; transition: color 0.3s; }
+        a:hover { color: #20c997; text-decoration: underline; }
         .mobile-menu {
             transition: transform 0.3s ease-in-out;
             transform: translateX(-100%);
         }
-        .mobile-menu.open {
-            transform: translateX(0);
+        .mobile-menu.open { transform: translateX(0); }
+        
+        @keyframes lightning-flash {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
+        .lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 100%);
+            opacity: 0;
+            animation: lightning-flash 3s infinite;
+            z-index: 9999;
+        }
+        
+        @keyframes neon-glow {
+            0% { box-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de, 0 0 15px #ff00de, 0 0 20px #ff00de; }
+            100% { box-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de; }
+        }
+        .sneon-border {
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
         }
     </style>
 </head>
-<body class="bg-black text-white">
-    <header class="bg-purple-900 p-4 fixed w-full z-10">
+<body class="bg-gray-900 text-white">
+    <header class="bg-blue-900 p-4 fixed w-full z-10">
         <nav class="max-w-4xl mx-auto flex justify-between items-center">
             <a href="#" class="text-2xl font-bold">Ali Safamanesh</a>
-
             <ul class="hidden md:flex space-x-4">
-                <li><a href="/" class="hover:text-purple-300 transition duration-300">فا</a></li>
-                <li><a href="#about" class="hover:text-purple-300 transition duration-300">About Me</a></li>
-                <li><a href="#skills" class="hover:text-purple-300 transition duration-300">Skills</a></li>
-                <li><a href="#experience" class="hover:text-purple-300 transition duration-300">Experience</a></li>
-                <li><a href="#backend" class="hover:text-purple-300 transition duration-300">Backend Development</a></li>
-                <li><a href="#tools" class="hover:text-purple-300 transition duration-300">Tools</a></li>
+                <li><a href="/" class="hover:text-purple-300 transition">fa</a></li>
+                <li><a href="#about" class="hover:text-purple-300 transition">About Me</a></li>
+                <li><a href="#skills" class="hover:text-purple-300 transition">Skills</a></li>
+                <li><a href="#experience" class="hover:text-purple-300 transition">Experience</a></li>
+                <li><a href="#backend" class="hover:text-purple-300 transition">Backend Development</a></li>
+                <li><a href="#tools" class="hover:text-purple-300 transition">Tools</a></li>
             </ul>
             <button id="mobile-menu-button" class="md:hidden">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -79,96 +90,158 @@
             </svg>
         </button>
         <ul class="mt-8 space-y-4">
-            <li><a href="/" class="block hover:text-purple-300 transition duration-300">فا</a></li>
-            <li><a href="#about" class="block hover:text-purple-300 transition duration-300">About Me</a></li>
-            <li><a href="#skills" class="block hover:text-purple-300 transition duration-300">Skills</a></li>
-            <li><a href="#experience" class="block hover:text-purple-300 transition duration-300">Experience</a></li>
-            <li><a href="#backend" class="block hover:text-purple-300 transition duration-300">Backend Development</a></li>
-            <li><a href="#tools" class="hover:text-purple-300 transition duration-300">Tools</a></li>
+            <li><a href="/" class="block hover:text-purple-300 transition">fa</a></li>
+            <li><a href="#about" class="block hover:text-purple-300 transition">About Me</a></li>
+            <li><a href="#skills" class="block hover:text-purple-300 transition">Skills</a></li>
+            <li><a href="#experience" class="block hover:text-purple-300 transition">Experience</a></li>
+            <li><a href="#backend" class="block hover:text-purple-300 transition">Backend Development</a></li>
+            <li><a href="#tools" class="block hover:text-purple-300 transition">Tools</a></li>
         </ul>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const closeMenuButton = document.getElementById('close-menu');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.add('open');
-            });
-
-            closeMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.remove('open');
-            });
-
-            // Close menu when clicking on a link
-            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenu.classList.remove('open');
-                });
-            });
-        });
-
-    </script>
 
     <main class="p-8 pt-24">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 text-center">
-                <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="daradege avatar" class="w-32 h-32 rounded-full mx-auto mb-4 neon-border">
-                <h1 class="text-4xl font-bold mb-2">Ali Safamanesh</h1>
-                <p class="text-xl mb-4">Bot Developer and Programmer</p>
+                <img src="https://rozup.ir/view/3848105/20240513_212607.png" alt="Ali Safamanesh avatar" class="w-40 h-40 rounded-full mx-auto mb-4 neon-border shadow-lg hover:scale-105 transition-transform duration-300">
+                <h1 class="text-5xl font-bold mb-2 text-purple-300">Ali Safamanesh</h1>
+                <p class="text-2xl mb-4 text-gray-300">Bot Developer and Programmer</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://github.com/daradege" class="text-blue-400 hover:text-blue-300 transition duration-300" aria-label="GitHub Profile">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    </a>
+                    <a href="https://ble.ir/daradege" class="text-blue-400 hover:text-blue-300 transition duration-300" aria-label="Ble.ir Profile">
+                        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 999.63">
+                            <path d="M1009.65,466.44c-1.3-21.39-5-42.79-9.7-63.78C987.56,346,964.66,291.8,933.47,242.91,863.09,132.24,747.53,51,619,24a411.57,411.57,0,0,0-57.28-9.1,443.14,443.14,0,0,0-76.38-1.7,388.45,388.45,0,0,0-61.88,7.2c-18.7,2.6-36.89,7.8-55,12.69-16.9,5.3-33.69,11.3-50.09,18.2a469.62,469.62,0,0,0-45.78,22.09,437.61,437.61,0,0,0-42.69,26.29,100.06,100.06,0,0,1-10.6,6.8c-34.19-26-68.78-51.38-104.77-74.77-9.89-6.1-19.49-13-30.59-16.7-18.19-6.4-39.48-1.5-53.78,11.5C16.55,38.57,10.66,57.37,12.26,75.26c.1,23.79-.1,47.69.2,71.48-.3,24-.1,48.18-.2,72.18s-.1,48,.1,72q-.3,42,0,83.87-.3,40.78.1,81.57c.2,34-1.6,68.18,2.19,102.07,2.7,34.89,9.9,69.48,20.3,102.77,47.38,154.85,175.24,283,330.8,328.3l.1.6c32.39,9.6,65.68,16.7,99.27,19.29,37.28,3.6,75.07,3.5,112.16-2.19,19.9-1.5,39.39-6.4,58.88-10.7A566.24,566.24,0,0,0,702,974.59c20.1-8.6,40-17.9,58.89-29.1a455,455,0,0,0,48.38-31.59,496.83,496.83,0,0,0,51.28-43.48,486.75,486.75,0,0,0,35.19-38A500,500,0,0,0,926.27,792c8.6-12.79,16.6-26.09,24.3-39.49,7.89-15.19,15.49-30.39,22.29-46.08,7.4-18.8,14.7-37.69,19.89-57.18,4.4-16,9.2-32,10.8-48.49,4.2-17.39,6.1-35.69,6.8-53.48A412.52,412.52,0,0,0,1009.65,466.44ZM826.51,400.86c-6.1,16.2-16.8,30.09-29.5,41.69-11.09,11-22.09,22.09-33.19,33.19-11.79,11.79-23.59,23.49-35.28,35.39-11.3,11.19-22.6,22.39-33.89,33.79-12.3,12.29-24.7,24.59-36.89,36.89-14,14.09-28.09,28-42.09,42.08-13.2,13.3-26.49,26.49-39.79,39.79s-26.79,26.69-40.09,40.09c-12.29,11.79-23.49,24.89-37.38,35a105.49,105.49,0,0,1-57.89,16c-23.59-1.5-46.68-10.79-63.68-27.39q-78.42-78.42-156.95-157c-12.79-12.7-21.39-29.09-26-46.39-4.8-23.89-2-49.48,10.3-70.77,9.39-16.5,23.79-29.6,40.18-39a107.88,107.88,0,0,1,57.89-9.7c21.39,3.2,41.88,13,56.88,28.79,28.39,28.39,56.68,56.88,85.27,85.18,8.6-8.2,16.9-16.8,25.1-25.3,12-11.49,23.79-23.29,35.28-35.39,11.4-10.59,22.3-21.79,33.09-33.09,7.7-6.89,14.7-14.49,22.1-21.79,12-11.7,23.69-23.59,35.39-35.49,11.29-10.79,22.19-22,33.09-33,11.79-11.49,23.29-23.29,35-34.89a106.64,106.64,0,0,1,42.18-26.39A107.77,107.77,0,0,1,768,274.5c25.7,9.8,46.29,30,57.59,54.88C833.9,352.28,834.9,377.87,826.51,400.86Z" transform="translate(-12 -12.19)"/>
+                        </svg>
+                    </a>
+                </div>
+                <br><br>
+                
+                <div id="programming-box" class="bg-black p-4 sm:p-6 rounded-lg neon-border mb-4 sm:mb-8 relative overflow-hidden" style="height: auto; min-height: 120px; max-height: 200px;">
+                    <pre id="code-display" class="text-green-400 font-mono text-xs sm:text-sm overflow-auto"></pre>
+                </div>
+                
+                <style>
+                    @keyframes neon-glow {
+                        0% { box-shadow: 0 0 5px #ff00de, 0 0 10px #ff00de, 0 0 15px #ff00de, 0 0 20px #ff00de; }
+                        100% { box-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de; }
+                    }
+                    .sneon-border {
+                        animation: neon-glow 1.5s ease-in-out infinite alternate;
+                    }
+                </style>
+                
+                <script>
+                    const codeDisplay = document.getElementById('code-display');
+                    const code = `
+To code, or not to code, that is the exception
+programmer answer: try { toBe() } catch (NotToBe) { return "Shakespeare.RuntimeException"; }
+                    `;
+                
+                    let index = 0;
+                
+                    function typeCode() {
+                        if (index < code.length) {
+                            codeDisplay.innerHTML += code.charAt(index);
+                            index++;
+                            setTimeout(typeCode, 50);
+                        } else {
+                        }
+                    }
+                
+                    function resetCode() {
+                        codeDisplay.innerHTML = '';
+                        index = 0;
+                        typeCode();
+                    }
+                
+                    typeCode();
+                </script>
+                
             </div>
 
             <div id="about" class="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
-                <div id="english-content" class="bg-black p-6 rounded-lg neon-border">
+                <div id="english-content" dir="auto" class="bg-black p-6 rounded-lg neon-border">
                     <p class="text-lg">
                         Hello! I'm <a href="https://discordapp.com/users/898843614380163082" class="text-blue-400 hover:text-blue-300">Ali Safamanesh</a><br>
                         I love Python and I'm learning C#<br>
                         I have three translatable Python certificates from Tehran Central Technical Complex<br>
-                        I can professionally develop bots for <strong class="text-purple-400">Bale</strong>, <strong class="text-purple-400">Telegram</strong>, <strong class="text-purple-400">Guilded</strong>, and <strong class="text-purple-400">Discord</strong><br>
-                        I have over 2 years of experience in creating Discord and Bale bots and can build custom bots with advanced features for you
+                        And I can professionally develop bots for <strong class="text-purple-400">Bale</strong>, <strong class="text-purple-400">Telegram</strong>, <strong class="text-purple-400">Guilded</strong>, and <strong class="text-purple-400">Discord</strong> for you<br>
+                        I have more than 2 years of experience in creating Discord and Bale bots and can build custom bots with advanced features for you
                     </p>
                 </div>
             </div>
 
             <div id="skills" class="mb-8">
                 <h2 class="text-2xl font-bold mb-4 text-center">My Skills:</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">Python 100%</p>
+
+                        <p class="text-lg font-semibold mb-2">Python</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">HTML 100%</p>
+
+                        <p class="text-lg font-semibold mb-2">HTML</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-green-600 h-2.5 rounded-full" style="width: 100%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">Node.Js 100%</p>
+
+                        <p class="text-lg font-semibold mb-2">Node.Js</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-yellow-600 h-2.5 rounded-full" style="width: 100%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">CSS 95%</p>
+
+                        <p class="text-lg font-semibold mb-2">CSS</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-red-600 h-2.5 rounded-full" style="width: 95%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PhotoShop 90%</p>
+
+                        <p class="text-lg font-semibold mb-2">PhotoShop</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-purple-600 h-2.5 rounded-full" style="width: 90%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">BootStrap 90%</p>
+
+                        <p class="text-lg font-semibold mb-2">BootStrap</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 90%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PHP 70%</p>
+
+                        <p class="text-lg font-semibold mb-2">PHP</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-pink-600 h-2.5 rounded-full" style="width: 70%"></div>
+                        </div>
                     </div>
                     <div class="bg-black p-4 rounded-lg neon-border">
-                        <p class="text-lg font-semibold">PowerPoint 70%</p>
+
+                        <p class="text-lg font-semibold mb-2">PowerPoint</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-teal-600 h-2.5 rounded-full" style="width: 70%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div id="experience" class="mb-8">
+            <div id="experience" class="mb-8" dir="auto">
                 <h2 class="text-2xl font-bold mb-4 text-center">My Experience in Bot Development</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-black p-4 rounded-lg neon-border">
                         <h3 class="text-xl font-bold mb-2">Discord Bots</h3>
                         <ul class="list-disc list-inside">
-                            <li>Server management bots</li>
+                            <li>Creating server management bots</li>
                             <li>High-quality music bots</li>
                             <li>Level and rank systems</li>
                             <li>Economy and game bots</li>
@@ -186,16 +259,57 @@
                 </div>
             </div>
 
-            <div id="backend" class="mb-8">
-                <h2 class="text-2xl font-bold mb-4 text-center">Backend Development and APIs</h2>
+            
+                        <div id="certificates" class="mb-8" dir="auto">
+                            <h2 class="text-2xl font-bold mb-4 text-center">My Certificates</h2>
+                            <div class="bg-black p-4 rounded-lg neon-border">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('../certificates/en/python1.jpg')">
+                                        <img src="../certificates/en/python1.jpg" alt="Python Certificate 1" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('../certificates/en/python2.jpg')">
+                                        <img src="../certificates/en/python2.jpg" alt="Python Certificate 2" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('../certificates/en/python3.jpg')">
+                                        <img src="../certificates/en/python3.jpg" alt="Python Certificate 3" class="w-full h-auto rounded-lg">
+                                    </div>
+                                    <div class="bg-black p-4 rounded-lg neon-border cursor-pointer" onclick="openModal('../certificates/en/dotnet1.jpg')">
+                                        <img src="../certificates/en/dotnet1.jpg" alt=".NET Certificate" class="w-full h-auto rounded-lg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                            <div class="max-w-4xl max-h-full p-4">
+                                <img id="modalImage" src="" alt="Zoomed Certificate" class="max-w-full max-h-full object-contain">
+                            </div>
+                        </div>
+
+                        <script>
+                            function openModal(imageSrc) {
+                                const modal = document.getElementById('imageModal');
+                                const modalImage = document.getElementById('modalImage');
+                                modalImage.src = imageSrc;
+                                modal.classList.remove('hidden');
+                            }
+
+                            document.getElementById('imageModal').addEventListener('click', function() {
+                                this.classList.add('hidden');
+                            });
+                        </script>
+            
+
+            <div id="backend" class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">Backend Development and APIs</h2>
                 <div class="bg-black p-6 rounded-lg neon-border">
                     <p class="text-lg mb-4">
-                        In addition to bot development, I specialize in backend website development and creating useful APIs. Some of my projects include:
+                        In addition to bot development, I specialize in website backend development and creating practical APIs. Some of my projects include:
                     </p>
                     <ul class="list-disc list-inside mb-4">
                         <li>Developing a news API to fetch the latest news from various sources</li>
                         <li>Creating an image generation API using artificial intelligence</li>
-                        <li>Designing and implementing APIs for entertainment tools like joke generators and random quotes</li>
+                        <li>Designing and implementing APIs for entertainment tools such as joke generators and random quotes</li>
                     </ul>
                     <p class="text-lg">
                         I can provide custom solutions for your project's specific needs and build powerful and scalable APIs.
@@ -203,42 +317,65 @@
                 </div>
             </div>
 
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4 text-center">Tools</h2>
-                <div class="bg-black p-6 rounded-lg neon-border">
+            <div class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">Blog</h2>
+                <div class="bg-black p-6 rounded-lg neon-border" style="height: 500px; overflow: hidden;">
+                    <iframe src="https://daradege.github.io/blog" frameborder="0" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-8" dir="auto">
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">Widgets</h2>
+                <div class="bg-black p-6 rounded-lg neon-border" ;">
                     <div>
                         <p class="text-lg mb-4">
-                            Some of the tools developed in the frontend area:<br><a href="https://daradege.github.io/tools" style="color: #0dff00;">Go to website</a>
-                        </p>
-                        <ul class="list-disc list-inside mb-4">
-                            <li>ICRR</li>
-                            <li>IPW</li>
-                            <li>svng</li>
-                            <li>Paint</li>
-                        </ul>
+                            Some of the widgets developed in the frontend area:<br><span dir="ltr"><a href="https://daradege.github.io/tools" style="color: #0dff00;">Go to website</a></span>
+                            </p>
+                            <ul class="list-disc list-inside mb-4">
+                                <li>ICRR</li>
+                                <li>IPW</li>
+                                <li>svng</li>
+                                <li>Paint</li>
+                            </ul>
                     </div>
                     <div>
-                        <center><iframe src="https://daradege.github.io/tools" style="border-radius: 20px;height: 500px;width: 100%;"></iframe></center>
+                        <center><iframe src="https://daradege.github.io/tools" style="border-radius: 20px;height: 500px;width: 100%;"></center></iframe>
+
                     </div>
                 </div>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4 text-center">Contact Me</h2>
+                <h2 class="text-2xl font-bold mb-4 text-center" dir="auto">Contact Me</h2>
                 <div class="bg-black p-4 rounded-lg neon-border" style="display: inline-flex;width: 100%;">
-                    <center><a href="https://ble.ir/daradege">Bale</a> 
-                    <a href="https://github.com/daradege">Github</a>
+                    <center><a href="https://ble.ir/daradege">Bale</a>     
+                    <a href="https://github.com/daradege">Github</a>     
                     more soon
+
                     </center>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-purple-900 p-4 mt-8">
+    <footer class="bg-blue-900 p-4 mt-8">
         <div class="max-w-4xl mx-auto text-center">
             <p>© 2024 Ali Safamanesh. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const toggleMenu = () => mobileMenu.classList.toggle('open');
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+        });
+    </script>
 </body>
 </html>
