@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماشین حساب ب.م.م و ک.م.م</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            background-image: url('../m.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Vazirmatn', Arial, sans-serif;
+        }
+        .space-container {
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease-in-out;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .space-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        input[type="number"] {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        button {
+            transition: all 0.3s ease-in-out;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center p-4 ">
+    <div class="space-container p-6 max-w-sm w-full">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-300">ماشین حساب ب.م.م و ک.م.م</h1>
+        <div class="mb-4">
+            <label for="num1" class="block mb-1 text-sm text-blue-200">عدد اول:</label>
+            <input type="number" id="num1" class="w-full p-2 border border-blue-500 rounded-lg text-white focus:outline-none focus:border-blue-300 transition duration-300">
+        </div>
+        <div class="mb-4">
+            <label for="num2" class="block mb-1 text-sm text-blue-200">عدد دوم:</label>
+            <input type="number" id="num2" class="w-full p-2 border border-blue-500 rounded-lg text-white focus:outline-none focus:border-blue-300 transition duration-300">
+        </div>
+            <div class="flex space-x-2 rtl:space-x-reverse">
+                <button onclick="calculateGCD()" class="w-1/2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">محاسبه ب.م.م</button>
+                <button onclick="calculateLCM()" class="w-1/2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300">محاسبه ک.م.م</button>
+            </div>        <p id="result" class="mt-4 text-lg text-center text-green-300"></p>
+    </div>
+
+    <script>
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function calculateGCD() {
+            const num1 = parseInt(document.getElementById('num1').value);
+            const num2 = parseInt(document.getElementById('num2').value);
+
+            const result = gcd(num1, num2);
+            document.getElementById('result').textContent = `ب.م.م ${num1} و ${num2} برابر است با ${result}`;
+        }
+
+        function calculateLCM() {
+            const num1 = parseInt(document.getElementById('num1').value);
+            const num2 = parseInt(document.getElementById('num2').value);
+
+            const gcdValue = gcd(num1, num2);
+            const result = (num1 * num2) / gcdValue;
+            document.getElementById('result').textContent = `ک.م.م ${num1} و ${num2} برابر است با ${result}`;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                calculateGCD();
+            }
+        });
+    </script>
+</body>
+</html>
