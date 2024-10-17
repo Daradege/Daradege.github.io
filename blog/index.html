@@ -8,7 +8,7 @@
     <meta name="description" content="Welcome to Daradege Blog - A modern and insightful blog">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <script>
         tailwind.config = {
@@ -16,15 +16,16 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins','Vazirmatn','sans-serif']
+                        sans: ['Montserrat','Vazirmatn','sans-serif']
                     },
                     colors: {
-                        gold: {
-                            100: '#FFF7E6',
-                            200: '#FFE9B3',
-                            300: '#FFD980',
-                            400: '#FFC94D',
-                            500: '#FFB300',
+                        primary: {
+                            100: '#E6FFFA', 200: '#B2F5EA', 300: '#81E6D9',
+                            400: '#4FD1C5', 500: '#38B2AC',
+                        },
+                        secondary: {
+                            100: '#FDF2F8', 200: '#FCE7F3', 300: '#FBCFE8',
+                            400: '#F9A8D4', 500: '#F472B6',
                         },
                     },
                 },
@@ -32,36 +33,27 @@
         }
     </script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .transition-transform {
-            transition: transform 0.3s ease-in-out;
-        }
-        .hover\:scale-105:hover {
-            transform: scale(1.05);
-        }
-        [dir="rtl"] {
-            direction: rtl;
-        }
-        [dir="ltr"] {
-            direction: ltr;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .transition-transform { transition: transform 0.3s ease-in-out; }
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        [dir="rtl"] { direction: rtl; }
+        [dir="ltr"] { direction: ltr; }
     </style>
 </head>
-<body class="bg-black text-gold-100 flex flex-col min-h-screen">
-    <div class="container mx-auto px-4 py-8 flex-grow">
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen dark:bg-gray-900 dark:text-gray-100">
+    <header class="bg-primary-500 py-8 shadow-md">
+        <div class="container mx-auto px-4">
+            <h1 class="text-center text-5xl md:text-6xl font-bold text-white animate-fade-in">Daradege Blog</h1>
+        </div>
+    </header>
 
-        <h1 class="text-center mb-12 text-4xl md:text-5xl font-bold text-gold-400 animate-fade-in">Daradege Blog</h1>
+    <main class="container mx-auto px-4 py-12 flex-grow">
         <div id="posts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in"></div>
-        <div id="post-content" class="bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 animate-fade-in mt-8 hidden"></div>
-    </div>
+        <div id="post-content" class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl border-2 border-primary-300 animate-fade-in mt-12 hidden"></div>
+    </main>
 
-    <footer class="bg-gray-900 text-gold-100 py-4 mt-8">
+    <footer class="bg-gray-200 text-gray-600 py-6 mt-12 dark:bg-gray-800 dark:text-gray-400">
         <div class="container mx-auto px-4 text-center">
             <p>© 2024 Daradege Blog. All rights reserved.</p>
         </div>
@@ -99,11 +91,17 @@
             }
             
             posts.reverse().forEach(post => {
-                const postCard = document.createElement('div');
-                postCard.className = 'bg-gray-900 p-6 rounded-lg shadow-lg border border-gold-500 transition-transform hover:scale-105 cursor-pointer';
+                const postCard = document.createElement('article');
+                postCard.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-transform hover:scale-105 cursor-pointer';
                 postCard.innerHTML = `
-                    <h2 class="text-2xl font-semibold mb-4 text-gold-300">${post.title}</h2>
-                    <p class="text-gold-100">${post.excerpt}...</p>
+                    <div class="p-6">
+                        <h2 class="text-2xl font-semibold mb-4 text-primary-500 dark:text-primary-300">${post.title}</h2>
+                        <p class="text-gray-600 dark:text-gray-300">${post.excerpt}...</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Post #${post.id}</span>
+                            <button class="bg-secondary-500 text-white px-4 py-2 rounded-full hover:bg-secondary-400 transition-colors duration-200">Read More</button>
+                        </div>
+                    </div>
                 `;
                 postCard.addEventListener('click', () => displayPost(post.id));
                 postsList.appendChild(postCard);
@@ -113,7 +111,7 @@
         async function displayPost(postId) {
             postsList.classList.add('hidden');
             postContent.classList.remove('hidden');
-            postContent.innerHTML = '<div class="animate-pulse"><div class="h-4 bg-gold-200 rounded w-3/4 mb-4"></div><div class="h-4 bg-gold-200 rounded w-1/2 mb-4"></div><div class="h-4 bg-gold-200 rounded w-5/6"></div></div>';
+            postContent.innerHTML = '<div class="animate-pulse"><div class="h-4 bg-primary-200 rounded w-3/4 mb-4"></div><div class="h-4 bg-primary-200 rounded w-1/2 mb-4"></div><div class="h-4 bg-primary-200 rounded w-5/6"></div></div>';
             
             const content = await fetchMarkdown(`${postId}.md`);
             if (content) {
@@ -121,26 +119,22 @@
                 const title = lines[0];
                 const postBody = lines.slice(1).join('\n');
                 postContent.innerHTML = `
-                    <button  id="back-button" class="mb-4 text-gold-400 hover:text-gold-200 transition-colors duration-200">← Back to Posts</button>
-                    ${marked.parse(title + postBody)}
+                    <button id="back-button" class="mb-6 text-secondary-500 hover:text-secondary-400 transition-colors duration-200 text-lg">← Back to Posts</button>
+                    <h1 class="text-4xl font-bold mb-6 text-center">${title}</h1>${marked.parse(postBody)}
                 `;
                 postContent.querySelectorAll('a').forEach(link => {
-                    link.className = 'text-gold-400 hover:text-gold-200 underline transition-colors duration-200';
+                    link.className = 'text-secondary-500 hover:text-secondary-400 underline transition-colors duration-200';
                     link.setAttribute('target', '_blank');
                     link.setAttribute('rel', 'noopener noreferrer');
                 });
-                postContent.querySelectorAll('img').forEach(img => {
-                    img.className = 'max-w-full h-auto rounded-lg shadow-md my-4 transition-transform hover:scale-105';
-                    img.setAttribute('loading', 'lazy');
-                });
                 postContent.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
-                    heading.className += ' text-gold-300 mb-4';
+                    heading.className += ' text-primary-500 dark:text-primary-300 mb-4 mt-6';
                 });
                 postContent.querySelectorAll('p').forEach(p => {
-                    p.className += ' mb-4';
+                    p.className += ' mb-4 leading-relaxed';
                 });
                 postContent.querySelectorAll('ul, ol').forEach(list => {
-                    list.className += ' list-disc list-inside mb-4';
+                    list.className += ' list-disc list-inside mb-4 pl-4';
                 });
 
                 document.getElementById('back-button').addEventListener('click', () => {
@@ -152,7 +146,7 @@
                 const direction = isRTL(title) ? 'rtl' : 'ltr';
                 postContent.setAttribute('dir', direction);
             } else {
-                postContent.innerHTML = '<p class="text-red-500">Error loading post.</p>';
+                postContent.innerHTML = '<p class="text-secondary-500">Error loading post.</p>';
             }
         }
 
@@ -165,7 +159,5 @@
             loadPosts();
         });
     </script>
-    
-
 </body>
 </html>
