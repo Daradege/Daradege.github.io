@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text to ASCII Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: #00ff88;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        h3 {
+            color: #4ecca3;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #4ecca3;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(78,204,163,0.5);
+            border-color: #00ff88;
+        }
+        .container {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.18);
+        }
+    </style>
+</head>
+<body>
+    <h1>Text ↔ ASCII Converter</h1>
+    
+    <div class="container">
+        <h3>Text Input</h3>
+        <textarea id="textInput" placeholder="Enter your text here..." oninput="convertToAscii()"></textarea>
+    </div>
+
+    <div class="container">
+        <h3>ASCII Output</h3>
+        <textarea id="asciiOutput" placeholder="ASCII values will appear here..." oninput="convertToText()"></textarea>
+    </div>
+
+    <script>
+        function convertToAscii() {
+            const text = document.getElementById('textInput').value;
+            const ascii = text.split('').map(char => char.charCodeAt(0)).join(' ');
+            document.getElementById('asciiOutput').value = ascii;
+        }
+
+        function convertToText() {
+            const ascii = document.getElementById('asciiOutput').value;
+            try {
+                const text = ascii.split(' ')
+                    .filter(num => num.trim() !== '')
+                    .map(num => String.fromCharCode(parseInt(num)))
+                    .join('');
+                document.getElementById('textInput').value = text;
+            } catch (e) {
+                document.getElementById('textInput').value = 'Invalid ASCII values';
+            }
+        }
+    </script>
+</body>
+</html>
