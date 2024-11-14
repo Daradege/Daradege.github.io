@@ -1,0 +1,169 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Wipper - Web Zipper</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #1a1a1a;
+          }
+          #app {
+              background-color: #2a2a2a;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          }
+          h2 {
+              color: #ffffff;
+              margin-bottom: 20px;
+          }
+          .field-container {
+              margin: 15px 0;
+              padding: 15px;
+              border: 1px solid #3a3a3a;
+              border-radius: 4px;
+              background-color: #2f2f2f;
+          }
+          .remove-btn {
+              color: #ff4d4d;
+              cursor: pointer;
+              padding: 5px 10px;
+              border-radius: 3px;
+              display: inline-block;
+              margin-top: 10px;
+          }
+          .remove-btn:hover {
+              background-color: #3a3a3a;
+          }
+          button {
+              background-color: #007bff;
+              color: white;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+              margin: 5px 0;
+          }
+          button:hover {
+              background-color: #0056b3;
+          }
+          input[type="text"], textarea {
+              width: 100%;
+              padding: 8px;
+              margin: 5px 0;
+              border: 1px solid #3a3a3a;
+              border-radius: 4px;
+              box-sizing: border-box;
+              background-color: #333;
+              color: #fff;
+          }
+          textarea {
+              min-height: 100px;
+              resize: vertical;
+          }
+          label {
+              display: block;
+              margin: 10px 0 5px;
+              color: #ffffff;
+          }
+          span {
+              display: block;
+              margin: 10px 0;
+              color: #cccccc;
+          }
+          input[type="file"] {
+              margin: 10px 0;
+              padding: 5px;
+              color: #ffffff;
+          }
+      </style>
+  </head>
+  <body>
+      <div id="app">
+          <h2>Wipper - Web Zipper</h2>
+          <button onclick="addField()">Add New File Field</button>
+          <div id="fields"></div>
+          <button onclick="generateZip()">Generate Zip</button>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+      <script>
+          let fieldCount = 0;
+
+          function addField() {
+              const container = document.createElement('div');
+              container.className = 'field-container';
+              container.id = `field-${fieldCount}`;
+
+              container.innerHTML = `
+                  <div>
+                      <label>File Name:</label>
+                      <input type="text" id="filename-${fieldCount}" placeholder="example.txt">
+                  </div>
+                  <div>
+                      <label>Content:</label>
+                      <textarea id="content-${fieldCount}" placeholder="Enter file content"></textarea>
+                      <span>OR</span>
+                      <input type="file" id="file-${fieldCount}" onchange="handleFileSelect(${fieldCount})">
+                  </div>
+                  <span class="remove-btn" onclick="removeField(${fieldCount})">Remove</span>
+              `;
+
+              document.getElementById('fields').appendChild(container);
+              fieldCount++;
+          }
+
+          function handleFileSelect(id) {
+              const fileInput = document.getElementById(`file-${id}`);
+              const textarea = document.getElementById(`content-${id}`);
+              const filenameInput = document.getElementById(`filename-${id}`);
+              
+              if (fileInput.files.length > 0) {
+                  textarea.value = '';
+                  textarea.disabled = true;
+                  filenameInput.value = fileInput.files[0].name;
+              } else {
+                  textarea.disabled = false;
+              }
+          }
+
+          function removeField(id) {
+              document.getElementById(`field-${id}`).remove();
+          }
+
+          async function generateZip() {
+              const zip = new JSZip();
+
+              for (let i = 0; i < fieldCount; i++) {
+                  const container = document.getElementById(`field-${i}`);
+                  if (!container) continue;
+
+                  const filename = document.getElementById(`filename-${i}`).value || `file${i}.txt`;
+                  const content = document.getElementById(`content-${i}`).value;
+                  const fileInput = document.getElementById(`file-${i}`);
+
+                  if (fileInput.files.length > 0) {
+                      const file = fileInput.files[0];
+                      const fileContent = await file.arrayBuffer();
+                      zip.file(filename, fileContent);
+                  } else if (content) {
+                      zip.file(filename, content);
+                  }
+              }
+
+              zip.generateAsync({type: "blob"})
+                  .then(function(content) {
+                      saveAs(content, "files.zip");
+                  });
+          }
+      </script>
+  </body>
+  </html>
