@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Text to ASCII Converter</title>
+    <title>Text to decimal Converter</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,35 +48,35 @@
     </style>
 </head>
 <body>
-    <h1>Text ↔ ASCII Converter</h1>
+    <h1>Text ↔ Decimal Converter</h1>
     
     <div class="container">
         <h3>Text Input</h3>
-        <textarea id="textInput" placeholder="Enter your text here..." oninput="convertToAscii()"></textarea>
+        <textarea id="textInput" placeholder="Enter your text here..." oninput="convertToDecimal()"></textarea>
     </div>
 
     <div class="container">
-        <h3>ASCII Output</h3>
-        <textarea id="asciiOutput" placeholder="ASCII values will appear here..." oninput="convertToText()"></textarea>
+        <h3>Decimal Output</h3>
+        <textarea id="decimalOutput" placeholder="Decimal values will appear here..." oninput="convertToText()"></textarea>
     </div>
 
     <script>
-        function convertToAscii() {
+        function convertToDecimal() {
             const text = document.getElementById('textInput').value;
-            const ascii = text.split('').map(char => char.charCodeAt(0)).join(' ');
-            document.getElementById('asciiOutput').value = ascii;
+            const decimal = text.split('').map(char => char.charCodeAt(0)).join(' ');
+            document.getElementById('decimalOutput').value = decimal;
         }
 
         function convertToText() {
-            const ascii = document.getElementById('asciiOutput').value;
+            const decimal = document.getElementById('decimalOutput').value;
             try {
-                const text = ascii.split(' ')
+                const text = decimal.split(' ')
                     .filter(num => num.trim() !== '')
                     .map(num => String.fromCharCode(parseInt(num)))
                     .join('');
                 document.getElementById('textInput').value = text;
             } catch (e) {
-                document.getElementById('textInput').value = 'Invalid ASCII values';
+                document.getElementById('textInput').value = 'Invalid Decimal values';
             }
         }
     </script>
