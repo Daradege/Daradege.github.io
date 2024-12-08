@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صدرا جان محمدی</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            text-align: center;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 50%;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: clamp(15px, 4vw, 30px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1s ease;
+        }
+        h1 {
+            color: #e74c3c;
+            font-size: clamp(2em, 5vw, 3em);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: bounceIn 1s ease;
+            background: linear-gradient(45deg, #e74c3c, #ff9a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .joke {
+            font-size: clamp(1em, 2.5vw, 1.3em);
+            margin: 25px 0;
+            padding: clamp(15px, 3vw, 25px);
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            animation: slideInRight 0.5s ease;
+            border-left: 5px solid #e74c3c;
+            position: relative;
+            overflow: hidden;
+        }
+        .joke::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.8), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        .joke:hover::before {
+            transform: translateX(100%);
+        }
+        .joke:hover {
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .profile-image {
+            width: clamp(150px, 30vw, 250px);
+            height: clamp(150px, 30vw, 250px);
+            border-radius: 50%;
+            margin: 20px auto;
+            object-fit: cover;
+            border: 8px solid #e74c3c;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
+            filter: brightness(1.1) contrast(1.1);
+        }
+        .profile-image:hover {
+            transform: rotate(5deg) scale(1.1);
+            filter: brightness(1.2) contrast(1.2);
+        }
+        .social-links {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .social-links a {
+            display: inline-block;
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: clamp(1em, 2vw, 1.2em);
+            transition: all 0.3s ease;
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+            border-radius: 30px;
+            background: rgba(231, 76, 60, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        .social-links a:hover {
+            color: white;
+            background: #e74c3c;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        .emoji-rain {
+            position: fixed;
+            top: -20px;
+            font-size: clamp(16px, 3vw, 20px);
+            animation: rain 3s linear infinite;
+            z-index: 1000;
+            pointer-events: none;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.1));
+        }
+        @keyframes rain {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="animate__animated animate__bounceIn">صدرا جان محمدی</h1>
+        <img src="./sjm.jpg" alt="صدرا جان محمدی" class="profile-image">
+        <div class="joke animate__animated animate__fadeInRight">
+            کسی که عقل ندارد 😂✨
+        </div>
+        <div class="joke animate__animated animate__fadeInRight">
+            مثل یه تخمه پوچ ، پسته در بسته ، همیشه همیشه پوچه! 😂🌟
+        </div>
+        <div class="joke animate__animated animate__fadeInRight">
+            جان محمدی در پوچی خود بمیر🎉
+        </div>
+    </div>
+    <script>
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-rain';
+            emoji.textContent = ['😂', 'بی مخ', '🧠', '🎉'][Math.floor(Math.random() * 4)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => {
+                emoji.remove();
+            }, 3000);
+        }
+
+        setInterval(createEmoji, 200);
+    </script>
+</body>
+</html>
