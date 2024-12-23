@@ -17,5 +17,3 @@ self.addEventListener('fetch', event => {
         })
     );
 });
-```[_{{{CITATION{{{_1{HTML Offline Web Pages - W3Schools](https://www.w3schools.in/html5/offline-web-pages)
-
