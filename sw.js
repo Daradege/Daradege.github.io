@@ -1,5 +1,5 @@
 const cacheName = 'v1';
-const cachedFiles = ['/', 'index.html', '/en', '/blog', '/logo.png'];
+const cachedFiles = ['/', 'index.html', '/en', '/blog', '/logo.png', '/tw.js];
 
 self.addEventListener('install', event => {
     event.waitUntil(
