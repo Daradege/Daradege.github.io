@@ -68,6 +68,12 @@
         #themeToggle:hover {
             background-color: #0056b3;
         }
+        #formatSelect {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 5px;
+            font-size: 16px;
+        }
         footer {
             margin-top: auto;
             text-align: center;
@@ -92,6 +98,12 @@
 </head>
 <body class="light-theme">
     <h1>Image Paste Viewer</h1>
+    <select id="formatSelect">
+        <option value="image/jpeg">JPEG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/gif">GIF</option>
+        <option value="image/svg+xml">SVG</option>
+    </select>
     <div id="pasteArea" contenteditable="true">Paste your image here...</div>
     <img id="imagePreview" alt="Pasted image preview">
     <button id="themeToggle">Toggle Theme</button>
@@ -104,6 +116,7 @@
         const pasteArea = document.getElementById('pasteArea');
         const imagePreview = document.getElementById('imagePreview');
         const themeToggle = document.getElementById('themeToggle');
+        const formatSelect = document.getElementById('formatSelect');
         const body = document.body;
 
         pasteArea.addEventListener('paste', function(e) {
@@ -113,18 +126,30 @@
             for (let i = 0; i < items.length; i++) {
                 if (items[i].type.indexOf('image') !== -1) {
                     const blob = items[i].getAsFile();
-                    const url = URL.createObjectURL(blob);
-                    imagePreview.src = url;
-                    pasteArea.textContent = 'Image pasted successfully!';
+                    const selectedFormat = formatSelect.value;
 
-                    if (items[i].type === 'image/svg+xml') {
+                    if (selectedFormat === 'image/svg+xml' && items[i].type === 'image/svg+xml') {
                         const reader = new FileReader();
                         reader.onload = function(event) {
                             pasteArea.innerHTML = event.target.result;
+                            imagePreview.src = 'data:image/svg+xml;base64,' + btoa(event.target.result);
                         };
                         reader.readAsText(blob);
+                    } else {
+                        createImageBitmap(blob).then(function(imageBitmap) {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = imageBitmap.width;
+                            canvas.height = imageBitmap.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(imageBitmap, 0, 0);
+                            
+                            canvas.toBlob(function(convertedBlob) {
+                                const url = URL.createObjectURL(convertedBlob);
+                                imagePreview.src = url;
+                                pasteArea.textContent = 'Image pasted successfully!';
+                            }, selectedFormat);
+                        });
                     }
-
                     break;
                 }
             }
