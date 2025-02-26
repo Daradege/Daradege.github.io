@@ -1,260 +1,127 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>علی صفامنش - توسعه دهنده بات و برنامه نویس</title>
-    <link rel="icon" type="image/x-icon" href="/logo.png">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        @font-face {
-            font-family: 'Vazir';
-            src: url('/fonts/Vazir.ttf') format('ttf');
-        }
-        body {
-            font-family: 'Vazir', sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        .skill-bar {
-            height: 20px;
-            background: linear-gradient(90deg, #3b82f6 var(--percent), #1e293b var(--percent));
-            border-radius: 10px;
-        }
-    </style>
-</head>
-<body class="bg-gray-900">
-    <nav class="bg-gray-800 shadow-xl fixed w-full top-0 z-50 border-b border-blue-500/20">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center py-4">
-                    <img src="/logo.png" alt="Logo" class="h-8 w-8 ml-2">
-                    <span class="font-semibold text-blue-400 text-lg">علی صفامنش</span>
-                </div>
-                
-                <!-- Mobile menu button -->
-                <button class="md:hidden flex items-center px-3 py-2" onclick="toggleMenu()">
-                    <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-
-                <!-- Desktop menu -->
-                <div class="hidden md:flex items-center space-x-3">
-                    <a href="https://ble.ir/@daradege" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">بله من</a>
-                    <a href="https://t.me/daradege" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">تلگرام من</a>
-                    <a href="/contact/" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">تماس با من</a>
-                    <a href="/tools" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">ابزارک ها</a>
-                    <a href="/blog" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">نوشته های من</a>
-                    <a href="/en" class="py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">EN</a>
-                </div>
-
-                <!-- Mobile menu -->
-                <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-gray-800 border-b border-blue-500/20 md:hidden">
-                    <div class="flex flex-col items-center">
-                        <a href="https://ble.ir/@daradege" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">بله من</a>
-                        <a href="https://t.me/daradege" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">تلگرام من</a>
-                        <a href="/contact/" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">تماس با من</a>
-                        <a href="/tools" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">ابزارک ها</a>
-                        <a href="/blog" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">نوشته های من</a>
-                        <a href="/en" class="w-full text-center py-4 px-2 text-gray-300 hover:text-blue-400 transition-colors">EN</a>
+    <!DOCTYPE html>
+    <html dir="ltr" lang="en">
+    <head>
+        <style>
+            @font-face {
+                font-family:'poppinsfont';
+                src:url(/fonts/poppins.ttf);
+                font-weight:lighter;
+                font-display:swap;
+            }
+            body {
+                font-family:'poppinsfont',system-ui,-apple-system,sans-serif;
+            }
+            @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
+            @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.3}}
+            @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+            .star{position:absolute;width:1.5px;height:1.5px;background:#fff;border-radius:50%;animation:twinkle 1.5s infinite}
+            .glass-card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:clamp(8px, 2vw, 16px);transition:.25s ease;width:100%;max-width:300px;margin:0 auto;}
+            .glass-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.12);box-shadow:0 4px 15px rgba(0,0,0,.1)}
+            @media (max-width: 640px) {
+                .floating-orb {
+                    width: 20vw !important;
+                    height: 20vw !important;
+                    opacity: 0.15 !important;
+                }
+                .profile-image {
+                    width: clamp(80px, 25vw, 128px) !important;
+                    height: clamp(80px, 25vw, 128px) !important;
+                }
+                .nav-links {
+                    font-size: 0.875rem;
+                    padding: 0.5rem;
+                }
+            }
+        </style>
+        <style>
+            .page-transition {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+        
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Ali Safamanesh - Senior Fullstack Developer with expertise in modern web technologies, backend development, and scalable solutions. Delivering high-quality software development services.">
+        <meta name="keywords" content="Ali Safamanesh, Fullstack Developer, Software Engineer, Web Development, Backend Development, Frontend Development, JavaScript, React, Node.js, Programming">
+        <meta name="author" content="Ali Safamanesh">
+        <meta name="robots" content="index, follow">
+        <meta name="googlebot" content="index, follow">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Ali Safamanesh - Senior Fullstack Developer & Software Engineer">
+        <meta property="og:description" content="Experienced Fullstack Developer specializing in creating robust, scalable web applications and software solutions. Expert in modern development technologies.">
+        <meta property="og:image" content="https://daradege.ir/logo.png">
+        <meta property="og:url" content="https://daradege.ir">
+        <meta property="og:site_name" content="Ali Safamanesh Portfolio">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Ali Safamanesh - Senior Fullstack Developer">
+        <meta name="twitter:description" content="Experienced Fullstack Developer specializing in creating robust, scalable web applications and software solutions.">
+        <meta name="twitter:image" content="https://daradege.ir/logo.png">
+        <link rel="stylesheet" href="/src/output.css">
+        <link rel="canonical" href="https://daradege.ir">
+        <link rel="preload" href="/fonts/poppins.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="icon" type="image/png" href="/logo.png">
+        <link rel="apple-touch-icon" href="/logo.png">
+        <title>Ali Safamanesh | Senior Fullstack Developer & Software Engineer</title>
+    </head>
+    <body class="min-h-screen bg-gradient-to-b from-[#0A0A20] via-[#151540] to-[#250829] text-slate-200 relative overflow-x-hidden">
+        <div id="stars" class="fixed inset-0 z-0" aria-hidden="true"></div>
+        <div class="floating-orb fixed top-20 right-10 w-28 h-28 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-25 blur-xl animate-[float_5s_ease-in-out_infinite]" aria-hidden="true"></div>
+        <div class="floating-orb fixed bottom-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 opacity-15 blur-xl animate-[float_7s_ease-in-out_infinite]" aria-hidden="true"></div>
+        <div class="floating-orb fixed top-40 left-20 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-500 to-red-500 opacity-20 blur-xl animate-[float_6s_ease-in-out_infinite]" aria-hidden="true"></div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <header class="py-4">
+                <nav class="flex items-center justify-between backdrop-blur-md bg-white/5 rounded-xl p-3 sm:p-4 hover:bg-white/8 transition-all duration-300" role="navigation">
+                    <a href="/" aria-label="Home" class="focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <img src="/logo.png" alt="Ali Safamanesh Logo" width="40" height="40" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-purple-500 hover:border-pink-500 transition-colors">
+                    </a>
+                    <div class="flex gap-2 sm:gap-4">
+                        <a href="/tools" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">Tools</a>
+                        <a href="/blog" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">Blog</a>
                     </div>
-                </div>
-            </div>
+                </nav>
+            </header>
+            <main class="page-transition">
+                <section class="min-h-[75vh] flex flex-col items-center justify-center text-center px-4">
+                    <div class="relative inline-block mb-6 sm:mb-8">
+                        <img src="/logo.png" alt="Ali Safamanesh - Professional Fullstack Developer" width="128" height="128" class="profile-image w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-purple-500 mx-auto animate-[float_4s_ease-in-out_infinite] hover:border-pink-500 transition-colors">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-15 blur-lg -z-10 animate-[rotate_8s_linear_infinite]" aria-hidden="true"></div>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-4 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text hover:from-pink-400 hover:to-purple-400 transition-all duration-500">Ali Safamanesh</h1>
+                    <p class="text-lg sm:text-xl mt-3 text-purple-200">Senior Fullstack Developer & Software Engineer</p>
+                    <div class="mt-8 sm:mt-10 w-full max-w-xs sm:max-w-sm">
+                        <a href="/resume" class="glass-card px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 rounded-lg inline-block focus:outline-none focus:ring-2 focus:ring-purple-500">View Resume</a>
+                    </div>
+                </section>
+            </main>
         </div>
-    </nav>
-
-    <script>
-        function toggleMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        }
-    </script>
-    <main class="max-w-6xl mx-auto pt-24 px-4">
-        <section id="about" class="bg-gray-800 rounded-lg shadow-xl p-8 mb-8 border border-blue-500/10 backdrop-blur-sm">
-            <div class="text-center">
-                <img src="/logo.png" alt="Ali Safamanesh avatar" class="w-32 h-32 mx-auto rounded-full mb-4 border-4 border-blue-500/50">
-                <h1 class="text-3xl font-bold mb-2 text-blue-400">علی صفامنش</h1>
-                <p class="text-xl text-blue-300 mb-4">برنامه نویس فول استک</p>
-                <p class="text-gray-300 leading-relaxed">
-                    سلام! من علی صفامنش هستم. عاشق پایتون و در حال یادگیری #C. 
-                    سه مدرک قابل ترجمه پایتون از مجتمع فنی مرکزی تهران دارم و در زمینه بات نویسی و بک اند به صورت حرفه‌ای فعالیت می‌کنم.
-                </p>
-            </div>
-        </section>
-
-        <section id="about-me" class="bg-gray-800 rounded-lg shadow-xl p-8 mb-8 border border-blue-500/10">
-                    <h2 class="text-2xl font-bold mb-6 text-blue-400">درباره من</h2>
-                    <div class="text-gray-300 space-y-4">
-                        <p>من یک برنامه‌نویس و توسعه‌دهنده با تجربه در زمینه‌های مختلف هستم. تخصص اصلی من در پایتون و توسعه بک اند است.</p>
-                        <p>در طول سال‌های فعالیتم، پروژه‌های متعددی را در زمینه:</p>
-                        <ul class="list-disc list-inside space-y-2 mr-6">
-                            <li>توسعه بات‌های تلگرام</li>
-                            <li>بات‌های پلتفرم بله</li>
-                            <li>اپلیکیشن‌های دیسکورد</li>
-                            <li>برنامه‌نویسی وب</li>
-                            <li>طراحی رابط کاربری</li>
-                        </ul>
-                        <p>با موفقیت به انجام رسانده‌ام و همواره در تلاش برای یادگیری تکنولوژی‌های جدید هستم.</p>
-                        <p>من همچنین علاقه مند به حوزه های دیگر تکنولوژی هستم، اخبار تکنولوژی رو به صورت به روز دنبال میکنم، طرفدار هر چیز <a href="https://en.wikipedia.org/wiki/Open_source" style="color: yellow;">Open-Source</a> هستم، به شدت از اپل و محصولاتش بدم میاد.</p>
-                        <center><a href="/contact/"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">سفارش پروژه</button></a></center>
-                    </div>
-                </section>
-        
-
-                <section id="skills" class="bg-gray-800 rounded-lg shadow-xl p-8 mb-8 border border-blue-500/10 hover:border-blue-500/20 transition-all" dir="rtl">
-                    <h2 class="text-2xl font-bold mb-6 text-blue-400 hover:text-blue-300 transition-colors">مهارت‌های من</h2>
-                    <div class="space-y-4">
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">پایتون</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">90%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">HTML</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">100%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">Node.Js</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">70%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 70%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">CSS</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">95%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">فتوشاپ</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">90%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">بوت‌استرپ</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">90%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">PHP</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">70%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 70%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">پاورپوینت</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">100%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="skill group hover:transform hover:scale-105 transition-all duration-300">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-gray-300 group-hover:text-blue-300 transition-colors">سی‌شارپ</span>
-                                <span class="text-blue-400 group-hover:text-blue-300">70%</span>
-                            </div>
-                            <div class="skill-bar bg-blue-500/20 h-2 rounded-full overflow-hidden">
-                                <div class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 70%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>        <section class="bg-gray-800 rounded-lg shadow-xl p-8 mb-8 border border-blue-500/10 hover:border-blue-500/20 transition-all">
-                    <h2 class="text-2xl font-bold mb-6 text-blue-400 hover:text-blue-300 transition-colors">گواهینامه‌های من</h2>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300" onclick="window.open('certificates/fa/ict.png', '_blank')">
-                            <img src="certificates/fa/ict.png" alt="ICT Certificate" class="w-full h-auto rounded-lg transition-transform duration-500 transform group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                        </div>
-                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300" onclick="window.open('certificates/fa/python1.jpg', '_blank')">
-                            <img src="certificates/fa/python1.jpg" alt="Python Certificate 1" class="w-full h-auto rounded-lg transition-transform duration-500 transform group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                        </div>
-                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300" onclick="window.open('certificates/fa/python2.jpg', '_blank')">
-                            <img src="certificates/fa/python2.jpg" alt="Python Certificate 2" class="w-full h-auto rounded-lg transition-transform duration-500 transform group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                        </div>
-                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300" onclick="window.open('certificates/fa/python3.jpg', '_blank')">
-                            <img src="certificates/fa/python3.jpg" alt="Python Certificate 3" class="w-full h-auto rounded-lg transition-transform duration-500 transform group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                        </div>
-                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300" onclick="window.open('certificates/fa/dotnet1.jpg', '_blank')">
-                            <img src="certificates/fa/dotnet1.jpg" alt=".NET Certificate" class="w-full h-auto rounded-lg transition-transform duration-500 transform group-hover:scale-110">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                        </div>
-                    </div>
-                </section>
-        
-
-        <section id="experience" class="bg-gray-800 rounded-lg shadow-xl p-8 mb-8 border border-blue-500/10">
-            <h2 class="text-2xl font-bold mb-6 text-blue-400">تجربیات من در ساخت بات</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-xl font-semibold mb-4 text-blue-300">بات‌های دیسکورد</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>ساخت بات‌های مدیریت سرور</li>
-                        <li>بات‌های موسیقی با کیفیت بالا</li>
-                        <li>سیستم‌های لول و رنک</li>
-                        <li>بات‌های اکونومی و بازی</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-4 text-blue-300">بات‌های بله</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300">
-                        <li>بات‌های اطلاع‌رسانی و خبری</li>
-                        <li>سیستم‌های پاسخگوی خودکار</li>
-                        <li>بات‌های مدیریت گروه و کانال</li>
-                        <li>بات‌های سرگرمی و بازی</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <footer class="text-center py-12 mt-8 bg-gray-800/50 rounded-lg border border-blue-500/10 backdrop-blur-sm">
-            <div class="flex justify-center">
-                <a href="https://t.me/daradege" class="group text-gray-400 hover:text-blue-400 transition-all transform hover:scale-110">
-                    <span class="relative inline-block after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-blue-400 after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform group-hover:after:scale-x-100">Telegram</span>
-                </a>
-                &nbsp;&nbsp;&nbsp;
-                <a href="https://github.com/daradege" class="group text-gray-400 hover:text-blue-400 transition-all transform hover:scale-110">
-                    <span class="relative inline-block after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-blue-400 after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform group-hover:after:scale-x-100">Github</span>
-                </a>
-                &nbsp;&nbsp;&nbsp;
-                <a href="https://ble.ir/daradege" class="group text-gray-400 hover:text-blue-400 transition-all transform hover:scale-110">
-                    <span class="relative inline-block after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-blue-400 after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform group-hover:after:scale-x-100">Bale</span>
-                </a>
-            </div>
-            <p class="mt-6 text-gray-400 font-light tracking-wide">© 2024 علی صفامنش. تمامی حقوق محفوظ است</p>
-        </footer>
-        <br>
-    </main>
-</body>
-</html>
+        <script defer>
+            const starsContainer=document.getElementById('stars');for(let i=0;i<150;i++){const star=document.createElement('div');star.className='star';star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*1.5}s`;starsContainer.appendChild(star)}
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', e => {
+                        if (link.href.includes(window.location.origin)) {
+                            e.preventDefault();
+                            document.querySelector('main').style.opacity = '0';
+                            document.querySelector('main').style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                window.location.href = link.href;
+                            }, 500);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+    </html>
