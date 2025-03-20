@@ -1,108 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daradege Tools</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="./util.png">
     <style>
+        @font-face {
+            font-family:'poppinsfont';
+            src:url(/fonts/poppins.ttf);
+            font-weight:lighter;
+            font-display:swap;
+        }
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            font-family:'poppinsfont',system-ui,-apple-system,sans-serif;
+        }
+        @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
+        @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.3}}
+        @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        .star{position:absolute;width:1.5px;height:1.5px;background:#fff;border-radius:50%;animation:twinkle 1.5s infinite}
+        .glass-card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:clamp(8px, 2vw, 16px);transition:.25s ease;width:100%;max-width:300px;margin:0 auto;}
+        .glass-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.12);box-shadow:0 4px 15px rgba(0,0,0,.1)}
+        .page-transition {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .screenshot-iframe {
             pointer-events: none;
             user-select: none;
         }
+        @media (max-width: 640px) {
+            .floating-orb {
+                width: 20vw !important;
+                height: 20vw !important;
+                opacity: 0.15 !important;
+            }
+            .profile-image {
+                width: clamp(80px, 25vw, 128px) !important;
+                height: clamp(80px, 25vw, 128px) !important;
+            }
+            .nav-links {
+                font-size: 0.875rem;
+                padding: 0.5rem;
+            }
+        }
     </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/logo.png">
+    <link rel="stylesheet" href="/src/output.css">
+    <link rel="preload" href="/fonts/poppins.ttf" as="font" type="font/ttf" crossorigin>
+    <title>Tools | Ali Safamanesh</title>
 </head>
-<body class="bg-gray-900">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8 text-white">Daradege Tools</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">ICRR</h2>
-                <p class="mb-4 text-gray-300">Image Color Replacer and Remover</p>
-                <a href="https://Daradege.github.io/tools/ICRR" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/ICRR')">Capture Screenshot</button>
+<body class="min-h-screen bg-gradient-to-b from-[#0A0A20] via-[#151540] to-[#250829] text-slate-200 relative overflow-x-hidden">
+    <div id="stars" class="fixed inset-0 z-0" aria-hidden="true"></div>
+    <div class="floating-orb fixed top-20 right-10 w-28 h-28 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-25 blur-xl animate-[float_5s_ease-in-out_infinite]" aria-hidden="true"></div>
+    <div class="floating-orb fixed bottom-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 opacity-15 blur-xl animate-[float_7s_ease-in-out_infinite]" aria-hidden="true"></div>
+    <div class="floating-orb fixed top-40 left-20 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-500 to-red-500 opacity-20 blur-xl animate-[float_6s_ease-in-out_infinite]" aria-hidden="true"></div>
+    
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <header class="py-4">
+            <nav class="flex items-center justify-between backdrop-blur-md bg-white/5 rounded-xl p-3 sm:p-4 hover:bg-white/8 transition-all duration-300" role="navigation">
+                <a href="/" aria-label="Home" class="focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <img src="/logo.png" alt="Ali Safamanesh Logo" width="40" height="40" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-purple-500 hover:border-pink-500 transition-colors">
+                </a>
+                <div class="flex gap-2 sm:gap-4">
+                    <a href="/tools" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">Tools</a>
+                    <a href="/blog" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">Blog</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="page-transition">
+            <div class="container mx-auto px-4 py-8">
+                <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">Tools</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">ICRR</h2>
+                        <p class="mb-4 text-slate-300">Image Color Replacer and Remover</p>
+                        <a href="https://Daradege.github.io/tools/ICRR" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">IPW</h2>
+                        <p class="mb-4 text-slate-300">Image Paste Viewer</p>
+                        <a href="https://Daradege.github.io/tools/IPW" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">svng</h2>
+                        <p class="mb-4 text-slate-300">SVG to PNG Converter</p>
+                        <a href="https://Daradege.github.io/tools/svng" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">Paint</h2>
+                        <p class="mb-4 text-slate-300">A simple Paint open source app using js and canvas</p>
+                        <a href="https://Daradege.github.io/tools/paint" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">Owghat</h2>
+                        <p class="mb-4 text-slate-300">Legal Owghat WebApp</p>
+                        <a href="https://Daradege.github.io/tools/owghat" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">Image</h2>
+                        <p class="mb-4 text-slate-300">AI Image Generator</p>
+                        <a href="https://Daradege.github.io/tools/image" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">TTA</h2>
+                        <p class="mb-4 text-slate-300">Text to decimal</p>
+                        <a href="https://Daradege.github.io/tools/tta" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">Wipper</h2>
+                        <p class="mb-4 text-slate-300">The Web zipper</p>
+                        <a href="https://Daradege.github.io/tools/wipper" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                    <div class="glass-card">
+                        <h2 class="text-2xl font-semibold mb-4 text-purple-200">Clock</h2>
+                        <p class="mb-4 text-slate-300">The world clock</p>
+                        <a href="https://Daradege.github.io/tools/time" class="btn bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 text-white px-4 py-2 rounded-lg inline-block">Open Tool</a>
+                    </div>
+                </div>
             </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">IPW</h2>
-                <p class="mb-4 text-gray-300">Image Paste Viewer</p>
-                <a href="https://Daradege.github.io/tools/IPW" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/IPW')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">svng</h2>
-                <p class="mb-4 text-gray-300">SVG to PNG Converter</p>
-                <a href="https://Daradege.github.io/tools/svng" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/svng')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Paint</h2>
-                <p class="mb-4 text-gray-300">A simple Paint open source app using js and canvas</p>
-                <a href="https://Daradege.github.io/tools/paint" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/paint')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Owghat</h2>
-                <p class="mb-4 text-gray-300">Legal Owghat WebApp</p>
-                <a href="https://Daradege.github.io/tools/owghat" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/owghat')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Image</h2>
-                <p class="mb-4 text-gray-300">AI Image Generator</p>
-                <a href="https://Daradege.github.io/tools/image" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/image')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">TTA</h2>
-                <p class="mb-4 text-gray-300">Text to decimal</p>
-                <a href="https://Daradege.github.io/tools/tta" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/tta')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Wipper</h2>
-                <p class="mb-4 text-gray-300">The Web zipper</p>
-                <a href="https://Daradege.github.io/tools/wipper" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/wipper')">Capture Screenshot</button>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-4 text-white">Clock</h2>
-                <p class="mb-4 text-gray-300">The world clock</p>
-                <a href="https://Daradege.github.io/tools/time" target="_blank" class="btn btn-primary">Open Tool</a>
-                <button class="btn btn-secondary mt-2" onclick="captureScreenshot('https://Daradege.github.io/tools/time')">Capture Screenshot</button>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <div id="screenshotContainer" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 hidden flex items-center justify-center">
-        <div class="bg-white p-4 rounded-lg" style="width: 85%; height: 85%;">
-            <iframe id="screenshotFrame" class="w-full h-full screenshot-iframe" src=""></iframe>
-            <button class="btn btn-primary mt-4" onclick="closeScreenshot()">Close</button>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer>
+        const starsContainer=document.getElementById('stars');for(let i=0;i<150;i++){const star=document.createElement('div');star.className='star';star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*1.5}s`;starsContainer.appendChild(star)}
+    </script>
     <script>
-        function captureScreenshot(url) {
-            const container = document.getElementById('screenshotContainer');
-            const frame = document.getElementById('screenshotFrame');
-            frame.src = url;
-            container.classList.remove('hidden');
-        }
-
-        function closeScreenshot() {
-            const container = document.getElementById('screenshotContainer');
-            const frame = document.getElementById('screenshotFrame');
-            container.classList.add('hidden');
-            frame.src = '';
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', e => {
+                    if (link.href.includes(window.location.origin)) {
+                        e.preventDefault();
+                        document.querySelector('main').style.opacity = '0';
+                        document.querySelector('main').style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            window.location.href = link.href;
+                        }, 500);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
