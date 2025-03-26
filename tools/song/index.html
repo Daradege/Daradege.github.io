@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Search Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .search-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #searchInput {
+            padding: 12px 20px;
+            width: 60%;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        #searchInput:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.2);
+        }
+        button {
+            padding: 12px 30px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+        }
+        .results {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+        }
+        .song-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .song-item:hover {
+            transform: translateY(-5px);
+        }
+        .song-item p {
+            margin: 0 0 15px 0;
+            color: #666;
+        }
+        .song-item a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .song-item a:hover {
+            text-decoration: underline;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 30px;
+        }
+        audio::-webkit-media-controls-panel {
+            background: #f5f7fa;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            #searchInput {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            button {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for songs...">
+        <button onclick="searchSongs()">Search</button>
+    </div>
+    <div id="results" class="results"></div>
+    
+    <script>
+        async function searchSongs() {
+            const query = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Searching...</div>';
+            
+            try {
+                const response = await fetch(`https://api.daradege.ir/searchsong?text=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                if (data.results && data.results.length > 0) {
+                    resultsDiv.innerHTML = data.results.map(result => `
+                        <div class="song-item">
+                            <p>Source: <a href="${result.source_page}" target="_blank">${result.source_page}</a></p>
+                            <audio controls>
+                                <source src="${result.url}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No results found</div>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff4444;">Error searching for songs. Please try again.</div>';
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
