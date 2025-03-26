@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio player from url</title>
+</head>
+<body>
+    <input type="text" id="url" placeholder="Enter the url">
+    <button onclick="playAudio()">Play</button>
+    <br>
+    <audio controls src=""></audio>
+    <script>
+        function playAudio() {
+            var url = document.getElementById("url").value;
+            var audio = document.querySelector("audio");
+            audio.src = url;
+        }
+    </script>
+</body>
+</html> 
