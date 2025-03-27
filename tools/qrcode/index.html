@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRcode generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        #qrcode-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        #qrcode-input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        #generate-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        #generate-button:hover {
+            transform: translateY(-2px);
+        }
+        #qrcode-image {
+            margin-top: 25px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <input type="text" id="qrcode-input" placeholder="Enter text to generate QR code">
+        <button id="generate-button">Generate QR Code</button>
+        <br>
+        <img src="" alt="QR Code" style="display:none;" id="qrcode-image">
+    </div>
+    <script>
+        document.getElementById("generate-button").addEventListener("click", function() {
+            var input = document.getElementById("qrcode-input").value;
+            if(input.trim() === "") {
+                alert("Please enter some text!");
+                return;
+            }
+            var url = "https://api.daradege.ir/qrcode?text=" + encodeURIComponent(input);
+            document.getElementById("qrcode-image").src = url;
+            document.getElementById("qrcode-image").style.display = "block";
+        });
+    </script>
+</body>
+</html>
