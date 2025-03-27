@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            background: #4a00e0;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            background: #5c17e6;
+            transform: translateY(-2px);
+        }
+
+        #weather {
+            margin-top: 20px;
+            line-height: 1.8;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .weather-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="city" placeholder="Enter city name">
+            <button onclick="getWeather()">Get Weather</button>
+        </div>
+        <div id="weather"></div>
+    </div>
+    <script>
+        var url = "https://api.daradege.ir/weather?city=Tehran";
+        function getWeather() {
+            var city = document.getElementById("city").value;
+            var url = "https://api.daradege.ir/weather?city=" + city;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherInfo = [
+                        ['City', `${data.weather.city}, ${data.weather.country} ${data.weather.flag}`],
+                        ['Temperature', data.weather.degree],
+                        ['Conditions', data.weather.weather_conditions],
+                        ['Humidity', data.weather.humidity],
+                        ['Wind Speed', data.weather.speed],
+                        ['Pressure', data.weather.pressure],
+                        ['Sunrise', data.weather.sunrise.time],
+                        ['Sunset', data.weather.sunset.time]
+                    ];
+
+                    document.getElementById("weather").innerHTML = weatherInfo
+                        .map(([label, value]) => `
+                            <div class="weather-item">
+                                <span>${label}:</span>
+                                <span>${value}</span>
+                            </div>
+                        `).join('');
+                })
+                .catch(error => {
+                    console.log(error);
+                    document.getElementById("weather").innerHTML = 
+                        '<div class="weather-item" style="color: #ff4444">Error fetching weather data. Please try again.</div>';
+                });
+        }
+    </script>
+</body>
+</html>
