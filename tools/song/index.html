@@ -13,13 +13,27 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
         }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
         .search-container {
             margin-bottom: 30px;
             text-align: center;
         }
         #searchInput {
             padding: 12px 20px;
-            width: 60%;
+            width: 40%;
             border: 2px solid #ddd;
             border-radius: 25px;
             font-size: 16px;
@@ -47,6 +61,7 @@
         }
         .results {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -56,18 +71,29 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
         .song-item:hover {
             transform: translateY(-5px);
         }
+        .song-item h3 {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
         .song-item p {
             margin: 0 0 15px 0;
             color: #666;
+            font-size: clamp(14px, 1.5vw, 16px);
         }
         .song-item a {
             color: #4a90e2;
             text-decoration: none;
             font-weight: 500;
+            word-wrap: break-word;
+            display: inline-block;
+            max-width: 100%;
         }
         .song-item a:hover {
             text-decoration: underline;
@@ -76,28 +102,56 @@
             width: 100%;
             margin-top: 10px;
             border-radius: 30px;
+            max-width: 100%;
         }
         audio::-webkit-media-controls-panel {
             background: #f5f7fa;
+        }
+        @media (max-width: 1024px) {
+            .results {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
         }
         @media (max-width: 768px) {
             body {
                 padding: 20px;
             }
+            .header h1 {
+                font-size: 24px;
+            }
+            .header p {
+                font-size: 14px;
+            }
             #searchInput {
-                width: 100%;
+                width: 90%;
                 margin-bottom: 10px;
             }
             button {
                 width: 100%;
                 margin-left: 0;
             }
+            .results {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .song-item {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>Song Search Tool</h1>
+        <p>Enter any song name or artist in the search box below to find and play music. Click the search button or press Enter to start searching.</p>
+    </div>
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search for songs...">
+        <input type="text" id="searchInput" placeholder="Type song name or artist here..." aria-label="Search input">
         <button onclick="searchSongs()">Search</button>
     </div>
     <div id="results" class="results"></div>
@@ -106,6 +160,12 @@
         async function searchSongs() {
             const query = document.getElementById('searchInput').value;
             const resultsDiv = document.getElementById('results');
+            
+            if (!query.trim()) {
+                resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Please enter a search term</div>';
+                return;
+            }
+            
             resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Searching...</div>';
             
             try {
@@ -113,23 +173,34 @@
                 const data = await response.json();
                 
                 if (data.results && data.results.length > 0) {
-                    resultsDiv.innerHTML = data.results.map(result => `
-                        <div class="song-item">
-                            <p>Source: <a href="${result.source_page}" target="_blank">${result.source_page}</a></p>
-                            <audio controls>
-                                <source src="${result.url}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    `).join('');
+                    resultsDiv.innerHTML = data.results.map(result => {
+                        const title = result.url.split('/').pop().replace(/\.[^/.]+$/, '');
+                        return `
+                            <div class="song-item">
+                                <h3>${decodeURIComponent(title)}</h3>
+                                <p>Source: <a href="${result.source_page}" target="_blank" rel="noopener noreferrer">${result.source_page}</a></p>
+                                <audio controls>
+                                    <source src="${result.url}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        `;
+                    }).join('');
                 } else {
-                    resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No results found</div>';
+                    resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No results found. Try different keywords.</div>';
                 }
             } catch (error) {
                 resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff4444;">Error searching for songs. Please try again.</div>';
                 console.error('Error:', error);
             }
         }
+
+        // Add Enter key support
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchSongs();
+            }
+        });
     </script>
 </body>
 </html>
