@@ -109,7 +109,7 @@
         const starsContainer=document.getElementById('stars');for(let i=0;i<150;i++){const star=document.createElement('div');star.className='star';star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*1.5}s`;starsContainer.appendChild(star)}
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('pageshow', () => {
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', e => {
                     if (link.href.includes(window.location.origin)) {
