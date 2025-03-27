@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aparat Video Info</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        video {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aparat Video Info</h1>
+    <div>
+        <input type="text" id="videoUrl" placeholder="Enter Aparat video URL">
+        <button onclick="getVideoInfo()">Get Info</button>
+    </div>
+    <div id="result" class="result"></div>
+
+    <script>
+        async function getVideoInfo() {
+            const url = document.getElementById('videoUrl').value;
+            const videoId = url.replace(/\/$/, '').split('/').pop();
+            
+            try {
+                const response = await fetch(`https://api.daradege.ir/aparat?video=${videoId}`);
+                const data = await response.json();
+                
+                const resultHtml = `
+                    <h2>${data.title}</h2>
+                    <img src="${data.big_poster}" alt="Video Thumbnail">
+                    <p><strong>Description:</strong> ${data.description}</p>
+                    <p><strong>Duration:</strong> ${Math.floor(data.duration / 60)}:${(data.duration % 60).toString().padStart(2, '0')}</p>
+                    <p><strong>Views:</strong> ${data.visit_cnt}</p>
+                    <p><strong>Likes:</strong> ${data.like_cnt}</p>
+                    <p><strong>Category:</strong> ${data.cat_name}</p>
+                    <p><strong>Upload Date:</strong> ${data.create_date}</p>
+                    <p><strong>Channel:</strong> ${data.sender_name}</p>
+                    ${data.file_link ? `
+                        <p><strong>Download Link:</strong> <a href="${data.file_link}" target="_blank">Download Video</a></p>
+                        <button onclick="watchVideo('${data.file_link}')">Watch Video</button>
+                        <div id="videoPlayer"></div>
+                    ` : ''}
+                    <h3>Raw Data:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+                document.getElementById('result').innerHTML = resultHtml;
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error fetching video information. Please check the URL and try again.</p>';
+            }
+        }
+
+        function watchVideo(videoUrl) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.innerHTML = `<video controls>
+                <source src="${videoUrl}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>`;
+        }
+    </script>
+</body>
+</html>
