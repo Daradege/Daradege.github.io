@@ -2,26 +2,88 @@
 <html>
 <head>
     <title>MP4 to MP3 Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            text-align: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 20px;
+            padding: 30px;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        #fileInput {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 20px 0;
+            border: 2px dashed #4CAF50;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         #audioPlayer {
             width: 100%;
-            margin-top: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
         }
+
         .download-btn {
             display: none;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background-color: #4CAF50;
+            margin: 15px auto;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 25px;
             cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76,175,80,0.3);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            #fileInput {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -46,6 +108,10 @@
                 downloadLink.href = url;
                 downloadLink.download = file.name.replace('.mp4', '.mp3');
                 downloadLink.style.display = 'inline-block';
+
+                audioPlayer.onended = function() {
+                    URL.revokeObjectURL(url);
+                };
             }
         }
     </script>
