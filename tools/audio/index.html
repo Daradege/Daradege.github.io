@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تبدیل MP4 به MP3</title>
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #ff6f61;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #e05c51;
+        }
+
+        .download-section {
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #43a047;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>تبدیل فایل MP4 به MP3</h1>
+        <p>فایل MP4 خود را انتخاب کنید و آن را به MP3 تبدیل کنید.</p>
+        
+        <!-- بخش انتخاب فایل -->
+        <div class="upload-section">
+            <input type="file" id="fileInput" accept="video/mp4" />
+            <label for="fileInput" class="upload-btn">انتخاب فایل MP4</label>
+        </div>
+
+        <!-- بخش دانلود -->
+        <div class="download-section hidden">
+            <a id="downloadLink" class="download-btn" download>دانلود فایل MP3</a>
+        </div>
+
+        <!-- پیغام وضعیت -->
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // نمایش پیغام وضعیت
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = 'در حال پردازش...';
+
+            try {
+                // بارگذاری فایل MP4
+                const arrayBuffer = await file.arrayBuffer();
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // دیکد فایل صوتی
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+                // استخراج کانال صوتی
+                const offlineContext = new OfflineAudioContext(
+                    audioBuffer.numberOfChannels,
+                    audioBuffer.length,
+                    audioBuffer.sampleRate
+                );
+
+                const source = offlineContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(offlineContext.destination);
+                source.start();
+
+                // رندر کردن صوت
+                const renderedBuffer = await offlineContext.startRendering();
+
+                // تبدیل به فایل MP3
+                const wavBlob = bufferToWav(renderedBuffer);
+                const mp3Blob = await convertWavToMp3(wavBlob);
+
+                // ایجاد لینک دانلود
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = URL.createObjectURL(mp3Blob);
+                downloadLink.download = file.name.replace('.mp4', '.mp3');
+
+                // نمایش دکمه دانلود
+                document.querySelector('.download-section').classList.remove('hidden');
+                statusMessage.textContent = 'تبدیل با موفقیت انجام شد!';
+            } catch (error) {
+                console.error('خطا در تبدیل:', error);
+                statusMessage.textContent = 'خطا در تبدیل فایل!';
+            }
+        });
+
+        // تابع تبدیل Buffer به فایل WAV
+        function bufferToWav(audioBuffer) {
+            const numOfChan = audioBuffer.numberOfChannels;
+            const length = audioBuffer.length * numOfChan * 2 + 44;
+            const buffer = new ArrayBuffer(length);
+            const view = new DataView(buffer);
+
+            // Header
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + audioBuffer.length * numOfChan * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numOfChan, true);
+            view.setUint32(24, audioBuffer.sampleRate, true);
+            view.setUint32(28, audioBuffer.sampleRate * numOfChan * 2, true);
+            view.setUint16(32, numOfChan * 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, audioBuffer.length * numOfChan * 2, true);
+
+            // Data
+            floatTo16BitPCM(view, 44, audioBuffer);
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        function floatTo16BitPCM(output, offset, input) {
+            for (let i = 0; i < input.length; i++, offset += 2) {
+                const s = Math.max(-1, Math.min(1, input.getChannelData(0)[i]));
+                output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            }
+        }
+
+        // تابع تبدیل WAV به MP3 (استفاده از کتابخانه lamejs)
+        async function convertWavToMp3(wavBlob) {
+            const lamejs = await import('https://cdn.jsdelivr.net/npm/lamejs@1.2.0/lame.min.js');
+            const reader = new FileReader();
+            return new Promise((resolve) => {
+                reader.onload = () => {
+                    const arrayBuffer = reader.result;
+                    const audioContext = new AudioContext();
+                    audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
+                        const channels = [];
+                        for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+                            channels.push(audioBuffer.getChannelData(i));
+                        }
+
+                        const mp3Encoder = new lamejs.Mp3Encoder(audioBuffer.numberOfChannels, audioBuffer.sampleRate, 128);
+                        const mp3Data = [];
+
+                        const sampleBlockSize = 1152;
+                        for (let i = 0; i < channels[0].length; i += sampleBlockSize) {
+                            const samples = channels.map(channel => channel.subarray(i, i + sampleBlockSize));
+                            const mp3buf = mp3Encoder.encodeBuffer(...samples);
+                            if (mp3buf.length > 0) {
+                                mp3Data.push(mp3buf);
+                            }
+                        }
+
+                        const flushBuf = mp3Encoder.flush();
+                        if (flushBuf.length > 0) {
+                            mp3Data.push(flushBuf);
+                        }
+
+                        resolve(new Blob(mp3Data, { type: 'audio/mp3' }));
+                    });
+                };
+                reader.readAsArrayBuffer(wavBlob);
+            });
+        }
+    </script>
+</body>
+</html>
