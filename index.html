@@ -123,6 +123,12 @@
                 });
             });
         });
-    </script>
+        
+        document.addEventListener("keydown", (event) => {
+            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "s") {
+                event.preventDefault();
+                window.location.href = "https://github.com/daradege/daradege.github.io";
+            }
+        });    </script>
 </body>
 </html>
