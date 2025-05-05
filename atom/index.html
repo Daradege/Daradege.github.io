@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <title>شبیه‌ساز مدل اتمی بور</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        .simulator {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .simulator {
+                flex-direction: row;
+            }
+        }
+
+        .atom-display {
+            flex: 2;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .atom-model {
+            flex: 1;
+            position: relative;
+            background-color: #f1f1f1;
+            border-radius: 15px;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nucleus {
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .nucleus-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 2px dashed rgba(70, 130, 180, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .orbit-1 {
+            width: 200px;
+            height: 200px;
+        }
+
+        .orbit-2 {
+            width: 300px;
+            height: 300px;
+        }
+
+        .orbit-3 {
+            width: 400px;
+            height: 400px;
+        }
+
+        .orbit-4 {
+            width: 500px;
+            height: 500px;
+        }
+
+        .particle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            cursor: grab;
+            transition: transform 0.2s;
+            z-index: 20;
+        }
+
+        .particle:hover {
+            transform: scale(1.1);
+        }
+
+        .proton {
+            background-color: #ff5252;
+            box-shadow: 0 0 10px rgba(255, 82, 82, 0.7);
+        }
+
+        .neutron {
+            background-color: #8d6e63;
+            box-shadow: 0 0 10px rgba(141, 110, 99, 0.7);
+        }
+
+        .electron {
+            background-color: #2196f3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+            width: 20px;
+            height: 20px;
+        }
+
+        .electron-orbit {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #2196f3;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+            z-index: 5;
+        }
+
+        .particle-bank {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bank-header {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .bank-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .particle-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+        }
+
+        .particle-label {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .info-panel {
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .info-header {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .info-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .info-content {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .info-item {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .reset-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .element-name {
+            font-size: 2rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .stability-indicator {
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .stable {
+            background-color: #a8e6cf;
+            color: #1b5e20;
+        }
+
+        .unstable {
+            background-color: #ffaaa5;
+            color: #b71c1c;
+        }
+
+        .neutral {
+            background-color: #dcedc8;
+            color: #33691e;
+        }
+
+        .ion-positive {
+            background-color: #ffd3b6;
+            color: #e65100;
+        }
+
+        .ion-negative {
+            background-color: #b5d8eb;
+            color: #01579b;
+        }
+
+        .drag-indicator {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>شبیه‌ساز مدل اتمی بور</h1>
+        
+        <div class="simulator">
+            <div class="atom-display">
+                <div class="atom-model">
+                    <div class="orbit orbit-1"></div>
+                    <div class="orbit orbit-2"></div>
+                    <div class="orbit orbit-3"></div>
+                    <div class="orbit orbit-4"></div>
+                    <div class="nucleus-container">
+                        <div class="nucleus" id="nucleus">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="element-name" id="element-name">هیدروژن</div>
+                
+                <div class="stability-indicator stable" id="stability-indicator">
+                    اتم پایدار است
+                </div>
+            </div>
+            
+            <div class="particle-bank">
+                <h2 class="bank-header">ذرات اتمی</h2>
+                <div class="bank-container">
+                    <div class="particle-container">
+                        <div>
+                            <div class="particle proton" draggable="true" data-type="proton">p+</div>
+                            <div class="particle-label">پروتون</div>
+                        </div>
+                    </div>
+                    
+                    <div class="particle-container">
+                        <div>
+                            <div class="particle neutron" draggable="true" data-type="neutron">n</div>
+                            <div class="particle-label">نوترون</div>
+                        </div>
+                    </div>
+                    
+                    <div class="particle-container">
+                        <div>
+                            <div class="particle electron" draggable="true" data-type="electron">e-</div>
+                            <div class="particle-label">الکترون</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="drag-indicator">
+                    ذرات را به داخل هسته یا مدار بکشید
+                </div>
+                
+                <button class="reset-btn" id="reset-btn">پاک کردن اتم</button>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2 class="info-header">مشخصات اتم</h2>
+            <div class="info-content">
+                <div class="info-item">
+                    <div class="info-label">عدد اتمی</div>
+                    <div class="info-value" id="atomic-number">1</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">عدد جرمی</div>
+                    <div class="info-value" id="mass-number">1</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">تعداد پروتون</div>
+                    <div class="info-value" id="proton-count">1</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">تعداد نوترون</div>
+                    <div class="info-value" id="neutron-count">0</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">تعداد الکترون</div>
+                    <div class="info-value" id="electron-count">1</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">بار الکتریکی</div>
+                    <div class="info-value" id="charge">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const elements = [
+    { name: "هیدروژن", symbol: "H", protons: 1, shells: [1] },
+    { name: "هلیوم", symbol: "He", protons: 2, shells: [2] },
+    { name: "لیتیوم", symbol: "Li", protons: 3, shells: [2, 1] },
+    { name: "بریلیوم", symbol: "Be", protons: 4, shells: [2, 2] },
+    { name: "بور", symbol: "B", protons: 5, shells: [2, 3] },
+    { name: "کربن", symbol: "C", protons: 6, shells: [2, 4] },
+    { name: "نیتروژن", symbol: "N", protons: 7, shells: [2, 5] },
+    { name: "اکسیژن", symbol: "O", protons: 8, shells: [2, 6] },
+    { name: "فلوئور", symbol: "F", protons: 9, shells: [2, 7] },
+    { name: "نئون", symbol: "Ne", protons: 10, shells: [2, 8] },
+    { name: "سدیم", symbol: "Na", protons: 11, shells: [2, 8, 1] },
+    { name: "منیزیم", symbol: "Mg", protons: 12, shells: [2, 8, 2] },
+    { name: "آلومینیوم", symbol: "Al", protons: 13, shells: [2, 8, 3] },
+    { name: "سیلیکون", symbol: "Si", protons: 14, shells: [2, 8, 4] },
+    { name: "فسفر", symbol: "P", protons: 15, shells: [2, 8, 5] },
+    { name: "گوگرد", symbol: "S", protons: 16, shells: [2, 8, 6] },
+    { name: "کلر", symbol: "Cl", protons: 17, shells: [2, 8, 7] },
+    { name: "آرگون", symbol: "Ar", protons: 18, shells: [2, 8, 8] },
+    { name: "پتاسیم", symbol: "K", protons: 19, shells: [2, 8, 8, 1] },
+    { name: "کلسیم", symbol: "Ca", protons: 20, shells: [2, 8, 8, 2] },
+    { name: "اسکاندیم", symbol: "Sc", protons: 21, shells: [2, 8, 9, 2] },
+    { name: "تیتانیوم", symbol: "Ti", protons: 22, shells: [2, 8, 10, 2] },
+    { name: "وانادیم", symbol: "V", protons: 23, shells: [2, 8, 11, 2] },
+    { name: "کروم", symbol: "Cr", protons: 24, shells: [2, 8, 13, 1] },
+    { name: "منگنز", symbol: "Mn", protons: 25, shells: [2, 8, 13, 2] },
+    { name: "آهن", symbol: "Fe", protons: 26, shells: [2, 8, 14, 2] },
+    { name: "کبالت", symbol: "Co", protons: 27, shells: [2, 8, 15, 2] },
+    { name: "نیکل", symbol: "Ni", protons: 28, shells: [2, 8, 16, 2] },
+    { name: "مس", symbol: "Cu", protons: 29, shells: [2, 8, 18, 1] },
+    { name: "روی", symbol: "Zn", protons: 30, shells: [2, 8, 18, 2] },
+    { name: "گالیم", symbol: "Ga", protons: 31, shells: [2, 8, 18, 3] },
+    { name: "ژرمانیوم", symbol: "Ge", protons: 32, shells: [2, 8, 18, 4] },
+    { name: "آرسنیک", symbol: "As", protons: 33, shells: [2, 8, 18, 5] },
+    { name: "سلنیوم", symbol: "Se", protons: 34, shells: [2, 8, 18, 6] },
+    { name: "برم", symbol: "Br", protons: 35, shells: [2, 8, 18, 7] },
+    { name: "کریپتون", symbol: "Kr", protons: 36, shells: [2, 8, 18, 8] },
+    { name: "روبیدیم", symbol: "Rb", protons: 37, shells: [2, 8, 18, 8, 1] },
+    { name: "استرانسیم", symbol: "Sr", protons: 38, shells: [2, 8, 18, 8, 2] },
+    { name: "ایتریم", symbol: "Y", protons: 39, shells: [2, 8, 18, 9, 2] },
+    { name: "زیرکونیم", symbol: "Zr", protons: 40, shells: [2, 8, 18, 10, 2] },
+    { name: "نیوبیم", symbol: "Nb", protons: 41, shells: [2, 8, 18, 12, 1] },
+    { name: "مولیبدن", symbol: "Mo", protons: 42, shells: [2, 8, 18, 13, 1] },
+    { name: "تکنسیم", symbol: "Tc", protons: 43, shells: [2, 8, 18, 13, 2] },
+    { name: "روتنیم", symbol: "Ru", protons: 44, shells: [2, 8, 18, 15, 1] },
+    { name: "رودیم", symbol: "Rh", protons: 45, shells: [2, 8, 18, 16, 1] },
+    { name: "پالادیم", symbol: "Pd", protons: 46, shells: [2, 8, 18, 18] },
+    { name: "نقره", symbol: "Ag", protons: 47, shells: [2, 8, 18, 18, 1] },
+    { name: "کادمیم", symbol: "Cd", protons: 48, shells: [2, 8, 18, 18, 2] },
+    { name: "ایندیم", symbol: "In", protons: 49, shells: [2, 8, 18, 18, 3] },
+    { name: "قلع", symbol: "Sn", protons: 50, shells: [2, 8, 18, 18, 4] },
+    { name: "آنتیموان", symbol: "Sb", protons: 51, shells: [2, 8, 18, 18, 5] },
+    { name: "تلوریم", symbol: "Te", protons: 52, shells: [2, 8, 18, 18, 6] },
+    { name: "ید", symbol: "I", protons: 53, shells: [2, 8, 18, 18, 7] },
+    { name: "زنون", symbol: "Xe", protons: 54, shells: [2, 8, 18, 18, 8] },
+    { name: "سزیم", symbol: "Cs", protons: 55, shells: [2, 8, 18, 18, 8, 1] },
+    { name: "باریم", symbol: "Ba", protons: 56, shells: [2, 8, 18, 18, 8, 2] },
+    { name: "لانتانیم", symbol: "La", protons: 57, shells: [2, 8, 18, 18, 9, 2] },
+    { name: "سریم", symbol: "Ce", protons: 58, shells: [2, 8, 18, 19, 9, 2] },
+    { name: "پرازئودیمیم", symbol: "Pr", protons: 59, shells: [2, 8, 18, 21, 8, 2] },
+    { name: "نئودیمیم", symbol: "Nd", protons: 60, shells: [2, 8, 18, 22, 8, 2] },
+    { name: "پرومتیم", symbol: "Pm", protons: 61, shells: [2, 8, 18, 23, 8, 2] },
+    { name: "ساماریم", symbol: "Sm", protons: 62, shells: [2, 8, 18, 24, 8, 2] },
+    { name: "یوروپیم", symbol: "Eu", protons: 63, shells: [2, 8, 18, 25, 8, 2] },
+    { name: "گادولینیم", symbol: "Gd", protons: 64, shells: [2, 8, 18, 25, 9, 2] },
+    { name: "تربیم", symbol: "Tb", protons: 65, shells: [2, 8, 18, 27, 8, 2] },
+    { name: "دیسپروزیم", symbol: "Dy", protons: 66, shells: [2, 8, 18, 28, 8, 2] },
+    { name: "هولمیم", symbol: "Ho", protons: 67, shells: [2, 8, 18, 29, 8, 2] },
+    { name: "اربیم", symbol: "Er", protons: 68, shells: [2, 8, 18, 30, 8, 2] },
+    { name: "تولیم", symbol: "Tm", protons: 69, shells: [2, 8, 18, 31, 8, 2] },
+    { name: "ایتربیم", symbol: "Yb", protons: 70, shells: [2, 8, 18, 32, 8, 2] },
+    { name: "لوتسیم", symbol: "Lu", protons: 71, shells: [2, 8, 18, 32, 9, 2] },
+    { name: "هافنیم", symbol: "Hf", protons: 72, shells: [2, 8, 18, 32, 10, 2] },
+    { name: "تانتال", symbol: "Ta", protons: 73, shells: [2, 8, 18, 32, 11, 2] },
+    { name: "تنگستن", symbol: "W", protons: 74, shells: [2, 8, 18, 32, 12, 2] },
+    { name: "رنیم", symbol: "Re", protons: 75, shells: [2, 8, 18, 32, 13, 2] },
+    { name: "اسمیم", symbol: "Os", protons: 76, shells: [2, 8, 18, 32, 14, 2] },
+    { name: "ایریدیم", symbol: "Ir", protons: 77, shells: [2, 8, 18, 32, 15, 2] },
+    { name: "پلاتین", symbol: "Pt", protons: 78, shells: [2, 8, 18, 32, 17, 1] },
+    { name: "طلا", symbol: "Au", protons: 79, shells: [2, 8, 18, 32, 18, 1] },
+    { name: "جیوه", symbol: "Hg", protons: 80, shells: [2, 8, 18, 32, 18, 2] },
+    { name: "تالیم", symbol: "Tl", protons: 81, shells: [2, 8, 18, 32, 18, 3] },
+    { name: "سرب", symbol: "Pb", protons: 82, shells: [2, 8, 18, 32, 18, 4] },
+    { name: "بیسموت", symbol: "Bi", protons: 83, shells: [2, 8, 18, 32, 18, 5] },
+    { name: "پولونیم", symbol: "Po", protons: 84, shells: [2, 8, 18, 32, 18, 6] },
+    { name: "استاتین", symbol: "At", protons: 85, shells: [2, 8, 18, 32, 18, 7] },
+    { name: "رادون", symbol: "Rn", protons: 86, shells: [2, 8, 18, 32, 18, 8] },
+    { name: "فرانسیم", symbol: "Fr", protons: 87, shells: [2, 8, 18, 32, 18, 8, 1] },
+    { name: "رادیم", symbol: "Ra", protons: 88, shells: [2, 8, 18, 32, 18, 8, 2] },
+    { name: "اکتینیم", symbol: "Ac", protons: 89, shells: [2, 8, 18, 32, 18, 9, 2] },
+    { name: "توریم", symbol: "Th", protons: 90, shells: [2, 8, 18, 32, 18, 10, 2] },
+    { name: "پروتاکتینیم", symbol: "Pa", protons: 91, shells: [2, 8, 18, 32, 20, 9, 2] },
+    { name: "اورانیم", symbol: "U", protons: 92, shells: [2, 8, 18, 32, 21, 9, 2] },
+    { name: "نپتونیم", symbol: "Np", protons: 93, shells: [2, 8, 18, 32, 22, 9, 2] },
+    { name: "پلوتونیم", symbol: "Pu", protons: 94, shells: [2, 8, 18, 32, 24, 8, 2] },
+    { name: "آمریسیم", symbol: "Am", protons: 95, shells: [2, 8, 18, 32, 25, 8, 2] },
+    { name: "کوریم", symbol: "Cm", protons: 96, shells: [2, 8, 18, 32, 25, 9, 2] },
+    { name: "برکلیم", symbol: "Bk", protons: 97, shells: [2, 8, 18, 32, 27, 8, 2] },
+    { name: "کالیفرنیم", symbol: "Cf", protons: 98, shells: [2, 8, 18, 32, 28, 8, 2] },
+    { name: "اینشتینیم", symbol: "Es", protons: 99, shells: [2, 8, 18, 32, 29, 8, 2] },
+    { name: "فرمیم", symbol: "Fm", protons: 100, shells: [2, 8, 18, 32, 30, 8, 2] },
+    { name: "مندلیوم", symbol: "Md", protons: 101, shells: [2, 8, 18, 32, 31, 8, 2] },
+    { name: "نوبلیم", symbol: "No", protons: 102, shells: [2, 8, 18, 32, 32, 8, 2] },
+    { name: "لارنسیم", symbol: "Lr", protons: 103, shells: [2, 8, 18, 32, 32, 8, 3] },
+    { name: "رادرفوردیم", symbol: "Rf", protons: 104, shells: [2, 8, 18, 32, 32, 10, 2] },
+    { name: "دابنیم", symbol: "Db", protons: 105, shells: [2, 8, 18, 32, 32, 11, 2] },
+    { name: "سیبورگیم", symbol: "Sg", protons: 106, shells: [2, 8, 18, 32, 32, 12, 2] },
+    { name: "بوریم", symbol: "Bh", protons: 107, shells: [2, 8, 18, 32, 32, 13, 2] },
+    { name: "هاسیم", symbol: "Hs", protons: 108, shells: [2, 8, 18, 32, 32, 14, 2] },
+    { name: "مایتنریم", symbol: "Mt", protons: 109, shells: [2, 8, 18, 32, 32, 15, 2] },
+    { name: "دارمشتاتیم", symbol: "Ds", protons: 110, shells: [2, 8, 18, 32, 32, 16, 2] },
+    { name: "رونتگنیم", symbol: "Rg", protons: 111, shells: [2, 8, 18, 32, 32, 17, 2] },
+    { name: "کوپرنیسیم", symbol: "Cn", protons: 112, shells: [2, 8, 18, 32, 32, 18, 2] },
+    { name: "نیهونیم", symbol: "Nh", protons: 113, shells: [2, 8, 18, 32, 32, 18, 3] },
+    { name: "فلروویم", symbol: "Fl", protons: 114, shells: [2, 8, 18, 32, 32, 18, 4] },
+    { name: "موسکوویم", symbol: "Mc", protons: 115, shells: [2, 8, 18, 32, 32, 18, 5] },
+    { name: "لیورموریم", symbol: "Lv", protons: 116, shells: [2, 8, 18, 32, 32, 18, 6] },
+    { name: "تنسین", symbol: "Ts", protons: 117, shells: [2, 8, 18, 32, 32, 18, 7] },
+    { name: "اوگانسون", symbol: "Og", protons: 118, shells: [2, 8, 18, 32, 32, 18, 8] }
+];
+
+        
+        let protonCount = 0;
+        let neutronCount = 0;
+        let electronCount = 0;
+        let electronPositions = [];
+        
+        
+        const nucleus = document.getElementById('nucleus');
+        const atomModel = document.querySelector('.atom-model');
+        const resetBtn = document.getElementById('reset-btn');
+        
+        
+        const atomicNumberEl = document.getElementById('atomic-number');
+        const massNumberEl = document.getElementById('mass-number');
+        const protonCountEl = document.getElementById('proton-count');
+        const neutronCountEl = document.getElementById('neutron-count');
+        const electronCountEl = document.getElementById('electron-count');
+        const chargeEl = document.getElementById('charge');
+        const elementNameEl = document.getElementById('element-name');
+        const stabilityIndicator = document.getElementById('stability-indicator');
+        
+        
+        const maxElectronsPerShell = [2, 8, 18, 32];
+        
+        
+        initializeAtom();
+        
+        
+        document.querySelectorAll('.particle').forEach(particle => {
+            particle.addEventListener('dragstart', dragStart);
+        });
+        
+        nucleus.addEventListener('dragover', dragOver);
+        nucleus.addEventListener('drop', drop);
+        
+        atomModel.addEventListener('dragover', dragOver);
+        atomModel.addEventListener('drop', dropElectron);
+        
+        resetBtn.addEventListener('click', resetAtom);
+        
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.type);
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            const particleType = e.dataTransfer.getData('text/plain');
+            
+            if (particleType === 'proton') {
+                addProton();
+            } else if (particleType === 'neutron') {
+                addNeutron();
+            }
+            
+            updateAtomInfo();
+        }
+        
+        function dropElectron(e) {
+            e.preventDefault();
+            const particleType = e.dataTransfer.getData('text/plain');
+            
+            if (particleType === 'electron') {
+                addElectron();
+                updateAtomInfo();
+            }
+        }
+        
+        function addProton() {
+            protonCount++;
+            
+            const proton = document.createElement('div');
+            proton.className = 'particle proton';
+            proton.textContent = 'p+';
+            nucleus.appendChild(proton);
+            
+            
+            arrangeNucleusParticles();
+            
+            
+        }
+        
+        function addNeutron() {
+            neutronCount++;
+            
+            const neutron = document.createElement('div');
+            neutron.className = 'particle neutron';
+            neutron.textContent = 'n';
+            nucleus.appendChild(neutron);
+            
+            
+            arrangeNucleusParticles();
+        }
+        
+        function addElectron() {
+            electronCount++;
+            
+            
+            let shellIndex = 0;
+            let electronsInShell = 0;
+            
+            for (let i = 0; i < electronPositions.length; i++) {
+                if (electronPositions[i] === shellIndex) {
+                    electronsInShell++;
+                }
+            }
+            
+            while (electronsInShell >= maxElectronsPerShell[shellIndex]) {
+                shellIndex++;
+                electronsInShell = 0;
+                for (let i = 0; i < electronPositions.length; i++) {
+                    if (electronPositions[i] === shellIndex) {
+                        electronsInShell++;
+                    }
+                }
+            }
+            
+            addElectronToShell(shellIndex);
+        }
+        
+        function addElectronToShell(shellIndex) {
+            electronPositions.push(shellIndex);
+            
+            const electron = document.createElement('div');
+            electron.className = 'electron-orbit';
+            electron.textContent = 'e-';
+            atomModel.appendChild(electron);
+            
+            const orbitSize = 100 + (shellIndex * 100);
+            
+            
+            let electronsInThisShell = 0;
+            for (let i = 0; i < electronPositions.length - 1; i++) {
+                if (electronPositions[i] === shellIndex) {
+                    electronsInThisShell++;
+                }
+            }
+            
+            const angle = (electronsInThisShell / maxElectronsPerShell[shellIndex]) * 2 * Math.PI;
+            const x = Math.cos(angle) * (orbitSize / 2);
+            const y = Math.sin(angle) * (orbitSize / 2);
+            
+            electron.style.left = `calc(50% + ${x}px - 10px)`;
+            electron.style.top = `calc(50% + ${y}px - 10px)`;
+        }
+        
+        function arrangeNucleusParticles() {
+            const totalParticles = protonCount + neutronCount - 1; 
+            const particles = nucleus.querySelectorAll('.particle');
+            
+            if (totalParticles <= 8) {
+                
+                particles.forEach((particle, index) => {
+                    if (index > 0) { 
+                        const angle = (index / totalParticles) * 2 * Math.PI;
+                        const radius = 30;
+                        const x = Math.cos(angle) * radius;
+                        const y = Math.sin(angle) * radius;
+                        
+                        particle.style.position = 'absolute';
+                        particle.style.left = `calc(50% + ${x}px - 15px)`;
+                        particle.style.top = `calc(50% + ${y}px - 15px)`;
+                    }
+                });
+            } else {
+                
+                let inner = Math.min(8, totalParticles);
+                let outer = totalParticles - inner;
+                
+                particles.forEach((particle, index) => {
+                    if (index === 0) {
+                        
+                        particle.style.position = 'absolute';
+                        particle.style.left = 'calc(50% - 15px)';
+                        particle.style.top = 'calc(50% - 15px)';
+                    } else if (index <= inner) {
+                        
+                        const angle = ((index - 1) / inner) * 2 * Math.PI;
+                        const radius = 25;
+                        const x = Math.cos(angle) * radius;
+                        const y = Math.sin(angle) * radius;
+                        
+                        particle.style.position = 'absolute';
+                        particle.style.left = `calc(50% + ${x}px - 15px)`;
+                        particle.style.top = `calc(50% + ${y}px - 15px)`;
+                    } else {
+                        
+                        const angle = ((index - inner - 1) / outer) * 2 * Math.PI;
+                        const radius = 45;
+                        const x = Math.cos(angle) * radius;
+                        const y = Math.sin(angle) * radius;
+                        
+                        particle.style.position = 'absolute';
+                        particle.style.left = `calc(50% + ${x}px - 15px)`;
+                        particle.style.top = `calc(50% + ${y}px - 15px)`;
+                    }
+                });
+            }
+        }
+        
+        function updateAtomInfo() {
+            
+            atomicNumberEl.textContent = protonCount;
+            massNumberEl.textContent = protonCount + neutronCount;
+            protonCountEl.textContent = protonCount;
+            neutronCountEl.textContent = neutronCount;
+            electronCountEl.textContent = electronCount;
+            
+            
+            const charge = protonCount - electronCount;
+            chargeEl.textContent = charge === 0 ? '0' : (charge > 0 ? `+${charge}` : charge);
+            
+            
+            const element = elements.find(el => el.protons === protonCount);
+            elementNameEl.textContent = element ? element.name : `عنصر ناشناخته (${protonCount})`;
+            
+            
+            checkStability();
+        }
+        
+        function checkStability() {
+            
+            const isStable = isStableIsotope();
+            const charge = protonCount - electronCount;
+            
+            
+            if (charge === 0) {
+                if (isStable) {
+                    stabilityIndicator.className = 'stability-indicator stable';
+                    stabilityIndicator.textContent = 'اتم پایدار است';
+                } else {
+                    stabilityIndicator.className = 'stability-indicator unstable';
+                    stabilityIndicator.textContent = 'اتم ناپایدار است';
+                }
+            } else {
+                if (charge > 0) {
+                    stabilityIndicator.className = 'stability-indicator ion-positive';
+                    stabilityIndicator.textContent = `یون مثبت (${charge}+)`;
+                } else {
+                    stabilityIndicator.className = 'stability-indicator ion-negative';
+                    stabilityIndicator.textContent = `یون منفی (${Math.abs(charge)}-)`; 
+                }
+            }
+        }
+        
+        function isStableIsotope() {
+            
+            const n = neutronCount;
+            const p = protonCount;
+            
+            
+            if (p <= 20) {
+                
+                return n >= p * 0.8 && n <= p * 1.2;
+            } else if (p <= 60) {
+                
+                return n >= p * 1.1 && n <= p * 1.5;
+            } else {
+                
+                return n >= p * 1.4 && n <= p * 1.6;
+            }
+        }
+        
+        function resetAtom() {
+            
+            while (nucleus.firstChild) {
+                nucleus.removeChild(nucleus.firstChild);
+            }
+            
+            
+            document.querySelectorAll('.electron-orbit').forEach(el => el.remove());
+            
+            
+            protonCount = 0;
+            neutronCount = 0;
+            electronCount = 0;
+            electronPositions = [];
+            
+            
+            initializeAtom();
+            
+            
+            updateAtomInfo();
+        }
+        
+        function initializeAtom() {
+            
+            const proton = document.createElement('div');
+            proton.className = 'particle proton';
+            proton.textContent = 'p+';
+            proton.style.position = 'absolute';
+            proton.style.left = 'calc(50% - 15px)';
+            proton.style.top = 'calc(50% - 15px)';
+            nucleus.appendChild(proton);
+            
+            
+            electronCount = 0;
+            
+            
+            updateAtomInfo();
+        }
+    </script>
+</body>
+</html>
