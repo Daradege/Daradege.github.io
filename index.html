@@ -1,134 +1,901 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="fa" dir="rtl">
 <head>
-    <style>
-        @font-face {
-            font-family:'poppinsfont';
-            src:url(/fonts/poppins.ttf);
-            font-weight:lighter;
-            font-display:swap;
-        }
-        body {
-            font-family:'poppinsfont',system-ui,-apple-system,sans-serif;
-        }
-        @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
-        @keyframes twinkle{0%,100%{opacity:1}50%{opacity:.3}}
-        @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-        .star{position:absolute;width:1.5px;height:1.5px;background:#fff;border-radius:50%;animation:twinkle 1.5s infinite}
-        .glass-card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:clamp(8px, 2vw, 16px);transition:.25s ease;width:100%;max-width:300px;margin:0 auto;}
-        .glass-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.12);box-shadow:0 4px 15px rgba(0,0,0,.1)}
-        @media (max-width: 640px) {
-            .floating-orb {
-                width: 20vw !important;
-                height: 20vw !important;
-                opacity: 0.15 !important;
-            }
-            .profile-image {
-                width: clamp(80px, 25vw, 128px) !important;
-                height: clamp(80px, 25vw, 128px) !important;
-            }
-            .nav-links {
-                font-size: 0.875rem;
-                padding: 0.5rem;
-            }
-        }
-    </style>
-    <style>
-        .page-transition {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-    
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/logo.png">
-    <meta name="description" content="Ali Safamanesh (علی صفامنش) - Senior Fullstack Developer with expertise in modern web technologies, backend development, and scalable solutions. توسعه‌دهنده ارشد فول‌استک با تخصص در فناوری‌های وب مدرن">
-    <meta name="keywords" content="Ali Safamanesh, علی صفامنش, Fullstack Developer, توسعه دهنده فول استک, Software Engineer, مهندس نرم افزار, Web Development, Backend Development, Frontend Development, JavaScript, React, Node.js, Programming">
-    <meta name="author" content="Ali Safamanesh - علی صفامنش">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Ali Safamanesh (علی صفامنش) - Senior Fullstack Developer & Software Engineer">
-    <meta property="og:description" content="Experienced Fullstack Developer specializing in creating robust, scalable web applications. توسعه‌دهنده با تجربه متخصص در ایجاد برنامه‌های تحت وب مقیاس‌پذیر">
-    <meta property="og:image" content="https://daradege.ir/logo.png">
-    <meta property="og:url" content="https://daradege.ir">
-    <meta property="og:site_name" content="Ali Safamanesh (علی صفامنش) Portfolio">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ali Safamanesh (علی صفامنش) - Senior Fullstack Developer">
-    <meta name="twitter:description" content="Experienced Fullstack Developer specializing in creating robust, scalable web applications. توسعه‌دهنده با تجربه متخصص در ایجاد برنامه‌های تحت وب مقیاس‌پذیر">
-    <meta name="twitter:image" content="https://daradege.ir/logo.png">
-    <meta name="language" content="English, Persian">
-    <link rel="stylesheet" href="/src/output.css">
-    <link rel="canonical" href="https://daradege.ir">
-    <link rel="preload" href="/fonts/poppins.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <title>Ali Safamanesh (علی صفامنش) | Senior Fullstack Developer & Software Engineer</title></head>
-<body class="min-h-screen bg-gradient-to-b from-[#0A0A20] via-[#151540] to-[#250829] text-slate-200 relative overflow-x-hidden">
-    <div id="stars" class="fixed inset-0 z-0" aria-hidden="true"></div>
-    <div class="floating-orb fixed top-20 right-10 w-28 h-28 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-25 blur-xl animate-[float_5s_ease-in-out_infinite]" aria-hidden="true"></div>
-    <div class="floating-orb fixed bottom-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 opacity-15 blur-xl animate-[float_7s_ease-in-out_infinite]" aria-hidden="true"></div>
-    <div class="floating-orb fixed top-40 left-20 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-500 to-red-500 opacity-20 blur-xl animate-[float_6s_ease-in-out_infinite]" aria-hidden="true"></div>
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <header class="py-4">
-            <nav class="flex items-center justify-between backdrop-blur-md bg-white/5 rounded-xl p-3 sm:p-4 hover:bg-white/8 transition-all duration-300" role="navigation">
-                <a href="/" aria-label="Home" class="focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <img src="/logo.png" alt="Ali Safamanesh Logo" width="40" height="40" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-purple-500 hover:border-pink-500 transition-colors">
-                </a>
-                <div class="flex gap-2 sm:gap-4">
-                    <a href="/tools" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">Tools</a>
-                    <a href="https://api.daradege.ir" class="nav-links hover:text-purple-400 transition-colors hover:scale-105 transform text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 sm:px-3">API</a>
-                </div>
-            </nav>
-        </header>
-        <main class="page-transition">
-            <section class="min-h-[75vh] flex flex-col items-center justify-center text-center px-4">
-                <div class="relative inline-block mb-6 sm:mb-8">
-                    <img src="/logo.png" alt="Ali Safamanesh - Professional Fullstack Developer" width="128" height="128" class="profile-image w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-purple-500 mx-auto animate-[float_4s_ease-in-out_infinite] hover:border-pink-500 transition-colors">
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-15 blur-lg -z-10 animate-[rotate_8s_linear_infinite]" aria-hidden="true"></div>
-                </div>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-4 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text hover:from-pink-400 hover:to-purple-400 transition-all duration-500">Ali Safamanesh</h1>
-                <p class="text-lg sm:text-xl mt-3 text-purple-200">Senior Fullstack Developer & Software Engineer</p>
-                <div class="mt-8 sm:mt-10 w-full max-w-xs sm:max-w-sm">
-                    <a href="/resume" class="glass-card px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 rounded-lg inline-block focus:outline-none focus:ring-2 focus:ring-purple-500">View Resume</a>
-                </div>
-            </section>
-        </main>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ali Safamanesh - Portfolio</title>
+  <meta name="description" content="Ali Safamanesh - Full Stack Developer, Backend Developer, علی صفامنش، توسعه دهنده بک اند و فول استک">
+  <meta name="keywords" content="Ali Safamanesh, علی صفامنش, Backend Developer, Full Stack Developer, Daradege, بک اند, فول استک, توسعه دهنده">
+  <meta name="author" content="Ali Safamanesh">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Ali Safamanesh - Portfolio">
+  <meta property="og:description" content="Ali Safamanesh - Full Stack Developer, Backend Developer, علی صفامنش، توسعه دهنده بک اند و فول استک">
+  <meta property="og:image" content="/logo.png">
+  <meta property="og:url" content="https://daradege.ir">
+  <link rel="canonical" href="https://daradege.ir">
+  <link rel="icon" href="/logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      font-family: 'Orbitron', sans-serif;
+      direction: ltr;
+      background: #000000;
+      color: #ffffff;
+    }
+    .full-tab {
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 40px 40px;
+    }
+    .half-tab {
+      width: 100vw;
+      min-height: 50vh;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 40px 40px;
+    }
+    .quad-tab {
+        width: 100vw;
+        min-height: 25vh;
+        position: relative;
+        overflow: hidden;
+        padding: 80px 40px 40px;
+    }
+    .green {
+      background: linear-gradient(45deg, #000000, #222222);
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .black {
+      background: linear-gradient(45deg, #169976, #1DCD9F);
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #1DCD9F;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .header-logo {
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #1DCD9F;
+      box-shadow: 0 0 15px rgba(29, 205, 159, 0.5);
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a {
+      color: #1DCD9F;
+      text-decoration: none;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 5px 10px;
+    }
+    .nav-links a:hover {
+      color: #169976;
+      transform: translateY(-2px);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #1DCD9F;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    .logo-container {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .logo {
+      max-width: 200px;
+      border-radius: 50%;
+      border: 4px solid #1DCD9F;
+      box-shadow: 0 0 30px rgba(29, 205, 159, 0.7);
+    }
+    .typing-container {
+      margin-bottom: 40px;
+      height: 30px;
+      overflow: hidden;
+    }
+    .typing-text {
+      color: #1DCD9F;
+      font-size: 20px;
+      letter-spacing: 2px;
+      border-right: 3px solid #1DCD9F;
+      width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 6s steps(40) infinite, blink-caret 0.75s step-end infinite;
+    }
+    @keyframes typing {
+      0% { width: 0 }
+      50% { width: 100% }
+      90% { width: 100% }
+      100% { width: 0 }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #1DCD9F }
+    }
+    .name {
+      color: #1DCD9F;
+      font-size: 36px;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(29, 205, 159, 0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #1DCD9F, 0 0 10px #1DCD9F; }
+      to { text-shadow: 0 0 10px #1DCD9F, 0 0 20px #1DCD9F; }
+    }
+    .bio {
+      color: #ffffff;
+      font-size: 18px;
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 20px;
+      width: 80%;
+      max-width: 1000px;
+      margin-top: 40px;
+    }
+    .skill-item {
+      background: rgba(34, 34, 34, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      color: #1DCD9F;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 2px solid rgba(29, 205, 159, 0.3);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 5px 15px rgba(29, 205, 159, 0.1);
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .skill-item:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(29, 205, 159, 0.2);
+      border-color: #1DCD9F;
+      background: rgba(34, 34, 34, 0.95);
+    }
+    .skill-item i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      animation: float 3s ease-in-out infinite;
+      background: linear-gradient(45deg, #1DCD9F, #13a17f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 80%;
+      max-width: 1200px;
+      padding: 40px 0;
+    }
+    .project-card {
+      background: rgba(34, 34, 34, 0.9);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-color: #1DCD9F;
+    }
+    .project-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 2px solid rgba(29, 205, 159, 0.5);
+    }
+    .project-info {
+      padding: 20px;
+      color: #1DCD9F;
+    }
+    .project-info h3 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+    .project-info p {
+      color: #ffffff;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    .project-links {
+      display: flex;
+      gap: 15px;
+    }
+    .project-links a {
+      color: #1DCD9F;
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid #1DCD9F;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    .project-links a:hover {
+      background: #1DCD9F;
+      color: #000000;
+    }
+    .certificates {
+      width: 80%;
+      max-width: 1000px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .certificate-item {
+      background: rgba(34, 34, 34, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      color: #1DCD9F;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .certificate-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-color: #1DCD9F;
+    }
+    .certificate-item h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    .certificate-item p {
+      color: #ffffff;
+    }
+    .certificate-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(29, 205, 159, 0.5);
+    }
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .contact a {
+      color: #1DCD9F;
+      text-decoration: none;
+      padding: 12px 25px;
+      border: 2px solid #1DCD9F;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .contact a:hover {
+      background: #1DCD9F;
+      color: #000000;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .contact a i {
+      font-size: 20px;
+    }
+    .contact-b {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .contact-b a {
+      color: #000000;
+      text-decoration: none;
+      padding: 12px 25px;
+      border: 2px solid #000000;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .contact-b a:hover {
+      background: #000000;
+      color: #1DCD9F;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .contact-b a i {
+      font-size: 20px;
+    }    .section-title {
+      color: #000000;
+      margin-bottom: 40px;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #000000;
+      border-radius: 5px;
+    }
+    .green .section-title {
+      color: #1DCD9F;
+    }
+    .green .section-title::after {
+      background: #1DCD9F;
+    }
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #000000;
+      color: #1DCD9F;
+      border-top: 1px solid #1DCD9F;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .stat-card {
+      background: rgba(34, 34, 34, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      color: #1DCD9F;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-color: #1DCD9F;
+    }
+    .stat-card img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1DCD9F;
+      color: #000000;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      font-size: 20px;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    .back-to-top.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: #169976;
+      transform: translateY(-5px);
+    }
+    .fun-fact {
+      background: rgba(34, 34, 34, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 40px auto;
+      color: #1DCD9F;
+      text-align: center;
+      border: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .fun-fact p {
+      color: #ffffff;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .profile-views {
+      background: rgba(34, 34, 34, 0.8);
+      padding: 15px 25px;
+      border-radius: 25px;
+      margin-top: 40px;
+      display: inline-block;
+      color: #1DCD9F;
+      border: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .thank-you {
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+    .typing-container-2 {
+      height: 30px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    /* Animation for the waving at the top */
+    .wave-header {
+      width: 100%;
+      height: 300px;
+      background-image: linear-gradient(to right, #1DCD9F, #169976);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wave-header::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23000000' fill-opacity='1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat;
+      background-size: cover;
+    }
+    .wave-header h1 {
+      color: #000000;
+      font-size: 48px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      z-index: 1;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .wave-header h1 {
+        font-size: 28px;
+      }
+      .name {
+        font-size: 24px;
+      }
+      .typing-text {
+        font-size: 16px;
+      }
+      .bio {
+        font-size: 16px;
+      }
+      .projects, .certificates, .skills {
+        width: 95%;
+      }
+      .section-title {
+        font-size: 24px;
+      }
+      .header-logo {
+        height: 40px;
+      }
+    }
+    /* Mobile menu */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      cursor: pointer;
+    }
+    .menu-toggle span {
+      height: 3px;
+      width: 100%;
+      background-color: #1DCD9F;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      z-index: 998;
+      border-bottom: 1px solid #1DCD9F;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.active {
+      transform: translateY(0);
+    }
+    .mobile-menu a {
+      display: block;
+      color: #1DCD9F;
+      text-decoration: none;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(29, 205, 159, 0.3);
+    }
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+      .mobile-menu {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div style="display: flex; align-items: center;"><img src="/logo.png" alt="Logo" class="header-logo" style="margin-right: 10px;"><a style="font-size: 100%; color: white;" href="#home">Ali Safamanesh</a></div>    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#stats">Stats</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-    <script defer>
-        const starsContainer=document.getElementById('stars');for(let i=0;i<150;i++){const star=document.createElement('div');star.className='star';star.style.left=`${Math.random()*100}%`;star.style.top=`${Math.random()*100}%`;star.style.animationDelay=`${Math.random()*1.5}s`;starsContainer.appendChild(star)}
-    </script>
-    <script>
-        document.addEventListener('pageshow', () => {
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', e => {
-                    if (link.href.includes(window.location.origin)) {
-                        e.preventDefault();
-                        document.querySelector('main').style.opacity = '0';
-                        document.querySelector('main').style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            window.location.href = link.href;
-                        }, 500);
-                    }
-                });
-            });
-        });
-        
-        document.addEventListener("keydown", (event) => {
-            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "s") {
-                event.preventDefault();
-                window.location.href = "https://github.com/daradege/daradege.github.io";
-            }
-        });    </script>
+  </header>
+  
+  <div class="mobile-menu">
+    <a href="#home">Home</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#certificates">Certificates</a>
+    <a href="#stats">Stats</a>
+    <a href="#contact">Contact</a>
+  </div>
+  
+  <div id="home" class="full-tab green">
+    
+    <div class="logo-container">
+      <img src="/logo.png" alt="Logo" class="logo">
+    </div>
+    <div class="typing-container">
+      <div class="typing-text">Backend Developer | Bot Developer</div>
+    </div>
+    <div class="bio">
+      Hello! I'm <strong>Ali Safamanesh</strong>, a dedicated <strong>Backend Developer</strong> from Iran. I specialize in developing efficient backend solutions and creating automated systems through bot development for various platforms.
+    </div>
+    <div class="contact">
+      <a href="https://t.me/daradege" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+      <a href="mailto:darg.q.a.a@gmail.com" target="_blank"><i class="fas fa-envelope"></i> Email</a>
+      <a href="https://github.com/daradege" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+  </div>
+  
+  <div id="skills" class="full-tab black">
+    <h2 class="section-title">Skills & Technologies</h2>
+    <div class="skills">
+      <div class="skill-item"><i class="fab fa-python"></i><br>Python</div>
+      <div class="skill-item"><i class="fab fa-node-js"></i><br>Node.js</div>
+      <div class="skill-item"><i class="fab fa-html5"></i><br>HTML5</div>
+      <div class="skill-item"><i class="fab fa-css3-alt"></i><br>CSS3</div>
+      <div class="skill-item"><i class="fab fa-php"></i><br>PHP</div>
+      <div class="skill-item"><i class="fab fa-bootstrap"></i><br>Bootstrap</div>
+      <div class="skill-item"><i class="fab fa-git-alt"></i><br>Git</div>
+      <div class="skill-item"><i class="fab fa-github"></i><br>GitHub</div>
+      <div class="skill-item"><i class="fab fa-js"></i><br>JavaScript</div>
+      <div class="skill-item"><i class="fab fa-discord"></i><br>Discord</div>
+      <div class="skill-item"><i class="fab fa-java"></i><br>Java</div>
+      <div class="skill-item"><i class="fas fa-code"></i><br>C#</div>
+      <div class="skill-item"><i class="fas fa-terminal"></i><br>Golang</div>
+      <div class="skill-item"><i class="fab fa-telegram"></i><br>Telegram Bots</div>
+      <div class="skill-item"><i class="fas fa-robot"></i><br>Bale Bots</div>
+      <div class="skill-item"><i class="fas fa-paint-brush"></i><br>Photoshop</div>
+      <div class="skill-item"><i class="fas fa-gamepad"></i><br>Godot</div>
+      <div class="skill-item"><i class="fab fa-stack-overflow"></i><br>Stack Overflow</div>
+      <div class="skill-item"><i class="fab fa-google"></i><br>Search Skill</div>
+      <div class="skill-item"><i class="fab fa-wordpress"></i><br>WordPress</div>
+    </div>
+  </div>
+  
+  <div id="projects" class="full-tab green">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img src="/projects/pyrobale.png" alt="PyRoBale" class="project-img">
+        <div class="project-info">
+          <h3>PyRoBale</h3>
+          <p>A Python library for Bale messenger bot development</p>
+          <div class="project-links">
+            <a href="https://pyrobale.github.io" target="_blank">View Project</a>
+            <a href="https://github.com/daradege/pyrobale" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/sqbooster.png" alt="SQBooster" class="project-img">
+        <div class="project-info">
+          <h3>SQBooster</h3>
+          <p>A powerful SQL query builder for Python</p>
+          <div class="project-links">
+            <a href="https://pypi.org/project/sqbooster" target="_blank">View Project</a>
+            <a href="https://github.com/daradege/sqbooster" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/aima.png" alt="AIMA" class="project-img">
+        <div class="project-info">
+          <h3>AIMA</h3>
+          <p>Mofid high school AI society Management and development</p>
+          <div class="project-links">
+            <a href="https://aima.daradege.ir" target="_blank">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/openwpb.png" alt="OpenWPB" class="project-img">
+        <div class="project-info">
+          <h3>OpenWPB</h3>
+          <p>A Web-Based panel for sending messages to single or a list of users using bot tokens</p>
+          <div class="project-links">
+            <a href="https://github.com/daradege/openWPB" target="_blank">GitHub</a>
+            <a href="https://openwpb.vercel.app" target="_blank">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/kita-farsi.png" alt="Kita Farsi" class="project-img">
+        <div class="project-info">
+          <h3>Kita Farsi</h3>
+          <p>A translation of kita - zola theme</p>
+          <div class="project-links">
+            <a href="https://github.com/daradege/kita-farsi" target="_blank">GitHub</a>
+            <a href="https://daradege.ir/kita-farsi" target="_blank">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/api.png" alt="Daradege Apis" class="project-img">
+        <div class="project-info">
+          <h3>Daradege Apis</h3>
+          <p>Free Webservices</p>
+          <div class="project-links">
+            <a href="https://api.daradege.ir/" target="_blank">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/projects/tools.png" alt="Kita Farsi" class="project-img">
+        <div class="project-info">
+          <h3>Useful Tools</h3>
+          <p>Useful Web-Based tools</p>
+          <div class="project-links">
+            <a href="https://daradege.ir/tools" target="_blank">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="/assets/soon.jpg" alt="More Projects" class="project-img">
+        <div class="project-info">
+          <h3>More Coming Soon</h3>
+          <p>Stay tuned for exciting new projects!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="certificates" class="full-tab black">
+    <h2 class="section-title">Certificates</h2>
+    <div class="certificates">
+      <div class="certificate-item">
+        <img src="/certificates/en/python1.jpg" alt="Python Certificate 1" class="certificate-img">
+        <h3>Python Programming 1</h3>
+        <p>Simple Python Programming Certification</p>
+      </div>
+      <div class="certificate-item">
+        <img src="/certificates/en/python2.jpg" alt="Python Certificate 2" class="certificate-img">
+        <h3>Python Programming 2</h3>
+        <p>Web Development with Python and Data Analysis</p>
+      </div>
+      <div class="certificate-item">
+        <img src="/certificates/en/python3.jpg" alt="Python Certificate 3" class="certificate-img">
+        <h3>Python Data Science</h3>
+        <p>Web Development and Backend Programming</p>
+      </div>
+      <div class="certificate-item">
+        <img src="/certificates/en/dotnet1.jpg" alt=".NET Certificate" class="certificate-img">
+        <h3>.NET Development</h3>
+        <p>C# and .NET Core Application Development</p>
+      </div>
+    </div>
+  </div>
+  
+  <div id="stats" class="full-tab green">
+    <h2 class="section-title">GitHub Stats</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <h3>Top Languages</h3>
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=daradege&layout=compact&theme=radical" alt="Top Languages">
+      </div>
+      <div class="stat-card">
+        <h3>GitHub Stats</h3>
+        <img src="https://github-readme-stats.vercel.app/api?username=daradege&show_icons=true&theme=radical" alt="GitHub Stats">
+      </div>
+      <div class="stat-card">
+        <h3>GitHub Streak</h3>
+        <img src="https://streak-stats.demolab.com?user=daradege&theme=transparent" alt="GitHub Streak">
+      </div>
+    </div>
+    
+    <h2 class="section-title" style="margin-top: 60px;">GitHub Trophies</h2>
+    <div class="stats">
+      <div class="stat-card" style="width: 90%;">
+        <img src="https://github-profile-trophy.vercel.app/?username=daradege&theme=darkhub&column=7" alt="GitHub Trophies">
+      </div>
+    </div>
+    
+    <div class="profile-views">
+        <img style="border-radius: 25px; width: 100%; height: 100%;" src="https://komarev.com/ghpvc/?username=daradege&label=Github Profile Views&style=for-the-badge">
+    </div>
+    
+    <div class="thank-you">
+      <p>Thanks for visiting my profile! Feel free to reach out if you want to collaborate on a project or just chat about tech! ❤️</p>
+    </div>
+  </div>
+  
+  <div id="contact" class="quad-tab black">
+    <h2 class="section-title">Contact Me</h2>
+
+    
+    <div class="contact-b">
+      <a href="https://t.me/daradege" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+      <a href="mailto:darg.q.a.a@gmail.com" target="_blank"><i class="fas fa-envelope"></i> Email</a>
+      <a href="https://github.com/daradege" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://daradege.ir" target="_blank"><i class="fas fa-globe"></i> Website</a>
+      <a href="https://matrix.to/#/@daradege:matrix.org" target="_blank"><i class="fas fa-comment-alt"></i> Matrix</a>
+      <a href="https://ble.ir/daradege" target="_blank"><i class="fas fa-check"></i> Bale</a>
+    </div>
+  </div>
+  
+  <a href="#home" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+  
+  <footer>
+    <p>&copy; 2025 Ali Safamanesh. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    
+    window.addEventListener('scroll', function() {
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('active');
+      } else {
+        backToTop.classList.remove('active');
+      }
+    });
+    
+    
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    menuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+      const spans = menuToggle.querySelectorAll('span');
+      spans[0].style.transform = mobileMenu.classList.contains('active') ? 'rotate(45deg) translate(5px, 5px)' : '';
+      spans[1].style.opacity = mobileMenu.classList.contains('active') ? '0' : '1';
+      spans[2].style.transform = mobileMenu.classList.contains('active') ? 'rotate(-45deg) translate(7px, -7px)' : '';
+    });
+    
+    
+    const mobileLinks = document.querySelectorAll('.mobile-menu a');
+    mobileLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+        const spans = menuToggle.querySelectorAll('span');
+        spans[0].style.transform = '';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = '';
+      });
+    });
+    
+    
+    const typingTexts = [
+      "Backend Developer",
+      "Frontend Developer",
+      "Bale Bot Developer",
+      "Telegram Bot Developer",
+      "GUI Application Developer",
+      "Programming Teacher",
+      "Network Engineer"
+    ];
+    
+    let currentTextIndex = 0;
+    
+    function changeTypingText() {
+      const typingElement = document.querySelector('.typing-text');
+      typingElement.textContent = typingTexts[currentTextIndex];
+      
+      currentTextIndex = (currentTextIndex + 1) % typingTexts.length;
+      
+      setTimeout(changeTypingText, 6000); 
+    }
+    
+    
+    setTimeout(changeTypingText, 6000);
+  </script>
 </body>
 </html>
