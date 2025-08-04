@@ -1,171 +1,796 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Wipper - Web Zipper</title>
-      <link rel="icon" type="image/x-icon" href="../util.png">
-
-      <style>
-          body {
-              font-family: Arial, sans-serif;
-              max-width: 800px;
-              margin: 0 auto;
-              padding: 20px;
-              background-color: #1a1a1a;
-          }
-          #app {
-              background-color: #2a2a2a;
-              padding: 20px;
-              border-radius: 8px;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-          }
-          h2 {
-              color: #ffffff;
-              margin-bottom: 20px;
-          }
-          .field-container {
-              margin: 15px 0;
-              padding: 15px;
-              border: 1px solid #3a3a3a;
-              border-radius: 4px;
-              background-color: #2f2f2f;
-          }
-          .remove-btn {
-              color: #ff4d4d;
-              cursor: pointer;
-              padding: 5px 10px;
-              border-radius: 3px;
-              display: inline-block;
-              margin-top: 10px;
-          }
-          .remove-btn:hover {
-              background-color: #3a3a3a;
-          }
-          button {
-              background-color: #007bff;
-              color: white;
-              padding: 10px 20px;
-              border: none;
-              border-radius: 4px;
-              cursor: pointer;
-              font-size: 14px;
-              margin: 5px 0;
-          }
-          button:hover {
-              background-color: #0056b3;
-          }
-          input[type="text"], textarea {
-              width: 100%;
-              padding: 8px;
-              margin: 5px 0;
-              border: 1px solid #3a3a3a;
-              border-radius: 4px;
-              box-sizing: border-box;
-              background-color: #333;
-              color: #fff;
-          }
-          textarea {
-              min-height: 100px;
-              resize: vertical;
-          }
-          label {
-              display: block;
-              margin: 10px 0 5px;
-              color: #ffffff;
-          }
-          span {
-              display: block;
-              margin: 10px 0;
-              color: #cccccc;
-          }
-          input[type="file"] {
-              margin: 10px 0;
-              padding: 5px;
-              color: #ffffff;
-          }
-      </style>
-  </head>
-  <body>
-      <div id="app">
-          <h2>Wipper - Web Zipper</h2>
-          <button onclick="addField()">Add New File Field</button>
-          <div id="fields"></div>
-          <button onclick="generateZip()">Generate Zip</button>
-      </div>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
-      <script>
-          let fieldCount = 0;
-
-          function addField() {
-              const container = document.createElement('div');
-              container.className = 'field-container';
-              container.id = `field-${fieldCount}`;
-
-              container.innerHTML = `
-                  <div>
-                      <label>File Name:</label>
-                      <input type="text" id="filename-${fieldCount}" placeholder="example.txt">
-                  </div>
-                  <div>
-                      <label>Content:</label>
-                      <textarea id="content-${fieldCount}" placeholder="Enter file content"></textarea>
-                      <span>OR</span>
-                      <input type="file" id="file-${fieldCount}" onchange="handleFileSelect(${fieldCount})">
-                  </div>
-                  <span class="remove-btn" onclick="removeField(${fieldCount})">Remove</span>
-              `;
-
-              document.getElementById('fields').appendChild(container);
-              fieldCount++;
-          }
-
-          function handleFileSelect(id) {
-              const fileInput = document.getElementById(`file-${id}`);
-              const textarea = document.getElementById(`content-${id}`);
-              const filenameInput = document.getElementById(`filename-${id}`);
-              
-              if (fileInput.files.length > 0) {
-                  textarea.value = '';
-                  textarea.disabled = true;
-                  filenameInput.value = fileInput.files[0].name;
-              } else {
-                  textarea.disabled = false;
-              }
-          }
-
-          function removeField(id) {
-              document.getElementById(`field-${id}`).remove();
-          }
-
-          async function generateZip() {
-              const zip = new JSZip();
-
-              for (let i = 0; i < fieldCount; i++) {
-                  const container = document.getElementById(`field-${i}`);
-                  if (!container) continue;
-
-                  const filename = document.getElementById(`filename-${i}`).value || `file${i}.txt`;
-                  const content = document.getElementById(`content-${i}`).value;
-                  const fileInput = document.getElementById(`file-${i}`);
-
-                  if (fileInput.files.length > 0) {
-                      const file = fileInput.files[0];
-                      const fileContent = await file.arrayBuffer();
-                      zip.file(filename, fileContent);
-                  } else if (content) {
-                      zip.file(filename, content);
-                  }
-              }
-
-              zip.generateAsync({type: "blob"})
-                  .then(function(content) {
-                      saveAs(content, "files.zip");
-                  });
-          }
-      </script>
-  </body>
-  </html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wipper - The Web Zipper</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+        <style>
+            .file-drop-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            }
+            .file-drop-area.active {
+            border-color: #4299e1;
+            background-color: #ebf8ff;
+            }
+            .file-item:hover {
+            background-color: #f7fafc;
+            }
+            .file-content-editor {
+            min-height: 300px;
+            font-family: 'Courier New', Courier, monospace;
+            }
+            .tab-button {
+            transition: all 0.2s ease;
+            }
+            .tab-button.active {
+            border-bottom: 3px solid #4299e1;
+            color: #4299e1;
+            font-weight: 600;
+            }
+            .archive-preview {
+            max-height: 400px;
+            overflow-y: auto;
+            }
+            .archive-preview::-webkit-scrollbar {
+            width: 8px;
+            }
+            .archive-preview::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+            }
+            .archive-preview::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+            }
+            .archive-preview::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50 min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <header class="mb-8 text-center">
+                <h1 class="text-4xl font-bold text-blue-600 mb-2">Wipper</h1>
+                <p class="text-gray-600">The Web Zipper - Create, edit, and extract archives directly in your browser</p>
+            </header>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="flex border-b border-gray-200">
+                    <button id="create-tab" class="tab-button active px-6 py-3 text-gray-700">Create Archive</button>
+                    <button id="extract-tab" class="tab-button px-6 py-3 text-gray-700">Extract Archive</button>
+                    <button id="edit-tab" class="tab-button px-6 py-3 text-gray-700">Edit Archive</button>
+                </div>
+                <div id="create-content" class="p-6">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Create New Archive</h2>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <button id="add-file-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add File
+                            </button>
+                            <button id="add-folder-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                            <i class="fas fa-folder-plus mr-2"></i> Add Folder
+                            </button>
+                            <button id="upload-files-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md flex items-center">
+                            <i class="fas fa-upload mr-2"></i> Upload Files
+                            </button>
+                            <input type="file" id="file-upload" class="hidden" multiple>
+                        </div>
+                        <div class="file-drop-area p-8 text-center mb-6" id="drop-area">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-blue-400 mb-2"></i>
+                            <p class="text-gray-600 mb-2">Drag & drop files here</p>
+                            <p class="text-sm text-gray-500">or click to browse files</p>
+                        </div>
+                        <div class="mb-6">
+                            <label for="archive-name" class="block text-gray-700 mb-2">Archive Name</label>
+                            <div class="flex">
+                                <input type="text" id="archive-name" class="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="my-archive">
+                                <select id="archive-format" class="px-4 py-2 border border-gray-300 rounded-r-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="zip">.zip</option>
+                                    <option value="tar">.tar</option>
+                                    <option value="gzip">.gz</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium mb-3 text-gray-800">Archive Contents</h3>
+                            <div id="file-list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
+                                <div class="p-4 text-gray-500 text-center" id="empty-message">
+                                    No files added yet. Add files to create your archive.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="create-archive-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex items-center">
+                            <i class="fas fa-file-archive mr-2"></i> Create Archive
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="extract-content" class="p-6 hidden">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Extract Archive</h2>
+                        <div class="file-drop-area p-8 text-center mb-6" id="extract-drop-area">
+                            <i class="fas fa-file-archive text-4xl text-blue-400 mb-2"></i>
+                            <p class="text-gray-600 mb-2">Drag & drop archive file here</p>
+                            <p class="text-sm text-gray-500">or click to browse files</p>
+                            <input type="file" id="extract-file-upload" class="hidden">
+                        </div>
+                        <div id="extract-preview" class="hidden">
+                            <h3 class="text-lg font-medium mb-3 text-gray-800">Archive Contents</h3>
+                            <div id="archive-contents" class="archive-preview border border-gray-200 rounded-md p-4 bg-gray-50">
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button id="extract-all-btn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md flex items-center">
+                                <i class="fas fa-download mr-2"></i> Extract All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="edit-content" class="p-6 hidden">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Edit Archive</h2>
+                        <div class="file-drop-area p-8 text-center mb-6" id="edit-drop-area">
+                            <i class="fas fa-file-archive text-4xl text-blue-400 mb-2"></i>
+                            <p class="text-gray-600 mb-2">Drag & drop archive file here</p>
+                            <p class="text-sm text-gray-500">or click to browse files</p>
+                            <input type="file" id="edit-file-upload" class="hidden">
+                        </div>
+                        <div id="edit-panel" class="hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="md:col-span-1">
+                                    <h3 class="text-lg font-medium mb-3 text-gray-800">Archive Files</h3>
+                                    <div id="edit-file-list" class="border border-gray-200 rounded-md divide-y divide-gray-200 max-h-96 overflow-y-auto">
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <h3 class="text-lg font-medium mb-3 text-gray-800">File Content</h3>
+                                    <div id="file-content-container" class="hidden">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span id="current-filename" class="font-medium text-gray-700"></span>
+                                            <div>
+                                                <button id="save-file-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm">
+                                                <i class="fas fa-save mr-1"></i> Save
+                                                </button>
+                                                <button id="delete-file-btn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm ml-2">
+                                                <i class="fas fa-trash mr-1"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <textarea id="file-content-editor" class="file-content-editor w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                    </div>
+                                    <div id="no-file-selected" class="text-center py-12 text-gray-500">
+                                        <i class="fas fa-file-alt text-4xl mb-2"></i>
+                                        <p>Select a file from the list to edit its content</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex justify-between">
+                                <div>
+                                    <button id="add-to-archive-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+                                    <i class="fas fa-plus mr-2"></i> Add File
+                                    </button>
+                                </div>
+                                <div>
+                                    <button id="save-archive-btn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md flex items-center">
+                                    <i class="fas fa-save mr-2"></i> Save Archive
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="file-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4" id="modal-title">Add File</h3>
+                        <div class="mb-4">
+                            <label for="file-name" class="block text-gray-700 mb-2">File Name</label>
+                            <input type="text" id="file-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-4" id="file-content-container">
+                            <label for="file-content" class="block text-gray-700 mb-2">Content</label>
+                            <textarea id="file-content" class="w-full px-4 py-2 border border-gray-300 rounded-md h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button id="cancel-modal-btn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancel</button>
+                            <button id="confirm-modal-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                
+                let currentArchive = null;
+                let currentFiles = [];
+                let editingFile = null;
+                let editArchive = null;
+            
+                
+                const tabs = {
+                    create: {
+                        tab: document.getElementById('create-tab'),
+                        content: document.getElementById('create-content')
+                    },
+                    extract: {
+                        tab: document.getElementById('extract-tab'),
+                        content: document.getElementById('extract-content')
+                    },
+                    edit: {
+                        tab: document.getElementById('edit-tab'),
+                        content: document.getElementById('edit-content')
+                    }
+                };
+            
+                
+                function switchTab(tabName) {
+                    Object.keys(tabs).forEach(key => {
+                        if (key === tabName) {
+                            tabs[key].tab.classList.add('active');
+                            tabs[key].content.classList.remove('hidden');
+                        } else {
+                            tabs[key].tab.classList.remove('active');
+                            tabs[key].content.classList.add('hidden');
+                        }
+                    });
+                }
+            
+                
+                Object.keys(tabs).forEach(key => {
+                    tabs[key].tab.addEventListener('click', () => switchTab(key));
+                });
+            
+                
+                const dropArea = document.getElementById('drop-area');
+                const fileUpload = document.getElementById('file-upload');
+                const fileList = document.getElementById('file-list');
+                const emptyMessage = document.getElementById('empty-message');
+                const addFileBtn = document.getElementById('add-file-btn');
+                const addFolderBtn = document.getElementById('add-folder-btn');
+                const uploadFilesBtn = document.getElementById('upload-files-btn');
+                const createArchiveBtn = document.getElementById('create-archive-btn');
+                const archiveName = document.getElementById('archive-name');
+                const archiveFormat = document.getElementById('archive-format');
+            
+                
+                const fileModal = document.getElementById('file-modal');
+                const modalTitle = document.getElementById('modal-title');
+                const fileNameInput = document.getElementById('file-name');
+                const fileContentInput = document.getElementById('file-content');
+                const confirmModalBtn = document.getElementById('confirm-modal-btn');
+                const cancelModalBtn = document.getElementById('cancel-modal-btn');
+                let modalMode = 'file'; 
+            
+                
+                const extractDropArea = document.getElementById('extract-drop-area');
+                const extractFileUpload = document.getElementById('extract-file-upload');
+                const extractPreview = document.getElementById('extract-preview');
+                const archiveContents = document.getElementById('archive-contents');
+                const extractAllBtn = document.getElementById('extract-all-btn');
+            
+                
+                const editDropArea = document.getElementById('edit-drop-area');
+                const editFileUpload = document.getElementById('edit-file-upload');
+                const editPanel = document.getElementById('edit-panel');
+                const editFileList = document.getElementById('edit-file-list');
+                const fileContentContainer = document.getElementById('file-content-container');
+                const noFileSelected = document.getElementById('no-file-selected');
+                const currentFilename = document.getElementById('current-filename');
+                const fileContentEditor = document.getElementById('file-content-editor');
+                const saveFileBtn = document.getElementById('save-file-btn');
+                const deleteFileBtn = document.getElementById('delete-file-btn');
+                const addToArchiveBtn = document.getElementById('add-to-archive-btn');
+                const saveArchiveBtn = document.getElementById('save-archive-btn');
+            
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    [dropArea, extractDropArea, editDropArea].forEach(area => {
+                        area.addEventListener(eventName, preventDefaults, false);
+                    });
+                });
+            
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropArea.addEventListener(eventName, highlight, false);
+                    extractDropArea.addEventListener(eventName, highlight, false);
+                    editDropArea.addEventListener(eventName, highlight, false);
+                });
+            
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropArea.addEventListener(eventName, unhighlight, false);
+                    extractDropArea.addEventListener(eventName, unhighlight, false);
+                    editDropArea.addEventListener(eventName, unhighlight, false);
+                });
+            
+                function highlight() {
+                    this.classList.add('active');
+                }
+            
+                function unhighlight() {
+                    this.classList.remove('active');
+                }
+            
+                
+                dropArea.addEventListener('drop', handleDrop, false);
+                extractDropArea.addEventListener('drop', handleExtractDrop, false);
+                editDropArea.addEventListener('drop', handleEditDrop, false);
+            
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    handleFiles(files);
+                }
+            
+                function handleExtractDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files.length > 0) {
+                        loadArchiveForExtraction(files[0]);
+                    }
+                }
+            
+                function handleEditDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files.length > 0) {
+                        loadArchiveForEditing(files[0]);
+                    }
+                }
+            
+                
+                uploadFilesBtn.addEventListener('click', () => fileUpload.click());
+                fileUpload.addEventListener('change', function() {
+                    handleFiles(this.files);
+                    this.value = ''; 
+                });
+            
+                extractDropArea.addEventListener('click', () => extractFileUpload.click());
+                extractFileUpload.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        loadArchiveForExtraction(this.files[0]);
+                    }
+                    this.value = ''; 
+                });
+            
+                editDropArea.addEventListener('click', () => editFileUpload.click());
+                editFileUpload.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        loadArchiveForEditing(this.files[0]);
+                    }
+                    this.value = ''; 
+                });
+            
+                
+                function handleFiles(files) {
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        addFileToArchive(file.name, file, false);
+                    }
+                }
+            
+                
+                function addFileToArchive(name, fileOrContent, isVirtual = true) {
+                    if (emptyMessage) emptyMessage.classList.add('hidden');
+            
+                    const fileId = Date.now() + '-' + Math.floor(Math.random() * 1000);
+                    const isFolder = name.endsWith('/');
+                    
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item flex items-center justify-between p-3';
+                    fileItem.dataset.id = fileId;
+                    
+                    fileItem.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas ${isFolder ? 'fa-folder text-yellow-500' : 'fa-file text-blue-500'} mr-3"></i>
+                            <span>${name}</span>
+                        </div>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    
+                    const removeBtn = fileItem.querySelector('button');
+                    removeBtn.addEventListener('click', () => {
+                        fileList.removeChild(fileItem);
+                        currentFiles = currentFiles.filter(f => f.id !== fileId);
+                        
+                        if (fileList.children.length === 0 && emptyMessage) {
+                            emptyMessage.classList.remove('hidden');
+                        }
+                    });
+                    
+                    fileList.appendChild(fileItem);
+                    
+                    
+                    currentFiles.push({
+                        id: fileId,
+                        name: name,
+                        content: fileOrContent,
+                        isVirtual: isVirtual,
+                        isFolder: isFolder
+                    });
+                }
+            
+                
+                addFileBtn.addEventListener('click', () => {
+                    modalMode = 'file';
+                    modalTitle.textContent = 'Add File';
+                    fileNameInput.value = '';
+                    fileContentInput.value = '';
+                    fileModal.classList.remove('hidden');
+                });
+            
+                
+                addFolderBtn.addEventListener('click', () => {
+                    modalMode = 'folder';
+                    modalTitle.textContent = 'Add Folder';
+                    fileNameInput.value = '';
+                    fileContentInput.value = '';
+                    fileModal.classList.remove('hidden');
+                });
+            
+                
+                confirmModalBtn.addEventListener('click', () => {
+                    const name = fileNameInput.value.trim();
+                    if (!name) return;
+            
+                    if (modalMode === 'folder') {
+                        const folderName = name.endsWith('/') ? name : name + '/';
+                        addFileToArchive(folderName, null, true);
+                    } else {
+                        const content = fileContentInput.value;
+                        addFileToArchive(name, content, true);
+                    }
+            
+                    fileModal.classList.add('hidden');
+                });
+            
+                
+                cancelModalBtn.addEventListener('click', () => {
+                    fileModal.classList.add('hidden');
+                });
+            
+                
+                createArchiveBtn.addEventListener('click', async () => {
+                    const name = archiveName.value.trim() || 'archive';
+                    const format = archiveFormat.value;
+                    
+                    if (currentFiles.length === 0) {
+                        alert('Please add at least one file to create an archive.');
+                        return;
+                    }
+                    
+                    const zip = new JSZip();
+                    
+                    
+                    for (const file of currentFiles) {
+                        if (file.isFolder) {
+                            zip.folder(file.name);
+                        } else if (file.isVirtual) {
+                            zip.file(file.name, file.content);
+                        } else {
+                            const fileContent = await readFileAsArrayBuffer(file.content);
+                            zip.file(file.name, fileContent);
+                        }
+                    }
+                    
+                    
+                    const content = await zip.generateAsync({type: 'blob'});
+                    
+                    
+                    const fullName = name + '.' + format;
+                    saveAs(content, fullName);
+                    
+                    
+                    fileList.innerHTML = '';
+                    fileList.appendChild(emptyMessage);
+                    emptyMessage.classList.remove('hidden');
+                    currentFiles = [];
+                    archiveName.value = '';
+                });
+            
+                
+                function readFileAsArrayBuffer(file) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsArrayBuffer(file);
+                    });
+                }
+            
+                
+                async function loadArchiveForExtraction(file) {
+                    try {
+                        const zip = new JSZip();
+                        const content = await readFileAsArrayBuffer(file);
+                        const loadedZip = await zip.loadAsync(content);
+                        
+                        
+                        archiveContents.innerHTML = '';
+                        
+                        
+                        await processZipForExtraction(loadedZip, '');
+                        
+                        extractPreview.classList.remove('hidden');
+                        currentArchive = loadedZip;
+                    } catch (error) {
+                        console.error('Error loading archive:', error);
+                        alert('Failed to load archive. Please try another file.');
+                    }
+                }
+            
+                async function processZipForExtraction(zip, path) {
+                    const files = zip.files;
+                    
+                    for (const [relativePath, file] of Object.entries(files)) {
+                        if (file.dir) {
+                            
+                            const folderItem = document.createElement('div');
+                            folderItem.className = 'flex items-center p-2 pl-4 border-b border-gray-200';
+                            folderItem.innerHTML = `
+                                <i class="fas fa-folder text-yellow-500 mr-2"></i>
+                                <span>${relativePath}</span>
+                            `;
+                            archiveContents.appendChild(folderItem);
+                        } else {
+                            
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'flex items-center justify-between p-2 pl-4 border-b border-gray-200';
+                            
+                            const fileSize = await getFileSize(file);
+                            
+                            fileItem.innerHTML = `
+                                <div class="flex items-center">
+                                    <i class="fas fa-file text-blue-500 mr-2"></i>
+                                    <span>${relativePath}</span>
+                                </div>
+                                <span class="text-sm text-gray-500">${fileSize}</span>
+                            `;
+                            archiveContents.appendChild(fileItem);
+                        }
+                    }
+                }
+            
+                async function getFileSize(file) {
+                    try {
+                        const content = await file.async('uint8array');
+                        const size = content.length;
+                        
+                        if (size < 1024) {
+                            return `${size} B`;
+                        } else if (size < 1024 * 1024) {
+                            return `${(size / 1024).toFixed(2)} KB`;
+                        } else {
+                            return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+                        }
+                    } catch (error) {
+                        return 'Unknown size';
+                    }
+                }
+            
+                
+                extractAllBtn.addEventListener('click', async () => {
+                    if (!currentArchive) return;
+                    
+                    const files = currentArchive.files;
+                    
+                    for (const [relativePath, file] of Object.entries(files)) {
+                        if (!file.dir) {
+                            try {
+                                const content = await file.async('blob');
+                                saveAs(content, relativePath);
+                            } catch (error) {
+                                console.error(`Error extracting ${relativePath}:`, error);
+                            }
+                        }
+                    }
+                });
+            
+                
+                async function loadArchiveForEditing(file) {
+                    try {
+                        const zip = new JSZip();
+                        const content = await readFileAsArrayBuffer(file);
+                        const loadedZip = await zip.loadAsync(content);
+                        
+                        
+                        editFileList.innerHTML = '';
+                        
+                        
+                        await processZipForEditing(loadedZip, '');
+                        
+                        editPanel.classList.remove('hidden');
+                        editArchive = loadedZip;
+                        editingFile = null;
+                        fileContentContainer.classList.add('hidden');
+                        noFileSelected.classList.remove('hidden');
+                    } catch (error) {
+                        console.error('Error loading archive for editing:', error);
+                        alert('Failed to load archive for editing. Please try another file.');
+                    }
+                }
+            
+                async function processZipForEditing(zip, path) {
+                    const files = zip.files;
+                    
+                    for (const [relativePath, file] of Object.entries(files)) {
+                        if (file.dir) {
+                            
+                            const folderItem = document.createElement('div');
+                            folderItem.className = 'flex items-center p-2 pl-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100';
+                            folderItem.innerHTML = `
+                                <i class="fas fa-folder text-yellow-500 mr-2"></i>
+                                <span>${relativePath}</span>
+                            `;
+                            editFileList.appendChild(folderItem);
+                        } else {
+                            
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'flex items-center p-2 pl-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100';
+                            fileItem.dataset.path = relativePath;
+                            
+                            fileItem.innerHTML = `
+                                <i class="fas fa-file text-blue-500 mr-2"></i>
+                                <span>${relativePath}</span>
+                            `;
+                            
+                            
+                            fileItem.addEventListener('click', async () => {
+                                try {
+                                    const content = await file.async('text');
+                                    currentFilename.textContent = relativePath;
+                                    fileContentEditor.value = content;
+                                    fileContentContainer.classList.remove('hidden');
+                                    noFileSelected.classList.add('hidden');
+                                    editingFile = relativePath;
+                                    
+                                    
+                                    const items = editFileList.querySelectorAll('div');
+                                    items.forEach(item => item.classList.remove('bg-blue-50'));
+                                    fileItem.classList.add('bg-blue-50');
+                                } catch (error) {
+                                    console.error('Error loading file content:', error);
+                                    alert('Failed to load file content. This file might be binary.');
+                                }
+                            });
+                            
+                            editFileList.appendChild(fileItem);
+                        }
+                    }
+                }
+            
+                
+                saveFileBtn.addEventListener('click', async () => {
+                    if (!editingFile || !editArchive) return;
+                    
+                    const newContent = fileContentEditor.value;
+                    editArchive.file(editingFile, newContent);
+                    
+                    
+                    const originalText = saveFileBtn.innerHTML;
+                    saveFileBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Saved';
+                    saveFileBtn.classList.remove('bg-blue-500');
+                    saveFileBtn.classList.add('bg-green-500');
+                    
+                    setTimeout(() => {
+                        saveFileBtn.innerHTML = originalText;
+                        saveFileBtn.classList.add('bg-blue-500');
+                        saveFileBtn.classList.remove('bg-green-500');
+                    }, 2000);
+                });
+            
+                
+                deleteFileBtn.addEventListener('click', () => {
+                    if (!editingFile || !editArchive) return;
+                    
+                    if (confirm(`Are you sure you want to delete "${editingFile}"?`)) {
+                        editArchive.remove(editingFile);
+                        
+                        
+                        const items = editFileList.querySelectorAll('div');
+                        items.forEach(item => {
+                            if (item.dataset.path === editingFile) {
+                                editFileList.removeChild(item);
+                            }
+                        });
+                        
+                        
+                        fileContentContainer.classList.add('hidden');
+                        noFileSelected.classList.remove('hidden');
+                        editingFile = null;
+                    }
+                });
+            
+                
+                addToArchiveBtn.addEventListener('click', () => {
+                    modalMode = 'file';
+                    modalTitle.textContent = 'Add File to Archive';
+                    fileNameInput.value = '';
+                    fileContentInput.value = '';
+                    fileModal.classList.remove('hidden');
+                });
+            
+                
+                confirmModalBtn.addEventListener('click', () => {
+                    if (modalMode === 'file' && editArchive) {
+                        const name = fileNameInput.value.trim();
+                        if (!name) return;
+                        
+                        const content = fileContentInput.value;
+                        editArchive.file(name, content);
+                        
+                        
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'flex items-center p-2 pl-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100';
+                        fileItem.dataset.path = name;
+                        
+                        fileItem.innerHTML = `
+                            <i class="fas fa-file text-blue-500 mr-2"></i>
+                            <span>${name}</span>
+                        `;
+                        
+                        
+                        fileItem.addEventListener('click', async () => {
+                            try {
+                                const file = editArchive.file(name);
+                                const content = await file.async('text');
+                                currentFilename.textContent = name;
+                                fileContentEditor.value = content;
+                                fileContentContainer.classList.remove('hidden');
+                                noFileSelected.classList.add('hidden');
+                                editingFile = name;
+                                
+                                
+                                const items = editFileList.querySelectorAll('div');
+                                items.forEach(item => item.classList.remove('bg-blue-50'));
+                                fileItem.classList.add('bg-blue-50');
+                            } catch (error) {
+                                console.error('Error loading file content:', error);
+                                alert('Failed to load file content.');
+                            }
+                        });
+                        
+                        editFileList.appendChild(fileItem);
+                        
+                        fileModal.classList.add('hidden');
+                    }
+                });
+            
+                
+                saveArchiveBtn.addEventListener('click', async () => {
+                    if (!editArchive) return;
+                    
+                    const content = await editArchive.generateAsync({type: 'blob'});
+                    saveAs(content, 'edited-archive.zip');
+                    
+                    
+                    const originalText = saveArchiveBtn.innerHTML;
+                    saveArchiveBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Archive Saved';
+                    saveArchiveBtn.classList.remove('bg-green-600');
+                    saveArchiveBtn.classList.add('bg-green-500');
+                    
+                    setTimeout(() => {
+                        saveArchiveBtn.innerHTML = originalText;
+                        saveArchiveBtn.classList.add('bg-green-600');
+                        saveArchiveBtn.classList.remove('bg-green-500');
+                    }, 2000);
+                });
+            });
+        </script>
+    </body>
+</html>
