@@ -1,0 +1,8 @@
+/* Ensure code blocks are always LTR */
+pre, code {
+  direction: ltr;
+  text-align: left;
+}
+body {
+    direction: rtl;
+}
