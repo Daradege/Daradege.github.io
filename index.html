@@ -1,234 +1,240 @@
 <!DOCTYPE html>
-<html class="not-ready lg:text-base" lang="fa">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Safamanesh - Developer & Programmer</title>
+    <meta name="description" content="Ali Safamanesh - Expert developer specializing in C, Python, JavaScript, DevOps, Docker, CI/CD, Linux, low-level programming, and automation">
+    <meta name="author" content="Ali Safamanesh">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Ali Safamanesh - Developer & Programmer">
+    <meta property="og:description" content="Expert developer specializing in C, Python, JavaScript, DevOps, Docker, CI/CD, Linux, low-level programming, and automation">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+    <div class="nav-container">
+        <img src="assets/logo.jpg" alt="AS" class="logo">
+        <div class="nav-links">
+            <a href="/blog">BLOG</a>
+        </div>
+    </div>
+</nav>
 
-        <title>
-            وبسایت رسمی علی صفامنش
-        </title>
-
-        <meta name="theme-color" />
-
-        <meta name="author" content="علی صفامنش" />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="وبسایت رسمی علی صفامنش" />
-        <meta name="description" content="علی صفامنش, Ali Safamanesh, برنامه نویس, programmer, لینوکس, linux, بات نویس, بله, ربات نویس, تلگرام" />
-        <meta property="og:url" content="https://daradege.ir" />
-
-        <link rel="preload stylesheet" as="style" href="/main.css" />
-        <style>
-            :root {
-                --bg: #f4f4f5;
-                --bg-dark: #18181b;
-                --header: #e4e4e7;
-                --header-dark: #27272a;
-            }
-            html[dir="rtl"] * {
-                text-align: right;
-            }
-            html[dir="ltr"] * {
-                text-align: left;
-            }
-        </style>
-
-        <link rel="preload" as="image" href="/icons/logo.png" />
-
-        <link rel="preload" as="image" href="/icons/github.svg" />
-
-        <link rel="preload" as="image" href="https://cdn.jsdelivr.net/npm/simple-icons/icons/telegram.svg" />
-
-        <link rel="preload" as="image" href="https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Daradege&#x2F;Daradege.github.io&#x2F;refs&#x2F;heads&#x2F;main&#x2F;assets&#x2F;www.svg" />
-
-        <link rel="preload" as="image" href="/icons/rss.svg" />
-
-        <link rel="preload" as="image" href="/icons/theme.svg" />
-
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-        <link rel="stylesheet" href="/custom.css" />
-        <link rel="canonical" href="https:&#x2F;&#x2F;daradege.ir&#x2F;blog" />
-        <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-        <style>
-            @font-face {
-                font-family: "Poppins";
-                src: url(https://daradege.ir/fonts/poppins.ttf);
-            }
-            * {
-                font-family: "Poppins", "Vazirmatn", sans-serif;
-            }
-            [dir="rtl"] * {
-                font-family: "Vazirmatn", "Poppins", sans-serif;
-            }
-        </style>
-    </head>
-    <body class="text-black duration-200 ease-out dark:text-white">
-        <header class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full">
-            <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
-                <div class="flex justify-between">
-                    <div class="flex items-center">
-                        <div class="btn-dark ms-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]" role="button" aria-label="Dark"></div>
-                        &nbsp;
-                        <a class="text-2xl font-semibold" href="/">وبسایت رسمی علی صفامنش</a>
-                    </div>
-
-                    <div class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden" role="button" aria-label="Menu"></div>
-                </div>
-                <script>
-                    // base
-                    const htmlClass = document.documentElement.classList;
-                    setTimeout(() => {
-                        htmlClass.remove("not-ready");
-                    }, 10);
-
-                    // mobile menu
-                    const btnMenu = document.querySelector(".btn-menu");
-                    btnMenu?.addEventListener("click", () => {
-                        htmlClass.toggle("open");
-                    });
-
-                    // dark theme
-                    const setDark = (isDark) => {
-                        if (isDark) {
-                            document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
-                            htmlClass.add("dark");
-                        } else {
-                            document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
-                            htmlClass.remove("dark");
-                        }
-                        localStorage.setItem("dark", isDark);
-                    };
-
-                    // init
-                    const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-                    if (htmlClass.contains("dark")) {
-                        setDark(true);
-                    } else {
-                        const darkVal = localStorage.getItem("dark");
-                        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
-                    }
-
-                    // listen system
-                    darkScheme.addEventListener("change", (event) => {
-                        setDark(event.matches);
-                    });
-
-                    // manual switch
-                    const btnDark = document.querySelector(".btn-dark");
-                    btnDark.addEventListener("click", () => {
-                        setDark(localStorage.getItem("dark") !== "true");
-                    });
-                </script>
-
-                <nav class="flex w-full items-center lg:w-auto">
-                    <ul class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0">
-                        <li>
-                            <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href="/projects">پروژه‌ها</a>
-                        </li>
-
-                        <li>
-                            <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href="/tools">ابزارها</a>
-                        </li>
-
-                        <li>
-                            <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href="/certs">مدارک</a>
-                        </li>
-
-                        <li>
-                            <a class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0" href="/blog">وبلاگ فارسی</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-
-        <main class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg">
-            <div class="mb-16 flex items-start">
-                <div class="not-prose mr-5 shrink-0 rounded-full border-[0.5px] border-black/10 bg-white/50 p-3 shadow dark:bg-white/[15%]">
-                    <img class="my-0 aspect-square w-16 rounded-full !bg-black/5 hover:animate-spin" src="/icons/logo.png" alt="وبسایت رسمی علی صفامنش" />
-                </div>
-                &nbsp;&nbsp;
-
+<main>
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-label">DEVELOPER & PROGRAMMER</div>
+            <h1>Ali Safamanesh</h1>
+            <div class="hero-grid">
                 <div>
-                    <h1 class="mb-2 text-3xl font-bold">وبسایت رسمی علی صفامنش</h1>
-                    <div class="mb-2 break-words">
-                        برنامه نویس فول استک، ربات نویس، متخصص ایجاد فرایند های خودکارسازی، متخصص لینوکس، طرفدار گنو و آزادی نرم افزار.
+                    <p class="hero-text">
+                        Specialized in Fullstack development & low-level programming, automation, and DevOps infrastructure.
+                        Building efficient solutions with focus on modern development practices.
+                    </p>
+                    <p class="hero-text">
+                        Passionate about creating robust, scalable applications and exploring the depths of
+                        system programming.
+                    </p>
+                </div>
+                <div>
+                    <div class="focus-box">
+                        <div class="focus-label">PRIMARY FOCUS</div>
+                        <div class="focus-item">Linux Systems</div>
+                        <div class="focus-item">Low-Level Programming</div>
+                        <div class="focus-item">Automation & DevOps</div>
                     </div>
-
-                    <nav class="flex justify-start dark:invert">
-                        <a
-                            class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
-                            style="--url: url(https://daradege.ir/blog/icons/github.svg);"
-                            href="https://github.com/daradege/"
-                            target="_blank"
-                            rel="me"
-                        >
-                            github
-                        </a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a
-                            class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
-                            style="--url: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/telegram.svg);"
-                            href="https://t.me/daradege"
-                            target="_blank"
-                            rel="me"
-                        >
-                            telegram
-                        </a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a
-                            class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
-                            style="--url: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/matrix.svg);"
-                            href="https://matrix.to/#/@daradege:envs.net"
-                            target="_blank"
-                            rel="me"
-                        >
-                            matrix
-                        </a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a
-                            class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
-                            style="--url: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/gitea.svg);"
-                            href="https://git.dvgng.ir/daradege"
-                            target="_blank"
-                            rel="me"
-                        >
-                            gitea
-                        </a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a
-                            class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
-                            style="--url: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/mastodon.svg);"
-                            href="https://techhub.social/@daradege"
-                            target="_blank"
-                            rel="me"
-                        >
-                            mastodon
-                        </a>
-                        &nbsp;&nbsp;&nbsp;
-                    </nav>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <br><br><br>
-            <center><h2>در دست احداث...</h2></center>
+    <section id="tech" class="section section-alt">
+        <div class="container">
+            <h2><span class="section-accent">&gt;</span> Tech Stack</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Programming Languages</h3>
+                    <div class="tech-grid">
+                        <div class="tech-box">
+                            <div class="tech-name">C</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">Python</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">C#</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">PHP</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">JavaScript</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">Node.js</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">HTML</div>
+                        </div>
+                        <div class="tech-box">
+                            <div class="tech-name">CSS</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>DevOps & Tools</h3>
+                    <div class="devops-list">
+                        <div class="devops-item">
+                            <div class="devops-title">Docker</div>
+                            <div class="devops-desc">Containerization & Orchestration</div>
+                        </div>
+                        <div class="devops-item">
+                            <div class="devops-title">CI/CD</div>
+                            <div class="devops-desc">Continuous Integration & Deployment</div>
+                        </div>
+                        <div class="devops-item">
+                            <div class="devops-title">Git</div>
+                            <div class="devops-desc">Version Control Systems</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <nav class="mt-16 flex"></nav>
-        </main>
+    <section id="work" class="section">
+        <div class="container">
+            <h2><span class="section-accent">&gt;</span> Selected Work</h2>
+            <div class="project-list">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">PyroBale</h3>
+                        <div class="project-year">2024</div>
+                    </div>
+                    <p class="project-desc">
+                        PyroBale is a powerful library for creating bale bots. you can easily write code your bot with simple and clean syntax.
+                    </p>
+                    <div class="tag-list">
+                        <span class="tag">PYTHON</span>
+                        <span class="tag">API</span>
+                        <a class="tag" style="color: cyan" target="_blank" href="https://pyrobale.ir">LINK</a>
+                    </div>
+                </div>
 
-        <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
-            <div class="mr-auto basis-full lg:basis-1/2">
-                &copy; 2025
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">SQbooster</h3>
+                        <div class="project-year">2024</div>
+                    </div>
+                    <p class="project-desc">
+                        SQbooster is a python library for easy key-value database management.
+                    </p>
+                    <div class="tag-list">
+                        <span class="tag">PYTHON</span>
+                        <span class="tag">DATABASE</span>
+                        <a class="tag" style="color: cyan" target="_blank" href="https://sqbooster.github.io">LINK</a>
+                    </div>
+                </div>
 
-                <a class="link" href="">
-                    علی صفامنش
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Kita Farsi</h3>
+                        <div class="project-year">2023</div>
+                    </div>
+                    <p class="project-desc">
+                        A translation of kita - zola theme
+                    </p>
+                    <div class="tag-list">
+                        <span class="tag">JAVASCRIPT</span>
+                        <span class="tag">AUTOMATION</span>
+                        <a class="tag" style="color: cyan" target="_blank" href="https://daradege.ir/kita-farsi">LINK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="credentials" class="section section-alt">
+        <div class="container">
+            <h2><span class="section-accent">&gt;</span> Professional Credentials</h2>
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <div class="cert-label">CERTIFICATION</div>
+                    <h3 class="cert-title">Python Programming for beginners</h3>
+                    <div class="cert-issuer">Tehran Institute of Technology</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-label">CERTIFICATION</div>
+                    <h3 class="cert-title">Python Programming for beginners 2</h3>
+                    <div class="cert-issuer">Tehran Institute of Technology</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-label">CERTIFICATION</div>
+                    <h3 class="cert-title">Python Programming expert</h3>
+                    <div class="cert-issuer">Tehran Institute of Technology</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-label">CERTIFICATION</div>
+                    <h3 class="cert-title">C# Programming expert</h3>
+                    <div class="cert-issuer">Tehran Institute of Technology</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="contact-title">Get In Touch</h2>
+            <p class="contact-text">
+                Open to discussing new opportunities, collaborations, or just having a conversation
+                about technology and development.
+            </p>
+            <br>
+            <div style="display: inline-flex; justify-content: flex-start; filter: invert(1);">
+                <a href="https://github.com/daradege/" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(https://daradege.ir/blog/icons/github.svg) center center / cover no-repeat;">
+                    github
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://t.me/daradege" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/telegram.svg) center center / cover no-repeat;">
+                    telegram
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://matrix.to/#/@dr:wiiz.ir" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/matrix.svg) center center / cover no-repeat;">
+                    matrix
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://git.dvgng.ir/daradege" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/git.svg) center center / cover no-repeat;">
+                    git
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://techhub.social/@daradege" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/mastodon.svg) center center / cover no-repeat;">
+                    mastodon
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://ble.ir/daradege" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(/assets/bale.svg) center center / cover no-repeat;">
+                    bale
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="mailto:daradege@proton.me" target="_blank" rel="me" style="display: block; height: 32px; width: 32px; text-indent: -9999px; background: url(/assets/at.svg) center center / cover no-repeat;">
+                    e-mail
                 </a>
             </div>
-        </footer>
-    </body>
-    <script src="https://cdn.kntr.ir/tracker.js"></script>
-    <script>kntrTracking.startTracking("19", "");</script>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-text">This website is open source</div>
+        <div class="footer-text">Built with precision & passion</div>
+    </div>
+</footer>
+</body>
 </html>
